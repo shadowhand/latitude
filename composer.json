@@ -1,0 +1,29 @@
+{
+    "name": "latitude/latitude",
+    "description": "A SQL query builder with zero dependencies",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Woody Gilk",
+            "email": "woody.gilk@gmail.com",
+            "homepage": "https://github.com/shadowhand"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Latitude\\QueryBuilder\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Latitude\\QueryBuilder\\": "tests/"
+        }
+    }
+}
