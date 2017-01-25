@@ -162,7 +162,7 @@ class SelectQuery implements Statement
         // ORDER BY ...
         if ($this->orderBy) {
             $parts[] = 'ORDER BY';
-            $parts[] = $this->escapeOrderBy($this->orderBy);
+            $parts[] = $this->escapeOrderBy();
         }
 
         // LIMIT ...
