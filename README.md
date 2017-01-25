@@ -26,6 +26,38 @@ and `DELETE` statements. The escaping helpers assist in protecting against SQL
 injection and identifier quoting for MySQL, SQL Server, Postgres, and other
 databases that follow SQL standards.
 
+## Examples
+
+### INSERT
+
+```php
+use Latitude\QueryBuilder\InsertQuery;
+
+$insert = InsertQuery::make('users', [
+    'username' => 'jsmith',
+]);
+
+echo $select->sql();
+// INSERT INTO users (username) VALUES (?)
+
+print_r($insert->params());
+// ["jsmith"]
+```
+
+There is also a Postgres extension that allows the use of the `RETURNING` statement:
+
+```php
+use Latitude\QueryBuilder\Postgres\InsertQuery;
+
+$insert = InsertQuery::make(...)
+    ->returning([
+        'id',
+    ]);
+
+echo $insert->sql();
+// INSERT INTO users (username) VALUES (?) RETURNING id
+```
+
 ## Why use Latitude instead of X?
 
 Many query builders depend directly on PDO or use complicated condition syntax
