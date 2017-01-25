@@ -84,7 +84,7 @@ $insert = InsertQuery::make('users', [
     'username' => 'jsmith',
 ]);
 
-echo $select->sql();
+echo $insert->sql();
 // INSERT INTO users (username) VALUES (?)
 
 print_r($insert->params());
@@ -118,7 +118,7 @@ $update = UpdateQuery::make('users', [
     Conditions::make('id = ?', 5)
 );
 
-echo $select->sql();
+echo $update->sql();
 // UPDATE users SET username = ? WHERE id = ?
 
 print_r($update->params());
@@ -188,6 +188,9 @@ echo $statement->sql();
 print_r($statement->params());
 // [5]
 ```
+
+Conditions are used for JOIN, WHERE, and HAVING clauses. They can also be used
+independently for custom query constructions.
 
 #### Grouping Conditions
 
