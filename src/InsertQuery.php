@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+use Iterator;
+
 class InsertQuery implements Statement
 {
-    use Traits\CanCreatePlaceholders;
     use Traits\CanEscapeIdentifiers;
+    use Traits\CanReplaceBooleanAndNullValues;
 
     /**
      * Create a new insert query.
@@ -47,7 +49,7 @@ class InsertQuery implements Statement
             'INSERT INTO %s (%s) VALUES (%s)',
             $this->escapeIdentifier($this->table),
             $this->escapeIdentifiers($this->columns),
-            $this->createPlaceholders(\count($this->params))
+            $this->createPlaceholders()
         );
     }
 
@@ -71,4 +73,22 @@ class InsertQuery implements Statement
      * @var array
      */
     protected $params = [];
+
+    /**
+     * Create a list of placeholders.
+     */
+    protected function createPlaceholders(): string
+    {
+        return \implode(', ', \iterator_to_array($this->generatePlaceholders()));
+    }
+
+    /**
+     * Generate a placeholder.
+     */
+    protected function generatePlaceholders(): Iterator
+    {
+        foreach (\array_keys($this->params) as $index) {
+            yield $this->placeholderValue($index);
+        }
+    }
 }

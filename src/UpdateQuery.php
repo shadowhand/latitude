@@ -62,7 +62,7 @@ class UpdateQuery implements Statement
         return \sprintf(
             'UPDATE %s SET %s WHERE %s',
             $this->escapeIdentifier($this->table),
-            $this->escapeSetList($this->columns),
+            $this->createSetList(),
             $this->where->sql()
         );
     }
@@ -96,17 +96,17 @@ class UpdateQuery implements Statement
     /**
      * Create a list of columns and placeholders.
      */
-    protected function escapeSetList(array $columns): string
+    protected function createSetList(): string
     {
-        return \implode(', ', \iterator_to_array($this->generateSetList($columns)));
+        return \implode(', ', \iterator_to_array($this->generateSetList()));
     }
 
     /**
      * Generate a column and placeholder pair.
      */
-    protected function generateSetList(array $columns): Iterator
+    protected function generateSetList(): Iterator
     {
-        foreach ($columns as $idx => $column) {
+        foreach ($this->columns as $idx => $column) {
             yield $this->escapeIdentifier($column) . ' = ' . $this->placeholderValue($idx);
         }
     }

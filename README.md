@@ -92,6 +92,16 @@ echo $update->sql();
 // UPDATE users SET username = ? WHERE id = ? RETURNING updated_at
 ```
 
+### Boolean and Null Values
+
+In `INSERT` and `UPDATE` queries, boolean and null values will be added directly
+the query, rather than as placeholders. This is due to the fact that
+`PDOStatement::execute($params)` will attempt to cast all parameters to strings,
+which does not work correctly with booleans or nulls.
+
+See [`PDOStatement::execute` documentation](http://php.net/manual/pdostatement.execute.php)
+for more information.
+
 ## Why use Latitude instead of X?
 
 Many query builders depend directly on PDO or use complicated condition syntax

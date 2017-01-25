@@ -5,6 +5,8 @@ namespace Latitude\QueryBuilder;
 
 class Conditions implements Statement
 {
+    use Traits\CanCreatePlaceholders;
+
     /**
      * Create a new conditions instance.
      */
@@ -218,8 +220,7 @@ class Conditions implements Statement
      */
     private function unpackCondition(string $condition, int $count): string
     {
-        // Replace a grouped placeholder with an matching count of placeholders.
-        $params = '?' . \str_repeat(', ?', $count - 1);
-        return \str_replace('?*', $params, $condition);
+        $placeholders = $this->createPlaceholders($count);
+        return \str_replace('?*', $placeholders, $condition);
     }
 }

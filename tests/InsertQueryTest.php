@@ -27,4 +27,30 @@ class InsertQueryTest extends TestCase
             $insert->params()
         );
     }
+    /**
+     * @dataProvider dataBooleanAndNull
+     */
+    public function testInsertBooleanAndNull($value, string $expect)
+    {
+        $table = 'users';
+        $map = [
+            'username' => 'jsmith',
+            'is_vip' => $value,
+        ];
+
+        $insert = InsertQuery::make($table, $map);
+
+        $this->assertContains("VALUES (?, $expect)", $insert->sql());
+        $this->assertCount(1, $insert->params());
+    }
+
+    public function dataBooleanAndNull()
+    {
+        return [
+            // value, expected sql fragment
+            'null value' => [null, 'NULL'],
+            'true value' => [true, 'TRUE'],
+            'false value' => [false, 'FALSE'],
+        ];
+    }
 }
