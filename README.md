@@ -67,7 +67,7 @@ use Latitude\QueryBuilder\Conditions;
 $update = UpdateQuery::make('users', [
     'username' => 'mr-smith',
 ])
-->where(
+->with(
     Conditions::make('id = ?', 5)
 );
 
@@ -99,7 +99,7 @@ use Latitude\QueryBuilder\DeleteQuery;
 use Latitude\QueryBuilder\Conditions;
 
 $delete = DeleteQuery::make('users')
-->where(
+->with(
     Conditions::make('last_login IS NULL')
 );
 
@@ -122,6 +122,104 @@ $delete = DeleteQuery::make(...)
 
 echo $delete->sql();
 // DELETE FROM users WHERE last_login IS NULL RETURNING id
+```
+
+### Conditions
+
+The conditions builder acts as both a dynamic condition builder and a parameter
+holder.
+
+```php
+use Latitude\QueryBuilder\Conditions;
+
+$statement = Conditions::make('id = ?', 5)
+    ->andWith('last_login IS NULL');
+
+echo $statement->sql();
+// id = ? AND last_login IS NULL
+
+print_r($statement->params());
+// [5]
+```
+
+#### Grouping Conditions
+
+Conditions can also produce groupings:
+
+```php
+$statement = Conditions::make()
+    ->group()
+        ->with('subtotal > ?')
+        ->andWith('taxes > 0')
+    ->end()
+    ->orGroup()
+        ->with('cost > ?')
+        ->andWith('cancelled = true')
+    ->end();
+
+echo $statement->sql();
+// (subtotal > ? AND taxes > 0) OR (cost > ? AND cancelled = true)
+```
+
+**Note:** Be sure to call `end()` to close the group, or you may get unexpected
+query results!
+
+#### IN conditions
+
+Because PDO does not have an easy way to handle array values for `IN` conditions,
+the builder introduces a special `?*` placeholder that will be expanded when using
+the `in()`, `andIn()`, and `orIn()` methods.
+
+```php
+use Latitude\QueryBuilder\Conditions;
+
+$ids = [1, 12, 5];
+
+$statement = Conditions::make()
+    ->in('id IN ?*', $ids);
+
+echo $statement->sql();
+// role IN (?, ?, ?)
+
+print_r($statement->params());
+// [1, 12, 5]
+```
+
+**Note:** Expansion of `?*` for a variable number of placeholders only works with
+the `in*()` methods. Using `?*` with any other method will produce an invalid query!
+
+#### LIKE Conditions
+
+```php
+use Latitude\QueryBuilder\Escape as e;
+
+$statement = Conditions::make()
+    ->with('name LIKE ?', e::likeAny('Smith'));
+
+print_r($statement->params());
+// ['%Smith%'];
+```
+
+Note the usage of the `e::likeAny()` method here. This will ensure that special
+characters in the input string are escaped properly, and then add `%` wildcards
+around the input.
+
+If you want to add the `%` wildcards manually, the `e::like()` method will only
+only escape the input:
+
+```php
+$search = '%' . e::like($search);
+// or
+$search = str_replace(' ', '%', e::like($search));
+```
+
+There is also a MSSQL extension that will escape character ranges:
+
+```php
+use Latitude\QueryBuilder\SqlServer\Escape as e;
+
+echo e::like('[range] test');
+// "\\[range\\] test"
 ```
 
 ### Boolean and Null Values
