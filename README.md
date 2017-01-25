@@ -92,6 +92,38 @@ echo $update->sql();
 // UPDATE users SET username = ? WHERE id = ? RETURNING updated_at
 ```
 
+### DELETE
+
+```php
+use Latitude\QueryBuilder\DeleteQuery;
+use Latitude\QueryBuilder\Conditions;
+
+$delete = DeleteQuery::make('users')
+->where(
+    Conditions::make('last_login IS NULL')
+);
+
+echo $select->sql();
+// DELETE FROM users WHERE last_login IS NULL
+
+print_r($delete->params());
+// []
+```
+
+There is also a Postgres extension that allows the use of the `RETURNING` statement:
+
+```php
+use Latitude\QueryBuilder\Postgres\DeleteQuery;
+
+$delete = DeleteQuery::make(...)
+    ->returning([
+        'id',
+    ]);
+
+echo $delete->sql();
+// DELETE FROM users WHERE last_login IS NULL RETURNING id
+```
+
 ### Boolean and Null Values
 
 In `INSERT` and `UPDATE` queries, boolean and null values will be added directly
