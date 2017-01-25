@@ -32,13 +32,7 @@ class Conditions implements Statement
      */
     public function andWith(string $condition, ...$params): self
     {
-        $this->parts[] = [
-            'type' => 'AND',
-            'condition' => $condition,
-            'params' => $params,
-        ];
-
-        return $this;
+        return $this->addCondition('AND', $condition, $params);
     }
 
     /**
@@ -46,47 +40,13 @@ class Conditions implements Statement
      */
     public function orWith(string $condition, ...$params): self
     {
-        $this->parts[] = [
-            'type' => 'OR',
-            'condition' => $condition,
-            'params' => $params,
-        ];
-
-        return $this;
-    }
-
-    /**
-     * Alias for andIn().
-     */
-    public function in(string $condition, array $params): self
-    {
-        return $this->andIn($condition, $params);
-    }
-
-    /**
-     * Add an IN condition that will be applied with a logical "AND".
-     *
-     * Instead of using ? to denote the placeholder, ?* must be used!
-     */
-    public function andIn(string $condition, array $params): self
-    {
-        return $this->andWith($this->unpackCondition($condition, \count($params)), ...$params);
-    }
-
-    /**
-     * Add an IN condition that will be applied with a logical "OR".
-     *
-     * Instead of using "?" to denote the placeholder, "?*" must be used!
-     */
-    public function orIn(string $condition, array $params): self
-    {
-        return $this->orWith($this->unpackCondition($condition, \count($params)), ...$params);
+        return $this->addCondition('OR', $condition, $params);
     }
 
     /**
      * Alias for andGroup().
      */
-    public function group(): self
+    public function group(): Conditions
     {
         return $this->andGroup();
     }
@@ -96,16 +56,9 @@ class Conditions implements Statement
      *
      * Exit the group with end().
      */
-    public function andGroup(): self
+    public function andGroup(): Conditions
     {
-        $group = new static($this);
-
-        $this->parts[] = [
-            'type' => 'AND',
-            'condition' => $group,
-        ];
-
-        return $group;
+        return $this->addConditionGroup('AND');
     }
 
     /**
@@ -113,16 +66,9 @@ class Conditions implements Statement
      *
      * Exit the group with end().
      */
-    public function orGroup(): self
+    public function orGroup(): Conditions
     {
-        $group = new static($this);
-
-        $this->parts[] = [
-            'type' => 'OR',
-            'condition' => $group,
-        ];
-
-        return $group;
+        return $this->addConditionGroup('OR');
     }
 
     /**
@@ -193,11 +139,42 @@ class Conditions implements Statement
     }
 
     /**
+     * Add a condition to the current conditions, expanding IN values.
+     */
+    protected function addCondition(string $type, string $condition, array $params): self
+    {
+        if ($params) {
+            $this->expandPlaceholders($condition, $params);
+        }
+
+        $this->parts[] = compact('type', 'condition', 'params');
+        return $this;
+    }
+
+    /**
+     * Add a condition group to the current conditions.
+     */
+    protected function addConditionGroup(string $type): Conditions
+    {
+        $condition = new static($this);
+        $this->parts[] = compact('type', 'condition');
+        return $condition;
+    }
+
+    /**
+     * Replace placeholder with expanded placeholder for IN values.
+     */
+    protected function expandPlaceholders(string &$condition, array &$params)
+    {
+        if ($params[0] instanceof InValue) {
+            $placeholders = $this->createPlaceholders(\count($params[0]));
+            $condition = \str_replace('?', "($placeholders)", $condition);
+            $params = $params[0]->values();
+        }
+    }
+
+    /**
      * Check if a condition is a sub-condition.
-     *
-     * @param mixed $condition
-     *
-     * @return bool
      */
     protected function isConditions($condition): bool
     {
@@ -206,21 +183,5 @@ class Conditions implements Statement
         }
 
         return $condition instanceof Conditions;
-    }
-
-    /**
-     * Replace a grouped placeholder with a list of placeholders.
-     *
-     * Given a count of 3, the placeholder ?* will become ?, ?, ?
-     *
-     * @param string $condition
-     * @param integer $count
-     *
-     * @return string
-     */
-    private function unpackCondition(string $condition, int $count): string
-    {
-        $placeholders = $this->createPlaceholders($count);
-        return \str_replace('?*', $placeholders, $condition);
     }
 }

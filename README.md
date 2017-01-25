@@ -167,16 +167,16 @@ query results!
 #### IN conditions
 
 Because PDO does not have an easy way to handle array values for `IN` conditions,
-the builder introduces a special `?*` placeholder that will be expanded when using
-the `in()`, `andIn()`, and `orIn()` methods.
+a special `InValue` wrapper exists that will expand the `?` placeholder in the
+condition based on the number of values provided.
 
 ```php
 use Latitude\QueryBuilder\Conditions;
+use Latitude\QueryBuilder\InValue as in;
 
 $ids = [1, 12, 5];
 
-$statement = Conditions::make()
-    ->in('id IN ?*', $ids);
+$statement = Conditions::make('role IN ?', in::make($ids))
 
 echo $statement->sql();
 // role IN (?, ?, ?)
@@ -185,8 +185,7 @@ print_r($statement->params());
 // [1, 12, 5]
 ```
 
-**Note:** Expansion of `?*` for a variable number of placeholders only works with
-the `in*()` methods. Using `?*` with any other method will produce an invalid query!
+**Note:** This will only work correctly with a single placeholder!
 
 #### LIKE Conditions
 
