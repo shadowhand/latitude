@@ -28,6 +28,51 @@ databases that follow SQL standards.
 
 ## Examples
 
+### SELECT
+
+```php
+use Latitude\QueryBuilder\SelectQuery;
+
+$select = SelectQuery::make()
+    ->from('users');
+
+echo $select->sql();
+// SELECT * FROM users
+```
+
+The columns can also be passed at construction:
+
+```
+$select = SelectQuery::make(
+        'id',
+        'username'
+    )
+    ->from('users');
+
+echo $select->sql();
+// SELECT id, username FROM users
+```
+
+Select supports the following methods:
+
+- `columns(string ...column)`
+- `from(string ...table)`
+- `join(string table, conditions)`
+- `innerJoin(...)`
+- `outerJoin(...)`
+- `leftJoin(...)`
+- `leftOuterJoin(...)`
+- `rightJoin(...)`
+- `rightOuterJoin(...)`
+- `fullJoin(...)`
+- `fullOuterJoin(...)`
+- `where(conditions)`
+- `groupBy(string ...columns)`
+- `having(conditions)`
+- `orderBy(array ...pairs)` in form `[column]` or `[column, direction]`
+- `limit(int limit)`
+- `offset(int offset)`
+
 ### INSERT
 
 ```php
