@@ -58,6 +58,40 @@ echo $insert->sql();
 // INSERT INTO users (username) VALUES (?) RETURNING id
 ```
 
+### UPDATE
+
+```php
+use Latitude\QueryBuilder\UpdateQuery;
+use Latitude\QueryBuilder\Conditions;
+
+$update = UpdateQuery::make('users', [
+    'username' => 'mr-smith',
+])
+->where(
+    Conditions::make('id = ?', 5)
+);
+
+echo $select->sql();
+// UPDATE users SET username = ? WHERE id = ?
+
+print_r($update->params());
+// ["mr-smith", 5]
+```
+
+There is also a Postgres extension that allows the use of the `RETURNING` statement:
+
+```php
+use Latitude\QueryBuilder\Postgres\UpdateQuery;
+
+$update = UpdateQuery::make(...)
+    ->returning([
+        'updated_at',
+    ]);
+
+echo $update->sql();
+// UPDATE users SET username = ? WHERE id = ? RETURNING updated_at
+```
+
 ## Why use Latitude instead of X?
 
 Many query builders depend directly on PDO or use complicated condition syntax
