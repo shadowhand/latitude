@@ -42,7 +42,7 @@ echo $select->sql();
 
 The columns can also be passed at construction:
 
-```
+```php
 $select = SelectQuery::make(
         'id',
         'username'
@@ -53,7 +53,7 @@ echo $select->sql();
 // SELECT id, username FROM users
 ```
 
-Select supports the following methods:
+#### Supported Select Methods
 
 - `columns(string ...column)`
 - `from(string ...table)`
@@ -69,9 +69,11 @@ Select supports the following methods:
 - `where(conditions)`
 - `groupBy(string ...columns)`
 - `having(conditions)`
-- `orderBy(array ...pairs)` in form `[column]` or `[column, direction]`
+- `orderBy(array ...pairs)` either `[column]` or `[column, direction]`
 - `limit(int limit)`
 - `offset(int offset)`
+
+Refer the source for more details. It aims to be easy to read!
 
 ### INSERT
 
