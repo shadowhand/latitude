@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-abstract class Escape
+abstract class LikeValue
 {
     /**
      * Escape input for a LIKE condition value.
      */
-    public static function like(string $value): string
+    public static function escape(string $value): string
     {
         // Backslash is used to escape wildcards.
         $value = str_replace('\\', '\\\\', $value);
@@ -22,9 +22,9 @@ abstract class Escape
     /**
      * Escape input for a LIKE condition, surrounding with wildcards.
      */
-    public static function likeAny(string $value): string
+    public static function any(string $value): string
     {
-        $value = static::like($value);
+        $value = static::escape($value);
         return "%$value%";
     }
 }

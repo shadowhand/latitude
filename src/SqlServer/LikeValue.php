@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\SqlServer;
 
-use Latitude\QueryBuilder\Escape as Base;
+use Latitude\QueryBuilder\LikeValue as Base;
 
-abstract class Escape extends Base
+abstract class LikeValue extends Base
 {
-    public static function like(string $value): string
+    public static function escape(string $value): string
     {
-        $value = parent::like($value);
+        $value = parent::escape($value);
 
         // MSSQL also includes character ranges.
         $value = str_replace('[', '\\[', $value);

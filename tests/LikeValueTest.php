@@ -5,14 +5,14 @@ namespace Latitude\QueryBuilder;
 
 use PHPUnit_Framework_TestCase as TestCase;
 
-class EscapeTest extends TestCase
+class LikeValueTest extends TestCase
 {
-    public function testLike()
+    public function testEscape()
     {
         $input = 'string_not%escaped';
         $expected = 'string\\_not\\%escaped';
 
-        $this->assertSame($expected, Escape::like($input));
+        $this->assertSame($expected, LikeValue::escape($input));
     }
 
     public function testLikeAny()
@@ -20,6 +20,6 @@ class EscapeTest extends TestCase
         $input = 'a % string';
         $expected = '%a \\% string%';
 
-        $this->assertSame($expected, Escape::likeAny($input));
+        $this->assertSame($expected, LikeValue::any($input));
     }
 }

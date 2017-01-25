@@ -190,36 +190,36 @@ the `in*()` methods. Using `?*` with any other method will produce an invalid qu
 
 #### LIKE Conditions
 
+Because `LIKE` conditions allow for "wildcard" expansion using `%` or `_`,
+a special `LikeValue` helper exists that will escape existing wildcards in
+the value. This helps protect against SQL query hijacking.
+
 ```php
-use Latitude\QueryBuilder\Escape as e;
+use Latitude\QueryBuilder\Conditions;
+use Latitude\QueryBuilder\LikeValue as like;
 
 $statement = Conditions::make()
-    ->with('name LIKE ?', e::likeAny('Smith'));
+    ->with('name LIKE ?', like::escape('%%hijack'));
 
 print_r($statement->params());
-// ['%Smith%'];
+// ["\%\%hijack"];
 ```
 
-Note the usage of the `e::likeAny()` method here. This will ensure that special
-characters in the input string are escaped properly, and then add `%` wildcards
-around the input.
-
-If you want to add the `%` wildcards manually, the `e::like()` method will only
-only escape the input:
+The `LikeValue` helper also supports adding wildcards before and after the
+value automatically:
 
 ```php
-$search = '%' . e::like($search);
-// or
-$search = str_replace(' ', '%', e::like($search));
+echo like::any('John');
+// "%John%"
 ```
 
 There is also a MSSQL extension that will escape character ranges:
 
 ```php
-use Latitude\QueryBuilder\SqlServer\Escape as e;
+use Latitude\QueryBuilder\SqlServer\LikeValue as like;
 
-echo e::like('[range] test');
-// "\\[range\\] test"
+echo like::escape('[range]');
+// "\[range\]"
 ```
 
 ### Boolean and Null Values
