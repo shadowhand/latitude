@@ -10,9 +10,9 @@ class ConditionsTest extends TestCase
     public function testBasicAndOr()
     {
         $conditions = Conditions::make()
-            ->where('id = ?', 1)
-            ->logicalAnd('last_login > ?', 'today')
-            ->logicalOr('last_login IS NULL');
+            ->with('id = ?', 1)
+            ->andWith('last_login > ?', 'today')
+            ->orWith('last_login IS NULL');
 
         $this->assertSql($conditions, 'id = ? AND last_login > ? OR last_login IS NULL');
         $this->assertParams($conditions, [1, 'today']);
@@ -37,11 +37,11 @@ class ConditionsTest extends TestCase
     public function testGroupingWithAnd()
     {
         $conditions = Conditions::make()
-            ->where('id = ?', 1);
+            ->with('id = ?', 1);
 
         $group = $conditions->group()
-            ->where('last_login > ?', 'today')
-            ->logicalOr('last_login IS NULL');
+            ->with('last_login > ?', 'today')
+            ->orWith('last_login IS NULL');
 
         $this->assertSame($conditions, $group->end());
 
@@ -55,11 +55,11 @@ class ConditionsTest extends TestCase
     {
         $conditions = Conditions::make()
             ->group()
-                ->where('failed_logins > ?', 5)
-                ->logicalAnd('last_login IS NULL')
+                ->with('failed_logins > ?', 5)
+                ->andWith('last_login IS NULL')
             ->end()
             ->orGroup()
-                ->where('role = ?', 'banned')
+                ->with('role = ?', 'banned')
             ->end();
 
         $this->assertSql($conditions, '(failed_logins > ? AND last_login IS NULL) OR (role = ?)');

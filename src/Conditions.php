@@ -14,23 +14,23 @@ class Conditions implements Statement
     {
         $statment = new static();
         if ($condition) {
-            $statment->where($condition, ...$params);
+            $statment->with($condition, ...$params);
         }
         return $statment;
     }
 
     /**
-     * Alias of logicalAnd().
+     * Alias of andWith().
      */
-    public function where(string $condition, ...$params): self
+    public function with(string $condition, ...$params): self
     {
-        return $this->logicalAnd($condition, ...$params);
+        return $this->andWith($condition, ...$params);
     }
 
     /**
      * Add a condition that will be applied with a logical "AND".
      */
-    public function logicalAnd(string $condition, ...$params): self
+    public function andWith(string $condition, ...$params): self
     {
         $this->parts[] = [
             'type' => 'AND',
@@ -44,7 +44,7 @@ class Conditions implements Statement
     /**
      * Add a condition that will be applied with a logical "OR".
      */
-    public function logicalOr(string $condition, ...$params): self
+    public function orWith(string $condition, ...$params): self
     {
         $this->parts[] = [
             'type' => 'OR',
@@ -70,7 +70,7 @@ class Conditions implements Statement
      */
     public function andIn(string $condition, array $params): self
     {
-        return $this->logicalAnd($this->unpackCondition($condition, \count($params)), ...$params);
+        return $this->andWith($this->unpackCondition($condition, \count($params)), ...$params);
     }
 
     /**
@@ -80,7 +80,7 @@ class Conditions implements Statement
      */
     public function orIn(string $condition, array $params): self
     {
-        return $this->logicalOr($this->unpackCondition($condition, \count($params)), ...$params);
+        return $this->orWith($this->unpackCondition($condition, \count($params)), ...$params);
     }
 
     /**
