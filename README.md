@@ -271,6 +271,67 @@ echo like::escape('[range]');
 // "\[range\]"
 ```
 
+### Identifiers, Aliases, and Escaping
+
+By default all table and column (identifier) references will be validated.
+Any aliases in the form `identifier alias` or `identifier as alias` will be
+changed to the canonical form `identifier AS alias`.
+
+To enable database specific identifier escaping, pass an instance of `Identifier`
+to any `sql()` method. Most databases can use the `Common` extension:
+
+```php
+use Latitude\QueryBuilder\Conditions;
+use Latitude\QueryBuilder\Common\Identifier;
+use Latitude\QueryBuilder\SelectQuery;
+
+$select = SelectQuery::make()
+    ->from('users u')
+    ->where(Conditions::with('u.id = ?'));
+
+echo $select->sql(Identifier::make());
+// SELECT * FROM "users" AS "u" WHERE "u"."id" = ?
+```
+
+There is an SQL Server extension that will escape using brackets:
+
+```php
+use Latitude\QueryBuilder\SqlServer\Identifier;
+
+echo $select->sql(Identifier::make());
+// SELECT * FROM [users] AS [u] WHERE [u].[id] = ?
+```
+
+As well as a MySQL extension that will escape using backticks:
+
+```php
+use Latitude\QueryBuilder\MySQL\Identifier;
+
+echo $select->sql(Identifier::make());
+// SELECT * FROM `users` AS `u` WHERE `u`.`id` = ?
+```
+
+#### Default Identifier
+
+If only one database type is used in your application, you can set the global
+default identifier:
+
+```php
+use Latitude\QueryBuilder\MySQL\Identifier as MySqlIdentifier;
+use Latitude\QueryBuilder\Identifier;
+
+Identifier::setDefault(MySqlIdentifier::make());
+```
+
+Now all queries will use the MySQL Identifier by default.
+
+The default can be fetched using the `getDefault()` method:
+
+```php
+$identifier = Identifier::getDefault();
+// Latitude\QueryBuilder\MySQL\Identifier Object
+```
+
 ### Boolean and Null Values
 
 In `INSERT` and `UPDATE` queries, boolean and null values will be added directly

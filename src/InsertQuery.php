@@ -7,8 +7,9 @@ use Iterator;
 
 class InsertQuery implements Statement
 {
-    use Traits\CanEscapeIdentifiers;
+    use Traits\CanConvertIteratorToString;
     use Traits\CanReplaceBooleanAndNullValues;
+    use Traits\CanUseDefaultIdentifier;
 
     /**
      * Create a new insert query.
@@ -43,13 +44,15 @@ class InsertQuery implements Statement
     }
 
     // Statement
-    public function sql(): string
+    public function sql(Identifier $identifier = null): string
     {
+        $identifier = $this->getDefaultIdentifier($identifier);
+
         return \sprintf(
             'INSERT INTO %s (%s) VALUES (%s)',
-            $this->escapeIdentifier($this->table),
-            $this->escapeIdentifiers($this->columns),
-            $this->createPlaceholders()
+            $identifier->escape($this->table),
+            \implode(', ', $identifier->all($this->columns)),
+            $this->stringifyIterator($this->generatePlaceholders())
         );
     }
 
@@ -73,14 +76,6 @@ class InsertQuery implements Statement
      * @var array
      */
     protected $params = [];
-
-    /**
-     * Create a list of placeholders.
-     */
-    protected function createPlaceholders(): string
-    {
-        return \implode(', ', \iterator_to_array($this->generatePlaceholders()));
-    }
 
     /**
      * Generate a placeholder.

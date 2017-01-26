@@ -3,8 +3,13 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Postgres\Traits;
 
+use Latitude\QueryBuilder\Identifier;
+use Latitude\QueryBuilder\Traits\CanUseDefaultIdentifier;
+
 trait CanReturnAfterExecute
 {
+    use CanUseDefaultIdentifier;
+
     /**
      * Set the columns to return after insert.
      */
@@ -15,14 +20,14 @@ trait CanReturnAfterExecute
     }
 
     // Statement
-    public function sql(): string
+    public function sql(Identifier $identifier = null): string
     {
-        $query = parent::sql();
+        $identifier = $this->getDefaultIdentifier($identifier);
 
         return \sprintf(
             '%s RETURNING %s',
-            parent::sql(),
-            $this->escapeIdentifiers($this->returning)
+            parent::sql($identifier),
+            \implode(', ', $identifier->allAliases($this->returning))
         );
     }
 

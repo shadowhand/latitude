@@ -7,9 +7,10 @@ use Iterator;
 
 class UpdateQuery implements Statement
 {
+    use Traits\CanConvertIteratorToString;
     use Traits\CanCreatePlaceholders;
-    use Traits\CanEscapeIdentifiers;
     use Traits\CanReplaceBooleanAndNullValues;
+    use Traits\CanUseDefaultIdentifier;
 
     /**
      * Create a new update query.
@@ -53,17 +54,19 @@ class UpdateQuery implements Statement
     }
 
     // Statement
-    public function sql(): string
+    public function sql(Identifier $identifier = null): string
     {
         if (!$this->where) {
             throw QueryBuilderException::updateRequiresWhere();
         }
 
+        $identifier = $this->getDefaultIdentifier($identifier);
+
         return \sprintf(
             'UPDATE %s SET %s WHERE %s',
-            $this->escapeIdentifier($this->table),
-            $this->createSetList(),
-            $this->where->sql()
+            $identifier->escapeQualified($this->table),
+            $this->stringifyIterator($this->generateSetList($identifier)),
+            $this->where->sql($identifier)
         );
     }
 
@@ -94,20 +97,12 @@ class UpdateQuery implements Statement
     protected $where;
 
     /**
-     * Create a list of columns and placeholders.
-     */
-    protected function createSetList(): string
-    {
-        return \implode(', ', \iterator_to_array($this->generateSetList()));
-    }
-
-    /**
      * Generate a column and placeholder pair.
      */
-    protected function generateSetList(): Iterator
+    protected function generateSetList(Identifier $identifier): Iterator
     {
         foreach ($this->columns as $idx => $column) {
-            yield $this->escapeIdentifier($column) . ' = ' . $this->placeholderValue($idx);
+            yield $identifier->escape($column) . ' = ' . $this->placeholderValue($idx);
         }
     }
 }

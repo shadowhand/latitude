@@ -8,7 +8,7 @@ use Iterator;
 class DeleteQuery implements Statement
 {
     use Traits\CanCreatePlaceholders;
-    use Traits\CanEscapeIdentifiers;
+    use Traits\CanUseDefaultIdentifier;
 
     /**
      * Create a new update query.
@@ -39,16 +39,18 @@ class DeleteQuery implements Statement
     }
 
     // Statement
-    public function sql(): string
+    public function sql(Identifier $identifier = null): string
     {
         if (!$this->where) {
             throw QueryBuilderException::deleteRequiresWhere();
         }
 
+        $identifier = $this->getDefaultIdentifier($identifier);
+
         return \sprintf(
             'DELETE FROM %s WHERE %s',
-            $this->escapeIdentifier($this->table),
-            $this->where->sql()
+            $identifier->escapeQualified($this->table),
+            $this->where->sql($identifier)
         );
     }
 

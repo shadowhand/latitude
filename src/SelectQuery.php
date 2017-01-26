@@ -7,7 +7,9 @@ use Iterator;
 
 class SelectQuery implements Statement
 {
+    use Traits\CanConvertIteratorToString;
     use Traits\CanEscapeIdentifiers;
+    use Traits\CanUseDefaultIdentifier;
 
     public static function make(string ...$columns): SelectQuery
     {
@@ -30,50 +32,50 @@ class SelectQuery implements Statement
         return $this;
     }
 
-    public function join(string $table, Conditions $conditions, string $bind = 'ON', string $type = ''): self
+    public function join(string $table, Conditions $conditions, string $type = ''): self
     {
-        $this->join[] = [\strtoupper($type), $table, \strtoupper($bind), $conditions];
+        $this->join[] = [\strtoupper($type), $table, $conditions];
         return $this;
     }
 
-    public function innerJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function innerJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'INNER');
+        return $this->join($table, $conditions, 'INNER');
     }
 
-    public function outerJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function outerJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'OUTER');
+        return $this->join($table, $conditions, 'OUTER');
     }
 
-    public function leftJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function leftJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'LEFT');
+        return $this->join($table, $conditions, 'LEFT');
     }
 
-    public function leftOuterJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function leftOuterJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'LEFT OUTER');
+        return $this->join($table, $conditions, 'LEFT OUTER');
     }
 
-    public function rightJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function rightJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'RIGHT');
+        return $this->join($table, $conditions, 'RIGHT');
     }
 
-    public function rightOuterJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function rightOuterJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'RIGHT OUTER');
+        return $this->join($table, $conditions, 'RIGHT OUTER');
     }
 
-    public function fullJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function fullJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'FULL');
+        return $this->join($table, $conditions, 'FULL');
     }
 
-    public function fullOuterJoin($table, Conditions $conditions, string $bind = 'ON'): self
+    public function fullOuterJoin($table, Conditions $conditions): self
     {
-        return $this->join($table, $conditions, $bind, 'FULL OUTER');
+        return $this->join($table, $conditions, 'FULL OUTER');
     }
 
     public function where(Conditions $where): self
@@ -113,56 +115,49 @@ class SelectQuery implements Statement
     }
 
     // Statement
-    public function sql(): string
+    public function sql(Identifier $identifier = null): string
     {
+        $identifier = $this->getDefaultIdentifier($identifier);
+
         // SELECT ...
         $parts = ['SELECT'];
         if (empty($this->columns)) {
             $parts[] = '*';
         } else {
-            $parts[] = $this->escapeIdentifiers($this->columns);
+            $parts[] = \implode(', ', $identifier->allAliases($this->columns));
         }
 
         // FROM ...
         $parts[] = 'FROM';
-        $parts[] = $this->escapeIdentifiers($this->from);
+        $parts[] = \implode(', ', $identifier->allAliases($this->from));
 
         // JOIN ...
         if (\count($this->join)) {
-            \array_map(
-                function (array $join) use (&$parts) {
-                    list($type, $table, $bind, $condition) = $join;
-                    $parts[] = \trim("$type JOIN");
-                    $parts[] = $this->escapeIdentifier($table);
-                    $parts[] = $bind;
-                    $parts[] = $condition->sql();
-                },
-                $this->join
-            );
+            $parts[] = $this->stringifyIterator($this->generateJoins($identifier));
         }
 
         // WHERE ...
         if ($this->where) {
             $parts[] = 'WHERE';
-            $parts[] = $this->where->sql();
+            $parts[] = $this->where->sql($identifier);
         }
 
         // GROUP BY ...
         if ($this->groupBy) {
             $parts[] = 'GROUP BY';
-            $parts[] = $this->escapeIdentifiers($this->groupBy);
+            $parts[] = \implode(', ', $identifier->allQualified($this->groupBy));
         }
 
         // HAVING ...
         if ($this->having) {
             $parts[] = 'HAVING';
-            $parts[] = $this->having->sql();
+            $parts[] = $this->having->sql($identifier);
         }
 
         // ORDER BY ...
         if ($this->orderBy) {
             $parts[] = 'ORDER BY';
-            $parts[] = $this->escapeOrderBy();
+            $parts[] = $this->stringifyIterator($this->generateOrderBy($identifier));
         }
 
         // LIMIT ...
@@ -240,23 +235,30 @@ class SelectQuery implements Statement
     protected $offset;
 
     /**
-     * Create a list of ORDER BY statements.
+     * Generate a list of JOIN statements.
      */
-    protected function escapeOrderBy(): string
+    protected function generateJoins(Identifier $identifier): Iterator
     {
-        return \implode(', ', \iterator_to_array($this->generateOrderBy()));
+        foreach ($this->join as $join) {
+            yield \trim(sprintf(
+                '%s JOIN %s ON %s',
+                $join[0],
+                $identifier->escapeAlias($join[1]),
+                $join[2]->sql($identifier)
+            ));
+        }
     }
 
     /**
      * Generate a list of ORDER BY statements.
      */
-    protected function generateOrderBy(): Iterator
+    protected function generateOrderBy(Identifier $identifier): Iterator
     {
         foreach ($this->orderBy as $sort) {
             if (empty($sort[1])) {
-                yield $this->escapeIdentifier($sort[0]);
+                yield $identifier->escapeQualified($sort[0]);
             } else {
-                yield $this->escapeIdentifier($sort[0]) . ' ' . \strtoupper($sort[1]);
+                yield $identifier->escapeQualified($sort[0]) . ' ' . \strtoupper($sort[1]);
             }
         }
     }

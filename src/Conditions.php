@@ -6,6 +6,7 @@ namespace Latitude\QueryBuilder;
 class Conditions implements Statement
 {
     use Traits\CanCreatePlaceholders;
+    use Traits\CanUseDefaultIdentifier;
 
     /**
      * Create a new conditions instance.
@@ -84,9 +85,11 @@ class Conditions implements Statement
     }
 
     // Statement
-    public function sql(): string
+    public function sql(Identifier $identifier = null): string
     {
-        return \array_reduce(
+        $identifier = $this->getDefaultIdentifier($identifier);
+
+        $sql = \array_reduce(
             $this->parts,
             function (string $sql, array $part): string {
                 if ($this->isConditions($part['condition'])) {
@@ -105,6 +108,8 @@ class Conditions implements Statement
             },
             ''
         );
+
+        return $identifier->escapeExpression($sql);
     }
 
     // Statement

@@ -8,7 +8,7 @@ interface Statement
     /**
      * Get the SQL statement of the query.
      */
-    public function sql(): string;
+    public function sql(Identifier $identifier = null): string;
 
     /**
      * Get the SQL parameters of the query.
