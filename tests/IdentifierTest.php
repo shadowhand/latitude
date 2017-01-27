@@ -18,6 +18,17 @@ class IdentifierTest extends TestCase
         $this->identifier = Identifier::make();
     }
 
+    public function testExpression()
+    {
+        $expr = Expression::make('COUNT(*) AS %s', 'total');
+
+        $this->assertSame('COUNT(*) AS total', $expr->sql($this->identifier));
+
+        $expr = Expression::make('COUNT(DISTINCT %s) AS %s', 'id', 'total');
+
+        $this->assertSame('COUNT(DISTINCT id) AS total', $expr->sql($this->identifier));
+    }
+
     public function testAlias()
     {
         $aliases = [

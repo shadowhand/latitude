@@ -17,6 +17,11 @@ class IdentifierTest extends TestCase
         $this->identifier = Identifier::make();
     }
 
+    public function testStar()
+    {
+        $this->assertSame('*', $this->identifier->escape('*'));
+    }
+
     public function testEscape()
     {
         $this->assertSame('"id"', $this->identifier->escape('id'));

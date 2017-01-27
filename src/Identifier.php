@@ -42,8 +42,12 @@ class Identifier
      */
     public function escape(string $identifier): string
     {
+        if ($identifier === '*') {
+            return $identifier;
+        }
+
         $this->guardIdentifier($identifier);
-        return $identifier;
+        return $this->surround($identifier);
     }
 
     /**
@@ -62,8 +66,12 @@ class Identifier
     /**
      * Escape a identifier alias.
      */
-    public function escapeAlias(string $alias): string
+    public function escapeAlias($alias): string
     {
+        if ($this->isExpression($alias)) {
+            return $alias->sql($this);
+        }
+
         $parts = \preg_split('/ (?:AS )?/i', $alias);
         return \implode(' AS ', \array_map([$this, 'escapeQualified'], $parts));
     }
@@ -107,6 +115,22 @@ class Identifier
         $matches[1] = \array_map([$this, 'escapeQualified'], $matches[1]);
         // table.col = other.col -> "table"."col" = "other"."col"
         return \str_replace($matches[0], $matches[1], $expression);
+    }
+
+    /**
+     * Surround the identifier with escape characters.
+     */
+    protected function surround(string $identifier): string
+    {
+        return $identifier;
+    }
+
+    /**
+     * Check if the identifier is an identifier expression.
+     */
+    final protected function isExpression($identifier): bool
+    {
+        return \is_object($identifier) && $identifier instanceof Expression;
     }
 
     /**

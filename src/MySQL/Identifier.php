@@ -7,9 +7,8 @@ use Latitude\QueryBuilder\Identifier as Base;
 
 class Identifier extends Base
 {
-    public function escape(string $identifier): string
+    protected function surround(string $identifier): string
     {
-        $this->guardIdentifier($identifier);
         return "`$identifier`";
     }
 }
