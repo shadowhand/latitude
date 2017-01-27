@@ -28,6 +28,20 @@ databases that follow SQL standards.
 
 ## Examples
 
+Query Types
+
+- [SELECT](#select)
+- [INSERT](#insert)
+- [UPDATE](#update)
+- [DELETE](#delete)
+
+Helpers
+
+- [Conditions](#conditions)
+- [Expressions](#expressions)
+- [Identifier Escaping](#identifier-escaping)
+- [Booleans and Nulls](#booleans-and-nulls)
+
 ### SELECT
 
 ```php
@@ -53,28 +67,7 @@ echo $select->sql();
 // SELECT id, username FROM users
 ```
 
-### Expressions
-
-The builder includes a simple wrapper for database expressions which can be used
-for column names in `SELECT` statements.
-
-```php
-use Latitude\QueryBuilder\Expression as e;
-use Latitude\QueryBuilder\Conditions as c;
-
-$select = SelectQuery::make(...[
-        'u.id',
-        e::make('COUNT(%s) AS %s', 'r.id', 'total'),
-    ])
-    ->from('users u')
-    ->join('roles r', c::make('r.id = u.role_id'))
-    ->groupBy('u.id');
-
-echo $select->sql();
-// SELECT u.id, COUNT(r.id) AS total FROM users AS u JOIN roles AS r ON r.id = u.role_id GROUP BY u.id
-```
-
-#### Supported Select Methods
+#### Supported Methods
 
 - `columns(string|Expression ...column)`
 - `from(string ...table)`
@@ -292,7 +285,29 @@ echo like::escape('[range]');
 // "\[range\]"
 ```
 
-### Identifiers, Aliases, and Escaping
+### Expressions
+
+The builder includes a simple wrapper for database expressions which can be used
+for column names in `SELECT` statements.
+
+```php
+use Latitude\QueryBuilder\Expression as e;
+use Latitude\QueryBuilder\Conditions as c;
+
+$select = SelectQuery::make(...[
+        'u.id',
+        e::make('COUNT(%s) AS %s', 'r.id', 'total'),
+    ])
+    ->from('users u')
+    ->join('roles r', c::make('r.id = u.role_id'))
+    ->groupBy('u.id');
+
+echo $select->sql();
+// SELECT u.id, COUNT(r.id) AS total FROM users AS u JOIN roles AS r ON r.id = u.role_id GROUP BY u.id
+```
+
+
+### Identifier Escaping
 
 By default all table and column (identifier) references will be validated.
 Any aliases in the form `identifier alias` or `identifier as alias` will be
@@ -356,7 +371,7 @@ $identifier = Identifier::getDefault();
 // Latitude\QueryBuilder\MySQL\Identifier Object
 ```
 
-### Boolean and Null Values
+### Booleans and Nulls
 
 In `INSERT` and `UPDATE` queries, boolean and null values will be added directly
 the query, rather than as placeholders. This is due to the fact that
@@ -365,6 +380,7 @@ which does not work correctly with booleans or nulls.
 
 See [`PDOStatement::execute` documentation](http://php.net/manual/pdostatement.execute.php)
 for more information.
+
 
 ## Why use Latitude instead of X?
 
