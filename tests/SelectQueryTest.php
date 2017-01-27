@@ -43,6 +43,17 @@ class SelectQueryTest extends TestCase
         );
     }
 
+    public function testParams()
+    {
+        $select = SelectQuery::make('id', 'username')
+            ->from('users')
+            ->where(c::make('id > ?', 3))
+            ->having(c::make('test = ?', 4))
+            ->join('roles', c::make('roles.id = ?', 1)->orWith('roles.is_admin = ?', 2));
+
+        $this->assertSame([1, 2, 3, 4], $select->params());
+    }
+
     /**
      * @dataProvider dataJoin
      */

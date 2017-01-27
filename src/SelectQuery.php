@@ -179,7 +179,9 @@ class SelectQuery implements Statement
     public function params(): array
     {
         $params = [];
-        // TODO: JOIN params?
+        if ($this->join) {
+            $params = \array_merge($params, $this->joinParams());
+        }
         if ($this->where) {
             $params = \array_merge($params, $this->where->params());
         }
@@ -261,5 +263,19 @@ class SelectQuery implements Statement
                 yield $identifier->escapeQualified($sort[0]) . ' ' . \strtoupper($sort[1]);
             }
         }
+    }
+
+    /**
+     * Get a flattened array of join parameters.
+     */
+    protected function joinParams(): array
+    {
+        $params = [];
+        foreach ($this->join as $join) {
+            $params[] = $join[2]->params();
+        }
+
+        // flatten: [[a, b], [c, ...]] -> [a, b, c]
+        return \array_reduce($params, 'array_merge', []);
     }
 }
