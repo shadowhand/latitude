@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Latitude\QueryBuilder;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Latitude\QueryBuilder\Expression as e;
 use Latitude\QueryBuilder\Conditions as c;
 
 class SelectQueryTest extends TestCase
@@ -45,11 +46,16 @@ class SelectQueryTest extends TestCase
 
     public function testParams()
     {
-        $select = SelectQuery::make('id', 'username')
-            ->from('users')
-            ->where(c::make('id > ?', 3))
-            ->having(c::make('test = ?', 4))
-            ->join('roles', c::make('roles.id = ?', 1)->orWith('roles.is_admin = ?', 2));
+        $select = SelectQuery::make(...[
+                'e.id',
+                'e.first_name',
+                'e.last_name',
+                e::make('COUNT(%s) AS %s', 's.id', 'shift_count'),
+            ])
+            ->from('employees e')
+            ->where(c::make('e.id > ?', 3))
+            ->having(c::make('shift_count > ?', 4))
+            ->join('shifts s', c::make('s.type = ?', 1)->orWith('s.day = ?', 2));
 
         $this->assertSame([1, 2, 3, 4], $select->params());
     }
@@ -101,13 +107,13 @@ class SelectQueryTest extends TestCase
 
     public function testGroupByHaving()
     {
-        $select = SelectQuery::make('COUNT(id) AS total')
+        $select = SelectQuery::make(e::make('COUNT(*) AS %s', 'total'))
             ->from('users')
             ->groupBy('role_id')
             ->having(c::make('total > ?', 5));
 
         $this->assertSame(
-            'SELECT COUNT(id) AS total FROM users GROUP BY role_id HAVING total > ?',
+            'SELECT COUNT(*) AS total FROM users GROUP BY role_id HAVING total > ?',
             $select->sql()
         );
 

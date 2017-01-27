@@ -8,10 +8,9 @@ use Iterator;
 class SelectQuery implements Statement
 {
     use Traits\CanConvertIteratorToString;
-    use Traits\CanEscapeIdentifiers;
     use Traits\CanUseDefaultIdentifier;
 
-    public static function make(string ...$columns): SelectQuery
+    public static function make(...$columns): SelectQuery
     {
         $query = new static();
         if ($columns) {
@@ -20,7 +19,7 @@ class SelectQuery implements Statement
         return $query;
     }
 
-    public function columns(string ...$columns): self
+    public function columns(...$columns): self
     {
         $this->columns = $columns;
         return $this;
@@ -38,42 +37,42 @@ class SelectQuery implements Statement
         return $this;
     }
 
-    public function innerJoin($table, Conditions $conditions): self
+    public function innerJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'INNER');
     }
 
-    public function outerJoin($table, Conditions $conditions): self
+    public function outerJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'OUTER');
     }
 
-    public function leftJoin($table, Conditions $conditions): self
+    public function leftJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'LEFT');
     }
 
-    public function leftOuterJoin($table, Conditions $conditions): self
+    public function leftOuterJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'LEFT OUTER');
     }
 
-    public function rightJoin($table, Conditions $conditions): self
+    public function rightJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'RIGHT');
     }
 
-    public function rightOuterJoin($table, Conditions $conditions): self
+    public function rightOuterJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'RIGHT OUTER');
     }
 
-    public function fullJoin($table, Conditions $conditions): self
+    public function fullJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'FULL');
     }
 
-    public function fullOuterJoin($table, Conditions $conditions): self
+    public function fullOuterJoin(string $table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'FULL OUTER');
     }
@@ -121,10 +120,10 @@ class SelectQuery implements Statement
 
         // SELECT ...
         $parts = ['SELECT'];
-        if (empty($this->columns)) {
-            $parts[] = '*';
-        } else {
+        if ($this->columns) {
             $parts[] = \implode(', ', $identifier->allAliases($this->columns));
+        } else {
+            $parts[] = '*';
         }
 
         // FROM ...
