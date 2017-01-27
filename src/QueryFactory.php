@@ -13,7 +13,7 @@ class QueryFactory
 
     public function __construct(string $engine, bool $setIdentifier = true)
     {
-        if (!empty(static::ENGINES[$engine])) {
+        if (\array_key_exists($engine, static::ENGINES)) {
             $this->engine = static::ENGINES[$engine];
         } else {
             $this->engine = 'Common';

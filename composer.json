@@ -15,7 +15,8 @@
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
-        "phpunit/phpunit": "^5.6.8"
+        "phpunit/phpunit": "^5.6.8",
+        "spatie/7to5": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -26,5 +27,15 @@
         "psr-4": {
             "Latitude\\QueryBuilder\\": "tests/"
         }
+    },
+    "scripts": {
+        "php5ize": [
+            "php7to5 convert --overwrite --copy-all -- src/ src-php5/",
+            "php7to5 convert --overwrite --copy-all -- tests/ tests-php5/",
+            "rm -rf src && mv src-php5 src",
+            "rm -rf tests && mv tests-php5 tests",
+            "sed -i '' -e 's/=7.0/=5.6/' composer.json"
+        ],
+        "test": "phpunit"
     }
 }
