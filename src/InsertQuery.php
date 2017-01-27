@@ -1,20 +1,17 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 use Iterator;
-
 class InsertQuery implements Statement
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanReplaceBooleanAndNullValues;
     use Traits\CanUseDefaultIdentifier;
-
     /**
      * Create a new insert query.
      */
-    public static function make(string $table, array $map): InsertQuery
+    public static function make($table, array $map)
     {
         $query = new static();
         $query->table($table);
@@ -23,67 +20,53 @@ class InsertQuery implements Statement
         }
         return $query;
     }
-
     /**
      * Set the table to insert into.
      */
-    public function table(string $table): self
+    public function table($table)
     {
         $this->table = $table;
         return $this;
     }
-
     /**
      * Set the columns and values to insert.
      */
-    public function map(array $map): self
+    public function map(array $map)
     {
         $this->columns = \array_keys($map);
         $this->params = \array_values($map);
         return $this;
     }
-
     // Statement
-    public function sql(Identifier $identifier = null): string
+    public function sql(Identifier $identifier = null)
     {
         $identifier = $this->getDefaultIdentifier($identifier);
-
-        return \sprintf(
-            'INSERT INTO %s (%s) VALUES (%s)',
-            $identifier->escape($this->table),
-            \implode(', ', $identifier->all($this->columns)),
-            $this->stringifyIterator($this->generatePlaceholders())
-        );
+        return \sprintf('INSERT INTO %s (%s) VALUES (%s)', $identifier->escape($this->table), \implode(', ', $identifier->all($this->columns)), $this->stringifyIterator($this->generatePlaceholders()));
     }
-
     // Statement
-    public function params(): array
+    public function params()
     {
         return $this->params;
     }
-
     /**
      * @var string
      */
     protected $table;
-
     /**
      * @var array
      */
     protected $columns = [];
-
     /**
      * @var array
      */
     protected $params = [];
-
     /**
      * Generate a placeholder.
      */
-    protected function generatePlaceholders(): Iterator
+    protected function generatePlaceholders()
     {
         foreach (\array_keys($this->params) as $index) {
-            yield $this->placeholderValue($index);
+            (yield $this->placeholderValue($index));
         }
     }
 }
