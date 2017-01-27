@@ -37,6 +37,7 @@ Query Types
 
 Helpers
 
+- [Factory](#factory)
 - [Conditions](#conditions)
 - [Expressions](#expressions)
 - [Identifier Escaping](#identifier-escaping)
@@ -183,6 +184,44 @@ $delete = DeleteQuery::make(...)
 
 echo $delete->sql();
 // DELETE FROM users WHERE last_login IS NULL RETURNING id
+```
+
+### Factory
+
+To simplify dependency injection, a factory class exists that can used that will
+always return the most specific type of builder or helper for the given database.
+
+```php
+use Latitude\QueryBuilder\QueryFactory;
+
+$factory = new QueryFactory('pgsql');
+
+$insert = $factory->insert(...);
+// Latitude\QueryBuilder\Postgres\InsertQuery Object
+
+$delete = $factory->delete(...);
+// Latitude\QueryBuilder\Postgres\DeleteQuery Object
+
+$select = $factory->select(...);
+// Latitude\QueryBuilder\SelectQuery Object
+```
+
+By default, the factory will also set the default identifier for the selected
+database engine. To disable setting the default, set the second parameter:
+
+```php
+$factory = new QueryFactory('pgsql', false);
+$identifier = Identifier::getDefault();
+// Latitude\QueryBuilder\Identifier Object
+```
+
+When the default identifier is not enabled, the specific identifier can be fetched
+using the `identifier()` method:
+
+```php
+$factory = new QueryFactory('mysql', false);
+$identifier = $factory->identifier();
+// Latitude\QueryBuilder\MySQL\Identifier Object
 ```
 
 ### Conditions
