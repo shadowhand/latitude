@@ -22,11 +22,17 @@ trait CanReturnAfterExecute
     // Statement
     public function sql(Identifier $identifier = null): string
     {
+        $sql = parent::sql($identifier);
+
+        if (empty($this->returning)) {
+            return $sql;
+        }
+
         $identifier = $this->getDefaultIdentifier($identifier);
 
         return \sprintf(
             '%s RETURNING %s',
-            parent::sql($identifier),
+            $sql,
             \implode(', ', $identifier->allAliases($this->returning))
         );
     }
