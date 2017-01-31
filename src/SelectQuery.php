@@ -132,7 +132,7 @@ class SelectQuery implements Statement
 
         // JOIN ...
         if (\count($this->join)) {
-            $parts[] = $this->stringifyIterator($this->generateJoins($identifier));
+            $parts[] = $this->stringifyIterator($this->generateJoins($identifier), ' ');
         }
 
         // WHERE ...
