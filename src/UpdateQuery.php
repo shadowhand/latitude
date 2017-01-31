@@ -1,21 +1,18 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 use Iterator;
-
 class UpdateQuery implements Statement
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanCreatePlaceholders;
     use Traits\CanReplaceBooleanAndNullValues;
     use Traits\CanUseDefaultIdentifier;
-
     /**
      * Create a new update query.
      */
-    public static function make(string $table, array $map): UpdateQuery
+    public static function make($table, array $map)
     {
         $query = new static();
         $query->table($table);
@@ -24,85 +21,68 @@ class UpdateQuery implements Statement
         }
         return $query;
     }
-
     /**
      * Set the table to update.
      */
-    public function table(string $table): self
+    public function table($table)
     {
         $this->table = $table;
         return $this;
     }
-
     /**
      * Set the columns and values to update.
      */
-    public function map(array $map): self
+    public function map(array $map)
     {
         $this->columns = \array_keys($map);
         $this->params = \array_values($map);
         return $this;
     }
-
     /**
      * Set the conditions for the update.
      */
-    public function where(Conditions $where): self
+    public function where(Conditions $where)
     {
         $this->where = $where;
         return $this;
     }
-
     // Statement
-    public function sql(Identifier $identifier = null): string
+    public function sql(Identifier $identifier = null)
     {
         if (!$this->where) {
             throw QueryBuilderException::updateRequiresWhere();
         }
-
         $identifier = $this->getDefaultIdentifier($identifier);
-
-        return \sprintf(
-            'UPDATE %s SET %s WHERE %s',
-            $identifier->escapeQualified($this->table),
-            $this->stringifyIterator($this->generateSetList($identifier)),
-            $this->where->sql($identifier)
-        );
+        return \sprintf('UPDATE %s SET %s WHERE %s', $identifier->escapeQualified($this->table), $this->stringifyIterator($this->generateSetList($identifier)), $this->where->sql($identifier));
     }
-
     // Statement
-    public function params(): array
+    public function params()
     {
         return \array_merge($this->params, $this->where->params());
     }
-
     /**
      * @var string
      */
     protected $table;
-
     /**
      * @var array
      */
     protected $columns = [];
-
     /**
      * @var array
      */
     protected $params = [];
-
     /**
      * @var Conditions
      */
     protected $where;
-
     /**
      * Generate a column and placeholder pair.
      */
-    protected function generateSetList(Identifier $identifier): Iterator
+    protected function generateSetList(Identifier $identifier)
     {
         foreach ($this->columns as $idx => $column) {
-            yield $identifier->escape($column) . ' = ' . $this->placeholderValue($idx);
+            (yield $identifier->escape($column) . ' = ' . $this->placeholderValue($idx));
         }
     }
 }
