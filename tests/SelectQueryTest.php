@@ -67,10 +67,12 @@ class SelectQueryTest extends TestCase
     {
         $select = SelectQuery::make()
             ->from('users')
-            ->$method('roles', c::make('users.role_id = roles.id'));
+            ->$method('roles', c::make('users.role_id = roles.id'))
+            ->$method('devices', c::make('users.devices_id = devices.id'))
+            ;
 
         $this->assertSame(
-            "SELECT * FROM users $type roles ON users.role_id = roles.id",
+            "SELECT * FROM users $type roles ON users.role_id = roles.id $type devices ON users.devices_id = devices.id",
             $select->sql()
         );
     }
