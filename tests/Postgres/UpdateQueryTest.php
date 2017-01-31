@@ -31,4 +31,27 @@ class UpdateQueryTest extends TestCase
             $update->params()
         );
     }
+
+    public function testUpdateWithoutReturning()
+    {
+        $table = 'users';
+        $map = [
+            'username' => 'mr-smith',
+        ];
+
+        $update = UpdateQuery::make($table, $map)
+            ->where(
+                Conditions::make('username = ?', 'jsmith')
+            );
+
+        $this->assertSame(
+            'UPDATE users SET username = ? WHERE username = ?',
+            $update->sql()
+        );
+
+        $this->assertSame(
+            ['mr-smith', 'jsmith'],
+            $update->params()
+        );
+    }
 }
