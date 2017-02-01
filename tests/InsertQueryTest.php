@@ -53,4 +53,21 @@ class InsertQueryTest extends TestCase
             'false value' => [false, 'FALSE'],
         ];
     }
+
+    public function testInsertExpression()
+    {
+        $table = 'users';
+        $map = [
+            'username' => 'jdoe',
+            'created_at' => Expression::make('NOW()'),
+        ];
+
+        $insert = InsertQuery::make($table, $map);
+
+        $this->assertSame(
+            'INSERT INTO users (username, created_at) VALUES (?, NOW())',
+            $insert->sql()
+        );
+        $this->assertSame(['jdoe'], $insert->params());
+    }
 }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Traits;
 
+use Latitude\QueryBuilder\Expression;
+
 trait CanReplaceBooleanAndNullValues
 {
     /**
@@ -29,6 +31,11 @@ trait CanReplaceBooleanAndNullValues
         if ($value === null) {
             unset($this->params[$index]);
             return 'NULL';
+        }
+
+        if ($value instanceof Expression) {
+            unset($this->params[$index]);
+            return $value->sql();
         }
 
         return '?';
