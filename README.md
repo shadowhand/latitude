@@ -334,7 +334,7 @@ echo like::escape('[range]');
 ### Expressions
 
 The builder includes a simple wrapper for database expressions which can be used
-for column names in `SELECT` statements.
+for column names in `SELECT` statements and values in other statements:
 
 ```php
 use Latitude\QueryBuilder\Expression as e;
@@ -352,6 +352,22 @@ echo $select->sql();
 // SELECT u.id, COUNT(r.id) AS total FROM users AS u JOIN roles AS r ON r.id = u.role_id GROUP BY u.id
 ```
 
+Expressions can also be used as values in `INSERT` and `UPDATE` statements:
+
+```php
+use Latitude\QueryBuilder\Expression as e;
+
+$insert = InsertQuery::make('users', [
+    'username' => 'ada.love',
+    'created_at' => e::make('NOW()'),
+]);
+
+echo $insert->sql();
+// INSERT INTO users (username, created_at) VALUES (?, NOW())
+
+print_r($insert->params());
+// ["ada.love"]
+```
 
 ### Identifier Escaping
 
