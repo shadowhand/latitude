@@ -1,5 +1,9 @@
 language: php
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 php:
   - 7.0
   - 7.1
@@ -13,11 +17,10 @@ matrix:
       env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
 
 before_script:
-  - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit
+  - composer test
 
 after_script:
   - bash -c '[[ -f "build/logs/clover.xml" ]] && wget https://scrutinizer-ci.com/ocular.phar'
