@@ -59,7 +59,7 @@ class InsertQuery implements Statement
     // Statement
     public function params(): array
     {
-        return $this->params;
+        return $this->placeholderParams();
     }
 
     /**

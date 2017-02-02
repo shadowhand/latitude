@@ -73,7 +73,7 @@ class UpdateQuery implements Statement
     // Statement
     public function params(): array
     {
-        return \array_merge($this->params, $this->where->params());
+        return \array_merge($this->placeholderParams(), $this->where->params());
     }
 
     /**
