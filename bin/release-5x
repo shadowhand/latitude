@@ -9,26 +9,24 @@ fi
 git checkout -tb compat-release
 git apply - <<EOF
 diff --git a/.travis.yml b/.travis.yml
-index dfe1a37..6ccebd8 100644
+index 0b91908..9adaab1 100644
 --- a/.travis.yml
 +++ b/.travis.yml
-@@ -1,6 +1,7 @@
- language: php
+@@ -5,6 +5,7 @@ cache:
+     - $HOME/.composer/cache
 
  php:
 +  - 5.6
    - 7.0
    - 7.1
    - hhvm
-@@ -9,7 +10,7 @@ matrix:
+@@ -13,7 +14,7 @@ matrix:
    allow_failures:
      - php: hhvm
    include:
 -    - php: 7.0
 +    - php: 5.6
        env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
-
- before_script:
 EOF
 
 composer run php5ize
