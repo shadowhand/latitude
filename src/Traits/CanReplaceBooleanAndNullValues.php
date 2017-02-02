@@ -18,26 +18,41 @@ trait CanReplaceBooleanAndNullValues
     {
         $value = $this->params[$index];
 
-        if ($value === true) {
-            unset($this->params[$index]);
-            return 'TRUE';
-        }
-
-        if ($value === false) {
-            unset($this->params[$index]);
-            return 'FALSE';
-        }
-
-        if ($value === null) {
-            unset($this->params[$index]);
-            return 'NULL';
+        if ($this->isPlaceholderValue($value)) {
+            return '?';
         }
 
         if ($value instanceof Expression) {
-            unset($this->params[$index]);
             return $value->sql();
         }
 
-        return '?';
+        // null -> "NULL", true -> "TRUE", etc
+        return \strtoupper(\var_export($value, true));
+    }
+
+    /**
+     * Determine if a value can be represented by a placeholder.
+     */
+    protected function isPlaceholderValue($value): bool
+    {
+        if (\in_array($value, [true, false, null], true)) {
+            return false;
+        }
+
+        if ($value instanceof Expression) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get all parameters that can be placeholders.
+     */
+    protected function placeholderParams(): array
+    {
+        return \array_filter($this->params, function ($value) {
+            return $this->isPlaceholderValue($value);
+        });
     }
 }

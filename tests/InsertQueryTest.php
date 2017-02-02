@@ -70,4 +70,31 @@ class InsertQueryTest extends TestCase
         );
         $this->assertSame(['jdoe'], $insert->params());
     }
+
+    /**
+     * Test for issue #6
+     */
+    public function testMultipleCompile()
+    {
+        $table = 'users';
+        $map = [
+            'username' => 'jdoe',
+            'is_employee' => false,
+            'is_manager' => true,
+            'created_at' => Expression::make('NOW()'),
+            'updated_at' => null,
+        ];
+
+        $insert = InsertQuery::make($table, $map);
+
+        $sql = $insert->sql();
+        $params = $insert->params();
+
+        $this->assertContains('(?, FALSE, TRUE, NOW(), NULL)', $sql);
+        $this->assertSame(['jdoe'], $params);
+
+        // Compile again, verifying the same output
+        $this->assertSame($sql, $insert->sql());
+        $this->assertSame($params, $insert->params());
+    }
 }
