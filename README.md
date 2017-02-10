@@ -331,6 +331,35 @@ echo like::escape('[range]');
 // "\[range\]"
 ```
 
+#### SELECT in Conditions
+
+Sometimes it is more efficient to use a sub-query as part of a condition, rather
+than executing a query to get values that will be used as conditions. For example:
+
+```php
+use Latitude\QueryBuilder\SelectQuery;
+use Latitude\QueryBuilder\Conditions as c;
+
+$user_ids_from_orders = SelectQuery::make('user_id')
+    ->from('orders')
+    ->where(c::make('placed_at BETWEEN ? AND ?', '2017-01-01', '2017-12-31'));
+
+$select = SelectQuery::make()
+    ->from('users')
+    ->where(
+        c::make(
+            // Compile the sub-query into the conditions and add parameters
+            sprintf('id IN (%s)', $user_ids_from_orders->sql()),
+            ...$user_ids_from_orders->params()
+        )
+    );
+
+echo $select->sql();
+// SELECT * FROM users WHERE id IN (
+//    SELECT user_id FROM orders WHERE placed_at BETWEEN ? AND ?
+// )
+```
+
 ### Expressions
 
 The builder includes a simple wrapper for database expressions which can be used

@@ -146,4 +146,30 @@ class SelectQueryTest extends TestCase
             $select->sql()
         );
     }
+
+    public function testSubselect()
+    {
+        $user_ids_from_orders = SelectQuery::make('user_id')
+            ->from('orders')
+            ->where(c::make('placed_at BETWEEN ? AND ?', '2017-01-01', '2017-12-31'));
+
+        $select = SelectQuery::make()
+            ->from('users')
+            ->where(
+                c::make(
+                    sprintf('id IN (%s)', $user_ids_from_orders->sql()),
+                    ...$user_ids_from_orders->params()
+                )
+            );
+
+        $this->assertSame(
+            'SELECT * FROM users WHERE id IN (SELECT user_id FROM orders WHERE placed_at BETWEEN ? AND ?)',
+            $select->sql()
+        );
+
+        $this->assertSame(
+            ['2017-01-01', '2017-12-31'],
+            $select->params()
+        );
+    }
 }
