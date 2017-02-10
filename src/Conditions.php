@@ -144,12 +144,13 @@ class Conditions implements Statement
     }
 
     /**
-     * Add a condition to the current conditions, expanding IN values.
+     * Add a condition to the current conditions.
      */
     protected function addCondition(string $type, string $condition, array $params): self
     {
-        if ($params) {
-            $this->expandPlaceholders($condition, $params);
+        if (\strpos($condition, '?*') !== false) {
+            $placeholders = $this->createPlaceholders(\count($params));
+            $condition = \str_replace('?*', $placeholders, $condition);
         }
 
         $this->parts[] = compact('type', 'condition', 'params');
@@ -164,18 +165,6 @@ class Conditions implements Statement
         $condition = new static($this);
         $this->parts[] = compact('type', 'condition');
         return $condition;
-    }
-
-    /**
-     * Replace placeholder with expanded placeholder for IN values.
-     */
-    protected function expandPlaceholders(string &$condition, array &$params)
-    {
-        if ($params[0] instanceof InValue) {
-            $placeholders = $this->createPlaceholders(\count($params[0]));
-            $condition = \str_replace('?', "($placeholders)", $condition);
-            $params = $params[0]->values();
-        }
     }
 
     /**
