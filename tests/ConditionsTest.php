@@ -77,6 +77,22 @@ class ConditionsTest extends TestCase
         $this->assertSame($conditions, $subconditions->end());
     }
 
+    public function testSubConditionIdentifier()
+    {
+        $identifier = Common\Identifier::make();
+
+        $conditions = Conditions::make()
+            ->with('u.id = ?')
+            ->orGroup()
+                ->with('u.username = ?')
+            ->end();
+
+        $this->assertSame(
+            '"u"."id" = ? OR ("u"."username" = ?)',
+            $conditions->sql($identifier)
+        );
+    }
+
     private function assertSql(Conditions $conditions, string $expected)
     {
         $this->assertSame($expected, $conditions->sql());
