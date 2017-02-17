@@ -136,7 +136,7 @@ use Latitude\QueryBuilder\Conditions;
 $update = UpdateQuery::make('users', [
     'username' => 'mr-smith',
 ])
-->with(
+->where(
     Conditions::make('id = ?', 5)
 );
 
@@ -168,7 +168,7 @@ use Latitude\QueryBuilder\DeleteQuery;
 use Latitude\QueryBuilder\Conditions;
 
 $delete = DeleteQuery::make('users')
-->with(
+->where(
     Conditions::make('last_login IS NULL')
 );
 
