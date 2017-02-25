@@ -51,8 +51,10 @@ trait CanReplaceBooleanAndNullValues
      */
     protected function placeholderParams(): array
     {
-        return \array_filter($this->params, function ($value) {
-            return $this->isPlaceholderValue($value);
-        });
+        return \array_values(
+            \array_filter($this->params, function ($value) {
+                return $this->isPlaceholderValue($value);
+            })
+        );
     }
 }
