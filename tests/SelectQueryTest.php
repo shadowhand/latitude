@@ -134,6 +134,18 @@ class SelectQueryTest extends TestCase
         );
     }
 
+	public function testOrderByWithExpression()
+	{
+		$select = SelectQuery::make()
+			->from('users u')
+			->orderBy([e::make('LOWER(u.period)'), 'desc']);
+		
+		$this->assertSame(
+			'SELECT * FROM users AS u ORDER BY LOWER(u.period) DESC',
+			$select->sql()
+		);
+	}
+
     public function testLimitOffset()
     {
         $select = SelectQuery::make()
