@@ -53,8 +53,12 @@ class Identifier
     /**
      * Escape a (possibly) qualified identifier.
      */
-    public function escapeQualified(string $identifier): string
+    public function escapeQualified($identifier): string
     {
+        if ($this->isExpression($identifier)) {
+            return $identifier->sql($this);
+        }
+
         if (\strpos($identifier, '.') === false) {
             return $this->escape($identifier);
         }

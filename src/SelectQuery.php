@@ -256,15 +256,10 @@ class SelectQuery implements Statement
     protected function generateOrderBy(Identifier $identifier): Iterator
     {
         foreach ($this->orderBy as $sort) {
-
-			$escapedIdentifier = $sort[0] instanceof Expression
-				? $sort[0]->sql()
-				: $identifier->escapeQualified($sort[0]);			
-
             if (empty($sort[1])) {
-                yield $escapedIdentifier;
+                yield $identifier->escapeQualified($sort[0]);
             } else {
-                yield $escapedIdentifier . ' ' . \strtoupper($sort[1]);
+                yield $identifier->escapeQualified($sort[0]) . ' ' . \strtoupper($sort[1]);
             }
         }
     }
