@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.0]
 
-### Changed
+### Added
 
-- Allow `ORDER BY` to contain expressions (@MelleB)
+- Expressions can now be used with `ORDER BY` (@MelleB)
 
 ## [1.1.2]
 
