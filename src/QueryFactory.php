@@ -11,9 +11,9 @@ class QueryFactory
         'sqlsrv' => 'SqlServer',
     ];
 
-    public function __construct(string $engine, bool $setIdentifier = true)
+    public function __construct(string $engine = null, bool $setIdentifier = true)
     {
-        if (\array_key_exists($engine, static::ENGINES)) {
+        if ($engine && \array_key_exists($engine, static::ENGINES)) {
             $this->engine = static::ENGINES[$engine];
         } else {
             $this->engine = 'Common';

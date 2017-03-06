@@ -80,6 +80,14 @@ class QueryFactoryTest extends TestCase
                 DeleteQuery::class,
                 Common\Identifier::class,
             ],
+            'Common' => [
+                '',
+                SelectQuery::class,
+                InsertQuery::class,
+                UpdateQuery::class,
+                DeleteQuery::class,
+                Common\Identifier::class,
+            ],
         ];
     }
 
