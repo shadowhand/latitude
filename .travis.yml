@@ -7,11 +7,11 @@ cache:
 php:
   - 7.0
   - 7.1
-  - hhvm
+  - nightly
 
 matrix:
   allow_failures:
-    - php: hhvm
+    - php: nightly
   include:
     - php: 7.0
       env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
