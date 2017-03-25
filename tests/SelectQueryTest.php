@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Latitude\QueryBuilder\Expression as e;
 use Latitude\QueryBuilder\Conditions as c;
 
