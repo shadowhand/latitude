@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class LikeValueTest extends TestCase
 {

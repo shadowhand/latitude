@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Latitude\QueryBuilder\Postgres;
 
 use Latitude\QueryBuilder\Conditions;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class DeleteQueryTest extends TestCase
 {

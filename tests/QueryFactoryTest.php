@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Latitude\QueryBuilder;
 
 use Eloquent\Liberator\Liberator;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class QueryFactoryTest extends TestCase
 {
