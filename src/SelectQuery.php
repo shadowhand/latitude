@@ -19,6 +19,12 @@ class SelectQuery implements Statement
         return $query;
     }
 
+    public function distinct(bool $distinct = true): self
+    {
+        $this->distinct = $distinct;
+        return $this;
+    }
+
     public function columns(...$columns): self
     {
         $this->columns = $columns;
@@ -119,7 +125,12 @@ class SelectQuery implements Statement
         $identifier = $this->getDefaultIdentifier($identifier);
 
         // SELECT ...
-        $parts = ['SELECT'];
+        if ($this->distinct) {
+            $parts = ['SELECT DISTINCT'];
+        } else {
+            $parts = ['SELECT'];
+        }
+
         if ($this->columns) {
             $parts[] = \implode(', ', $identifier->allAliases($this->columns));
         } else {
@@ -189,6 +200,11 @@ class SelectQuery implements Statement
         }
         return $params;
     }
+
+    /**
+     * @var bool
+     */
+    protected $distinct = false;
 
     /**
      * @var array
