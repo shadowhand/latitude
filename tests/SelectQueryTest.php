@@ -22,6 +22,34 @@ class SelectQueryTest extends TestCase
         $this->assertSame([], $select->params());
     }
 
+    public function testSelectDistinct()
+    {
+        $select = SelectQuery::make()
+            ->distinct(true)
+            ->from('users');
+
+        $this->assertSame(
+            'SELECT DISTINCT * FROM users',
+            $select->sql()
+        );
+
+        $this->assertSame([], $select->params());
+    }
+
+    public function testSelectDistinctFalse()
+    {
+        $select = SelectQuery::make()
+            ->distinct(false)
+            ->from('users');
+
+        $this->assertSame(
+            'SELECT * FROM users',
+            $select->sql()
+        );
+
+        $this->assertSame([], $select->params());
+    }
+
     public function testMultipleTables()
     {
         $select = SelectQuery::make()

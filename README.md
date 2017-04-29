@@ -95,6 +95,7 @@ echo $select->sql();
 - `orderBy(array ...pairs)` either `[column]` or `[column, direction]`
 - `limit(int limit)`
 - `offset(int offset)`
+- `distinct(bool or null)` defaults to `false`
 
 Refer the source for more details. It aims to be easy to read!
 
