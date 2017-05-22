@@ -129,6 +129,25 @@ echo $insert->sql();
 // INSERT INTO users (username) VALUES (?) RETURNING id
 ```
 
+#### Multi-line INSERT
+
+```php
+use Latitude\QueryBuilder\InsertMultipleQuery;
+use Latitude\QueryBuilder\Expression as e;
+
+$now = e::make('NOW()');
+
+$insert = InsertMultipleQuery::make('tokens', ['token', 'created_at'])
+    ->append(['first-token', $now])
+    ->append(['second-token', $now]);
+
+echo $insert->sql();
+// INSERT INTO tokens (token, created_at) VALUES (?, NOW()), (?, NOW())
+
+print_r($insert->params());
+// ["first-token", "second-token"]
+```
+
 ### UPDATE
 
 ```php
