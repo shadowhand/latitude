@@ -148,6 +148,8 @@ print_r($insert->params());
 // ["first-token", "second-token"]
 ```
 
+**Note:** There are no extensions for multi-line insert queries.
+
 ### UPDATE
 
 ```php

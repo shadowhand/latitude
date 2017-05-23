@@ -10,11 +10,13 @@ class InsertMultipleQuery implements Statement
     /**
      * Create a new multi-line insert query.
      */
-    public static function make(string $table, array $columns): InsertMultipleQuery
+    public static function make(string $table, array $columns = []): InsertMultipleQuery
     {
         $query = new static();
         $query->table($table);
-        $query->columns($columns);
+        if ($columns) {
+            $query->columns($columns);
+        }
         return $query;
     }
 
