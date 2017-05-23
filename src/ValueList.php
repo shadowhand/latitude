@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+use Countable;
 use Iterator;
 
-class ValueList implements Statement
+class ValueList implements
+    Countable,
+    Statement
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanReplaceBooleanAndNullValues;
@@ -18,6 +21,12 @@ class ValueList implements Statement
         $values = new static($params);
         $values->params = $params;
         return $values;
+    }
+
+    // Countable
+    public function count()
+    {
+        return \count($this->params);
     }
 
     // Statement
