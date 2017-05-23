@@ -1,15 +1,12 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 use Iterator;
-
 class ValueList implements Statement
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanReplaceBooleanAndNullValues;
-
     /**
      * Create a new value list.
      */
@@ -19,31 +16,27 @@ class ValueList implements Statement
         $values->params = $params;
         return $values;
     }
-
     // Statement
-    public function sql(Identifier $identifier = null): string
+    public function sql(Identifier $identifier = null)
     {
         return '(' . $this->stringifyIterator($this->generatePlaceholders()) . ')';
     }
-
     // Statement
-    public function params(): array
+    public function params()
     {
         return $this->placeholderParams();
     }
-
     /**
      * @var array
      */
     protected $params;
-
     /**
      * Generate a placeholder.
      */
-    protected function generatePlaceholders(): Iterator
+    protected function generatePlaceholders()
     {
         foreach (\array_keys($this->params) as $index) {
-            yield $this->placeholderValue($index);
+            (yield $this->placeholderValue($index));
         }
     }
 }
