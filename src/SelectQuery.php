@@ -291,6 +291,6 @@ class SelectQuery implements Statement
         }
 
         // flatten: [[a, b], [c, ...]] -> [a, b, c]
-        return \array_reduce($params, 'array_merge', []);
+        return \array_merge(...$params);
     }
 }
