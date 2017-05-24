@@ -87,49 +87,14 @@ class Conditions implements Statement
     public function sql(Identifier $identifier = null): string
     {
         $identifier = $this->getDefaultIdentifier($identifier);
-
-        $sql = \array_reduce(
-            $this->parts,
-            function (string $sql, array $part): string {
-                if ($this->isConditions($part['condition'])) {
-                    // (...)
-                    $statement = '(' . $part['condition']->sql() . ')';
-                } else {
-                    // foo = ?
-                    $statement = $this->replaceStatementParams($part['condition'], $part['params']);
-                }
-
-                if ($sql) {
-                    $statement = $part['type'] . ' ' . $statement;
-                }
-
-                return \trim($sql . ' ' . $statement);
-            },
-            ''
-        );
-
-        return $identifier->escapeExpression($sql);
+        $expression = \array_reduce($this->parts, $this->sqlReducer(), '');
+        return $identifier->escapeExpression($expression);
     }
 
     // Statement
     public function params(): array
     {
-        $params = [];
-        foreach ($this->parts as $part) {
-            if ($this->isConditions($part['condition'])) {
-                $params = \array_merge($params, $part['condition']->params());
-            } else {
-                foreach ($part['params'] as $param) {
-                    if ($this->isStatement($param)) {
-                        $params = \array_merge($params, $param->params());
-                    } else {
-                        $params[] = $param;
-                    }
-                }
-            }
-        }
-
-        return $params;
+        return \array_reduce($this->parts, $this->paramReducer(), []);
     }
 
     /**
@@ -167,14 +132,65 @@ class Conditions implements Statement
     }
 
     /**
+     * Get a function to reduce condition parts to a SQL string.
+     */
+    protected function sqlReducer(): callable
+    {
+        return function (string $sql, array $part): string {
+            if ($this->isCondition($part['condition'])) {
+                // (...)
+                $statement = "({$part['condition']->sql()})";
+            } else {
+                // foo = ?
+                $statement = $this->replaceStatementParams($part['condition'], $part['params']);
+            }
+            if ($sql) {
+                // AND ...
+                $statement = "{$part['type']} $statement";
+            }
+            return \trim($sql . ' ' . $statement);
+        };
+    }
+
+
+    /**
+     * Get a function to reduce parameters to a single list.
+     */
+    protected function paramReducer(): callable
+    {
+        return function (array $params, array $part): array {
+            if ($this->isCondition($part['condition'])) {
+                // Conditions have a parameter list already
+                return \array_merge($params, $part['condition']->params());
+            }
+            // Otherwise convert the list to a list of lists for flattening
+            return \array_merge($params, ...\array_map($this->paramLister(), $part['params']));
+        };
+    }
+
+    /**
+     * Convert all parameters to an array for flattening.
+     */
+    protected function paramLister(): callable
+    {
+        return function ($param): array {
+            if ($this->isStatement($param)) {
+                // Statements have a parameter list already
+                return $param->params();
+            }
+            // Otherwise convert to a list
+            return [$param];
+        };
+    }
+
+    /**
      * Check if a condition is a sub-condition.
      */
-    protected function isConditions($condition): bool
+    protected function isCondition($condition): bool
     {
         if (\is_object($condition) === false) {
             return false;
         }
-
         return $condition instanceof Conditions;
     }
 
@@ -186,7 +202,6 @@ class Conditions implements Statement
         if (\is_object($param) === false) {
             return false;
         }
-
         return $param instanceof Statement;
     }
 
@@ -200,7 +215,6 @@ class Conditions implements Statement
                 return true;
             }
         }
-
         return false;
     }
 
@@ -212,17 +226,20 @@ class Conditions implements Statement
         if ($this->hasStatementParam($params) === false) {
             return $statement;
         }
-
+        // Maintain an offset position, as preg_replace_callback() does not provide one
         $index = 0;
         return \preg_replace_callback('/\?/', function ($matches) use (&$index, $params) {
             try {
-                // Replace any statement placeholder with the generated SQL
                 if ($this->isStatement($params[$index])) {
+                    // Replace any statement placeholder with the generated SQL
                     return $params[$index]->sql();
                 } else {
+                    // And leave all other placeholders intact
                     return $matches[0];
                 }
             } finally {
+                // This funky usage of finally allows us to increment the offset
+                // after all other code in the block has been executed.
                 $index++;
             }
         }, $statement);
