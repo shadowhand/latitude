@@ -370,17 +370,16 @@ $user_ids_from_orders = SelectQuery::make('user_id')
 $select = SelectQuery::make()
     ->from('users')
     ->where(
-        c::make(
-            // Compile the sub-query into the conditions and add parameters
-            sprintf('id IN (%s)', $user_ids_from_orders->sql()),
-            ...$user_ids_from_orders->params()
-        )
+        c::make('id IN (?)', $user_ids_from_orders)
     );
 
 echo $select->sql();
 // SELECT * FROM users WHERE id IN (
 //    SELECT user_id FROM orders WHERE placed_at BETWEEN ? AND ?
 // )
+
+print_r($select->params());
+// ['2017-01-01', '2017-12-31']
 ```
 
 ### Expressions

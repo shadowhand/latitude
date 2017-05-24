@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-use PHPUnit\Framework\TestCase;
 use Latitude\QueryBuilder\Expression as e;
 use Latitude\QueryBuilder\Conditions as c;
+use PHPUnit\Framework\TestCase;
 
 class SelectQueryTest extends TestCase
 {
@@ -196,19 +196,24 @@ class SelectQueryTest extends TestCase
         $select = SelectQuery::make()
             ->from('users')
             ->where(
-                c::make(
-                    sprintf('id IN (%s)', $user_ids_from_orders->sql()),
-                    ...$user_ids_from_orders->params()
-                )
+                c::make('id IN (?)', $user_ids_from_orders)
+                ->with('deleted_at IS NULL')
+                ->with('created_at BETWEEN ? AND ?', '2016-12-15', '2016-12-25')
             );
 
-        $this->assertSame(
-            'SELECT * FROM users WHERE id IN (SELECT user_id FROM orders WHERE placed_at BETWEEN ? AND ?)',
-            $select->sql()
-        );
+        $expected = 'SELECT * FROM users WHERE id IN (' .
+            'SELECT user_id FROM orders WHERE placed_at BETWEEN ? AND ?' .
+            ') AND deleted_at IS NULL AND created_at BETWEEN ? AND ?';
+
+        $this->assertSame($expected, $select->sql());
 
         $this->assertSame(
-            ['2017-01-01', '2017-12-31'],
+            [
+                '2017-01-01',
+                '2017-12-31',
+                '2016-12-15',
+                '2016-12-25',
+            ],
             $select->params()
         );
     }

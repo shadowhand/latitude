@@ -34,6 +34,15 @@ class ConditionsTest extends TestCase
         $this->assertParams($conditions, [4, 5, 6]);
     }
 
+    public function testInValues()
+    {
+        $conditions = Conditions::make()
+            ->with('role_id IN (?)', ValueList::make(1, 2, 3));
+
+        $this->assertSql($conditions, 'role_id IN (?, ?, ?)');
+        $this->assertParams($conditions, [1, 2, 3]);
+    }
+
     public function testGroupingWithAnd()
     {
         $conditions = Conditions::make()

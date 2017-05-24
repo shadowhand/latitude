@@ -97,7 +97,7 @@ class Conditions implements Statement
                     $statement = '(' . $part['condition']->sql() . ')';
                 } else {
                     // foo = ?
-                    $statement = $part['condition'];
+                    $statement = $this->replaceStatementParams($part['condition'], $part['params']);
                 }
 
                 if ($sql) {
@@ -115,17 +115,22 @@ class Conditions implements Statement
     // Statement
     public function params(): array
     {
-        $reduce = function (array $params, array $part): array {
+        $params = [];
+        foreach ($this->parts as $part) {
             if ($this->isConditions($part['condition'])) {
-                return \array_merge(
-                    $params,
-                    $part['condition']->params()
-                );
+                $params = \array_merge($params, $part['condition']->params());
+            } else {
+                foreach ($part['params'] as $param) {
+                    if ($this->isStatement($param)) {
+                        $params = \array_merge($params, $param->params());
+                    } else {
+                        $params[] = $param;
+                    }
+                }
             }
-            return \array_merge($params, $part['params']);
-        };
+        }
 
-        return \array_reduce($this->parts, $reduce, []);
+        return $params;
     }
 
     /**
@@ -188,5 +193,55 @@ class Conditions implements Statement
         }
 
         return $condition instanceof Conditions;
+    }
+
+    /**
+     * Check if a parameter is a statement.
+     */
+    protected function isStatement($param): bool
+    {
+        if (\is_object($param) === false) {
+            return false;
+        }
+
+        return $param instanceof Statement;
+    }
+
+    /**
+     * Check if any parameter is a statement.
+     */
+    protected function hasStatementParam(array $params): bool
+    {
+        foreach ($params as $param) {
+            if ($this->isStatement($param)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Replacement statement parameters with SQL expression.
+     */
+    protected function replaceStatementParams(string $statement, array $params): string
+    {
+        if ($this->hasStatementParam($params) === false) {
+            return $statement;
+        }
+
+        $index = 0;
+        return \preg_replace_callback('/\?/', function ($matches) use (&$index, $params) {
+            try {
+                // Replace any statement placeholder with the generated SQL
+                if ($this->isStatement($params[$index])) {
+                    return $params[$index]->sql();
+                } else {
+                    return $matches[0];
+                }
+            } finally {
+                $index++;
+            }
+        }, $statement);
     }
 }
