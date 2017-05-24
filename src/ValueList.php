@@ -32,7 +32,7 @@ class ValueList implements
     // Statement
     public function sql(Identifier $identifier = null): string
     {
-        return '(' . $this->stringifyIterator($this->generatePlaceholders()) . ')';
+        return $this->stringifyIterator($this->generatePlaceholders());
     }
 
     // Statement

@@ -94,6 +94,6 @@ class InsertMultipleQuery implements Statement
             return $values->sql();
         };
 
-        return implode(', ', \array_map($sqlOf, $this->values));
+        return '(' . implode('), (', \array_map($sqlOf, $this->values)) . ')';
     }
 }
