@@ -8,7 +8,6 @@ use Iterator;
 class UpdateQuery implements Statement
 {
     use Traits\CanConvertIteratorToString;
-    use Traits\CanCreatePlaceholders;
     use Traits\CanReplaceBooleanAndNullValues;
     use Traits\CanUseDefaultIdentifier;
 

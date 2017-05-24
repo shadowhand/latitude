@@ -115,6 +115,18 @@ print_r($insert->params());
 // ["jsmith"]
 ```
 
+Multiple sets of values can be added to the insert:
+
+```php
+$insert = InsertQuery::make('tokens')->columns('token');
+
+$insert->values('token-one');
+$insert->values('token-two');
+
+echo $insert->sql();
+// INSERT INTO tokens (token) VALUES (?), (?)
+```
+
 There is also a Postgres extension that allows the use of the `RETURNING` statement:
 
 ```php
@@ -128,27 +140,6 @@ $insert = InsertQuery::make(...)
 echo $insert->sql();
 // INSERT INTO users (username) VALUES (?) RETURNING id
 ```
-
-#### Multi-line INSERT
-
-```php
-use Latitude\QueryBuilder\InsertMultipleQuery;
-use Latitude\QueryBuilder\Expression as e;
-
-$now = e::make('NOW()');
-
-$insert = InsertMultipleQuery::make('tokens', ['token', 'created_at'])
-    ->append(['first-token', $now])
-    ->append(['second-token', $now]);
-
-echo $insert->sql();
-// INSERT INTO tokens (token, created_at) VALUES (?, NOW()), (?, NOW())
-
-print_r($insert->params());
-// ["first-token", "second-token"]
-```
-
-**Note:** There are no extensions for multi-line insert queries.
 
 ### UPDATE
 
@@ -300,16 +291,13 @@ query results!
 #### IN conditions
 
 Because PDO does not have an easy way to handle array values for `IN` conditions,
-a special `InValue` wrapper exists that will expand the `?` placeholder in the
-condition based on the number of values provided.
+the `ValueList` wrapper can be used to expand the `?` placeholder in the condition.
 
 ```php
 use Latitude\QueryBuilder\Conditions;
-use Latitude\QueryBuilder\InValue as in;
+use Latitude\QueryBuilder\ValueList as in;
 
-$ids = [1, 12, 5];
-
-$statement = Conditions::make('role IN ?', in::make($ids))
+$statement = Conditions::make('role IN (?)', in::make(1, 12, 5))
 
 echo $statement->sql();
 // role IN (?, ?, ?)
@@ -317,8 +305,6 @@ echo $statement->sql();
 print_r($statement->params());
 // [1, 12, 5]
 ```
-
-**Note:** This will only work correctly with a single placeholder!
 
 #### LIKE Conditions
 
@@ -370,17 +356,16 @@ $user_ids_from_orders = SelectQuery::make('user_id')
 $select = SelectQuery::make()
     ->from('users')
     ->where(
-        c::make(
-            // Compile the sub-query into the conditions and add parameters
-            sprintf('id IN (%s)', $user_ids_from_orders->sql()),
-            ...$user_ids_from_orders->params()
-        )
+        c::make('id IN (?)', $user_ids_from_orders)
     );
 
 echo $select->sql();
 // SELECT * FROM users WHERE id IN (
 //    SELECT user_id FROM orders WHERE placed_at BETWEEN ? AND ?
 // )
+
+print_r($select->params());
+// ['2017-01-01', '2017-12-31']
 ```
 
 ### Expressions

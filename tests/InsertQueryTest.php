@@ -97,4 +97,32 @@ class InsertQueryTest extends TestCase
         $this->assertSame($sql, $insert->sql());
         $this->assertSame($params, $insert->params());
     }
+
+    public function testInsertMultiple()
+    {
+        $insert = InsertQuery::make('tokens')->columns('token');
+
+        $insert->values('a');
+        $insert->values('b');
+        $insert->values('c');
+
+        $this->assertSame(
+            'INSERT INTO tokens (token) VALUES (?), (?), (?)',
+            $insert->sql()
+        );
+
+        $this->assertSame(
+            ['a', 'b', 'c'],
+            $insert->params()
+        );
+    }
+
+    public function testInsertCountMismatch()
+    {
+        $insert = InsertQuery::make('tokens')->columns('token');
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $insert->values('a', 'b');
+    }
 }

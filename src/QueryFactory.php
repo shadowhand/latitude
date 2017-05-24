@@ -45,14 +45,6 @@ class QueryFactory
     }
 
     /**
-     * Create a new INSERT query with multiple values.
-     */
-    public function insertMultiple(...$params): InsertMultipleQuery
-    {
-        return InsertMultipleQuery::make(...$params);
-    }
-
-    /**
      * Create a new UPDATE query.
      */
     public function update(...$params): UpdateQuery
