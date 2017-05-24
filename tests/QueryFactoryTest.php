@@ -22,7 +22,6 @@ class QueryFactoryTest extends TestCase
         string $engine,
         string $selectClass,
         string $insertClass,
-        string $insertMultipleClass,
         string $updateClass,
         string $deleteClass,
         string $identifierClass
@@ -31,14 +30,12 @@ class QueryFactoryTest extends TestCase
 
         $select = $factory->select();
         $insert = $factory->insert('users', []);
-        $insertMultiple = $factory->insertMultiple('users', ['username']);
         $update = $factory->update('users', []);
         $delete = $factory->delete('users');
         $identifier = $factory->identifier();
 
         $this->assertInstanceOf($selectClass, $select);
         $this->assertInstanceOf($insertClass, $insert);
-        $this->assertInstanceOf($insertMultipleClass, $insertMultiple);
         $this->assertInstanceOf($updateClass, $update);
         $this->assertInstanceOf($deleteClass, $delete);
         $this->assertInstanceOf($identifierClass, $identifier);
@@ -55,7 +52,6 @@ class QueryFactoryTest extends TestCase
                 'mysql',
                 SelectQuery::class,
                 InsertQuery::class,
-                InsertMultipleQuery::class,
                 UpdateQuery::class,
                 DeleteQuery::class,
                 MySQL\Identifier::class,
@@ -64,7 +60,6 @@ class QueryFactoryTest extends TestCase
                 'pgsql',
                 SelectQuery::class,
                 Postgres\InsertQuery::class,
-                InsertMultipleQuery::class,
                 Postgres\UpdateQuery::class,
                 Postgres\DeleteQuery::class,
                 Common\Identifier::class,
@@ -73,7 +68,6 @@ class QueryFactoryTest extends TestCase
                 'sqlsrv',
                 SelectQuery::class,
                 InsertQuery::class,
-                InsertMultipleQuery::class,
                 UpdateQuery::class,
                 DeleteQuery::class,
                 SqlServer\Identifier::class,
@@ -82,7 +76,6 @@ class QueryFactoryTest extends TestCase
                 'sqlite',
                 SelectQuery::class,
                 InsertQuery::class,
-                InsertMultipleQuery::class,
                 UpdateQuery::class,
                 DeleteQuery::class,
                 Common\Identifier::class,
@@ -91,7 +84,6 @@ class QueryFactoryTest extends TestCase
                 '',
                 SelectQuery::class,
                 InsertQuery::class,
-                InsertMultipleQuery::class,
                 UpdateQuery::class,
                 DeleteQuery::class,
                 Common\Identifier::class,

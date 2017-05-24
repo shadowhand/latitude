@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Statements are now supported as parameters in conditions
+- Multi-line inserts are now supported by `InsertQuery`
 
 ### Removed
 
 - `InValue` has been removed in favor of `ValueList`
+- `InsertMultipleQuery` has been removed
 
 ## [1.4.0]
 

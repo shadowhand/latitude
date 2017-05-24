@@ -115,6 +115,18 @@ print_r($insert->params());
 // ["jsmith"]
 ```
 
+Multiple sets of values can be added to the insert:
+
+```php
+$insert = InsertQuery::make('tokens')->columns('token');
+
+$insert->values('token-one');
+$insert->values('token-two');
+
+echo $insert->sql();
+// INSERT INTO tokens (token) VALUES (?), (?)
+```
+
 There is also a Postgres extension that allows the use of the `RETURNING` statement:
 
 ```php
@@ -128,27 +140,6 @@ $insert = InsertQuery::make(...)
 echo $insert->sql();
 // INSERT INTO users (username) VALUES (?) RETURNING id
 ```
-
-#### Multi-line INSERT
-
-```php
-use Latitude\QueryBuilder\InsertMultipleQuery;
-use Latitude\QueryBuilder\Expression as e;
-
-$now = e::make('NOW()');
-
-$insert = InsertMultipleQuery::make('tokens', ['token', 'created_at'])
-    ->append(['first-token', $now])
-    ->append(['second-token', $now]);
-
-echo $insert->sql();
-// INSERT INTO tokens (token, created_at) VALUES (?, NOW()), (?, NOW())
-
-print_r($insert->params());
-// ["first-token", "second-token"]
-```
-
-**Note:** There are no extensions for multi-line insert queries.
 
 ### UPDATE
 
