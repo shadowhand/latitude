@@ -9,7 +9,7 @@ class Identifier
     const IDENTIFIER_CAPTURE_REGEX = '/([a-zA-Z](?:[a-zA-Z0-9_]+)?\.[a-zA-Z](?:[a-zA-Z0-9_]+)?)/';
 
     /**
-     * @var string
+     * @var Identifier
      */
     protected static $default;
 
