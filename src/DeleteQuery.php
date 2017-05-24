@@ -7,7 +7,6 @@ use Iterator;
 
 class DeleteQuery implements Statement
 {
-    use Traits\CanCreatePlaceholders;
     use Traits\CanUseDefaultIdentifier;
 
     /**

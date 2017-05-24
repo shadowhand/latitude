@@ -5,7 +5,6 @@ namespace Latitude\QueryBuilder;
 
 class Conditions implements Statement
 {
-    use Traits\CanCreatePlaceholders;
     use Traits\CanUseDefaultIdentifier;
 
     /**
@@ -153,10 +152,6 @@ class Conditions implements Statement
      */
     protected function addCondition(string $type, string $condition, array $params): self
     {
-        if ($params) {
-            $this->expandPlaceholders($condition, $params);
-        }
-
         $this->parts[] = compact('type', 'condition', 'params');
         return $this;
     }
@@ -169,18 +164,6 @@ class Conditions implements Statement
         $condition = new static($this);
         $this->parts[] = compact('type', 'condition');
         return $condition;
-    }
-
-    /**
-     * Replace placeholder with expanded placeholder for IN values.
-     */
-    protected function expandPlaceholders(string &$condition, array &$params)
-    {
-        if ($params[0] instanceof InValue) {
-            $placeholders = $this->createPlaceholders(\count($params[0]));
-            $condition = \str_replace('?', "($placeholders)", $condition);
-            $params = $params[0]->values();
-        }
     }
 
     /**

@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Statements are now supported as parameters in conditions
 
+### Removed
+
+- `InValue` has been removed in favor of `ValueList`
+
 ## [1.4.0]
 
 ### Added

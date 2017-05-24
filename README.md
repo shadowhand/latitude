@@ -300,16 +300,13 @@ query results!
 #### IN conditions
 
 Because PDO does not have an easy way to handle array values for `IN` conditions,
-a special `InValue` wrapper exists that will expand the `?` placeholder in the
-condition based on the number of values provided.
+the `ValueList` wrapper can be used to expand the `?` placeholder in the condition.
 
 ```php
 use Latitude\QueryBuilder\Conditions;
-use Latitude\QueryBuilder\InValue as in;
+use Latitude\QueryBuilder\ValueList as in;
 
-$ids = [1, 12, 5];
-
-$statement = Conditions::make('role IN ?', in::make($ids))
+$statement = Conditions::make('role IN (?)', in::make(1, 12, 5))
 
 echo $statement->sql();
 // role IN (?, ?, ?)
@@ -317,8 +314,6 @@ echo $statement->sql();
 print_r($statement->params());
 // [1, 12, 5]
 ```
-
-**Note:** This will only work correctly with a single placeholder!
 
 #### LIKE Conditions
 
