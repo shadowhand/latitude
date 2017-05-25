@@ -297,7 +297,7 @@ the `ValueList` wrapper can be used to expand the `?` placeholder in the conditi
 use Latitude\QueryBuilder\Conditions;
 use Latitude\QueryBuilder\ValueList as in;
 
-$statement = Conditions::make('role IN (?)', in::make(1, 12, 5))
+$statement = Conditions::make('role IN ?', in::make([1, 12, 5]))
 
 echo $statement->sql();
 // role IN (?, ?, ?)

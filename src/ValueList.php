@@ -16,7 +16,7 @@ class ValueList implements
     /**
      * Create a new value list.
      */
-    public static function make(...$params)
+    public static function make(array $params): ValueList
     {
         $values = new static($params);
         $values->params = $params;
@@ -32,7 +32,7 @@ class ValueList implements
     // Statement
     public function sql(Identifier $identifier = null): string
     {
-        return $this->stringifyIterator($this->generatePlaceholders());
+        return '(' . $this->stringifyIterator($this->generatePlaceholders()) . ')';
     }
 
     // Statement
