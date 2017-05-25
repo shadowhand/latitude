@@ -54,7 +54,7 @@ class InsertQuery implements Statement
                 \count($this->columns)
             ));
         }
-        $this->values[] = ValueList::make(...$values);
+        $this->values[] = ValueList::make($values);
         return $this;
     }
 
@@ -112,7 +112,7 @@ class InsertQuery implements Statement
     protected function insertLines(): Iterator
     {
         foreach ($this->values as $line) {
-            yield "({$line->sql()})";
+            yield $line->sql();
         }
     }
 

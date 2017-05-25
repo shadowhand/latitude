@@ -21,14 +21,14 @@ class ConditionsTest extends TestCase
     public function testLogicalIn()
     {
         $conditions = Conditions::make()
-            ->with('role_id IN (?)', ValueList::make(1, 2, 3))
-            ->orWith('user_id IN (?)', ValueList::make(100));
+            ->with('role_id IN ?', ValueList::make([1, 2, 3]))
+            ->orWith('user_id IN ?', ValueList::make([100]));
 
         $this->assertSql($conditions, 'role_id IN (?, ?, ?) OR user_id IN (?)');
         $this->assertParams($conditions, [1, 2, 3, 100]);
 
         $conditions = Conditions::make()
-            ->with('role_id IN (?)', ValueList::make(4, 5, 6));
+            ->with('role_id IN ?', ValueList::make([4, 5, 6]));
 
         $this->assertSql($conditions, 'role_id IN (?, ?, ?)');
         $this->assertParams($conditions, [4, 5, 6]);
@@ -37,7 +37,7 @@ class ConditionsTest extends TestCase
     public function testCombinedStatement()
     {
         $conditions = Conditions::make()
-            ->with('id IN (?) OR id = ?', ValueList::make(5, 10), 1);
+            ->with('id IN ? OR id = ?', ValueList::make([5, 10]), 1);
 
         $this->assertSql($conditions, 'id IN (?, ?) OR id = ?');
         $this->assertParams($conditions, [5, 10, 1]);
