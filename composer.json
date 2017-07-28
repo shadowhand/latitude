@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0"
+        "php": ">=5.6"
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
@@ -34,7 +34,7 @@
             "php7to5 convert --overwrite --copy-all -- tests/ tests-php5/",
             "rm -rf src && mv src-php5 src",
             "rm -rf tests && mv tests-php5 tests",
-            "sed -i '' -e 's/=7.0/=5.6/' composer.json"
+            "sed -i '' -e 's/=5.6/=5.6/' composer.json"
         ],
         "test": "phpunit"
     }
