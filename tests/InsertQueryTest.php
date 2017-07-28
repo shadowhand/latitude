@@ -117,6 +117,19 @@ class InsertQueryTest extends TestCase
         );
     }
 
+    public function testInsertQualified()
+    {
+        $table = 'public.users';
+        $map = [
+            'username' => 'jsmith',
+        ];
+
+        $insert = InsertQuery::make($table, $map);
+        $identifier = Common\Identifier::make();
+
+        $this->assertContains('"public"."users"', $insert->sql($identifier));
+    }
+
     public function testInsertCountMismatch()
     {
         $insert = InsertQuery::make('tokens')->columns('token');

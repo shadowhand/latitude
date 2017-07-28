@@ -78,7 +78,7 @@ class InsertQuery implements Statement
 
         return \sprintf(
             'INSERT INTO %s (%s) VALUES %s',
-            $identifier->escape($this->table),
+            $identifier->escapeQualified($this->table),
             \implode(', ', $identifier->all($this->columns)),
             $this->stringifyIterator($this->insertLines())
         );
