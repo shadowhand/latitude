@@ -89,9 +89,9 @@ class SelectQuery implements Statement
         return $this;
     }
 
-    public function groupBy(string ...$tables): self
+    public function groupBy(...$columns): self
     {
-        $this->groupBy = $tables;
+        $this->groupBy = $columns;
         return $this;
     }
 

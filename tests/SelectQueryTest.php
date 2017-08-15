@@ -150,6 +150,22 @@ class SelectQueryTest extends TestCase
         $this->assertSame([5], $select->params());
     }
 
+    public function testGroupByWithExpression()
+    {
+        $select = SelectQuery::make(
+                e::make('COUNT(*) AS %s', 'total'),
+                e::make('DATE(created_at) AS %s', 'date')
+            )
+            ->from('users')
+            ->groupBy(e::make('DATE(created_at)'))
+            ;
+
+        $this->assertSame(
+            'SELECT COUNT(*) AS total, DATE(created_at) AS date FROM users GROUP BY DATE(created_at)',
+            $select->sql()
+        );
+    }
+
     public function testOrderBy()
     {
         $select = SelectQuery::make()
