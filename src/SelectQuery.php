@@ -8,6 +8,8 @@ use Iterator;
 class SelectQuery implements Statement
 {
     use Traits\CanConvertIteratorToString;
+    use Traits\CanLimit;
+    use Traits\CanOrderBy;
     use Traits\CanUseDefaultIdentifier;
 
     public static function make(...$columns): SelectQuery
@@ -101,18 +103,6 @@ class SelectQuery implements Statement
         return $this;
     }
 
-    public function orderBy(array ...$sorting): self
-    {
-        $this->orderBy = $sorting;
-        return $this;
-    }
-
-    public function limit(int $limit): self
-    {
-        $this->limit = $limit;
-        return $this;
-    }
-
     public function offset(int $offset): self
     {
         $this->offset = $offset;
@@ -166,14 +156,12 @@ class SelectQuery implements Statement
 
         // ORDER BY ...
         if ($this->orderBy) {
-            $parts[] = 'ORDER BY';
-            $parts[] = $this->stringifyIterator($this->generateOrderBy($identifier));
+            $parts[] = $this->orderByAsSql($identifier);
         }
 
         // LIMIT ...
-        if (isset($this->limit)) {
-            $parts[] = 'LIMIT';
-            $parts[] = $this->limit;
+        if ($this->limit) {
+            $parts[] = $this->limitAsSql();
         }
 
         // OFFSET ...
@@ -237,16 +225,6 @@ class SelectQuery implements Statement
     protected $having;
 
     /**
-     * @var array
-     */
-    protected $orderBy;
-
-    /**
-     * @var int
-     */
-    protected $limit;
-
-    /**
      * @var int
      */
     protected $offset;
@@ -263,20 +241,6 @@ class SelectQuery implements Statement
                 $identifier->escapeAlias($join[1]),
                 $join[2]->sql($identifier)
             ));
-        }
-    }
-
-    /**
-     * Generate a list of ORDER BY statements.
-     */
-    protected function generateOrderBy(Identifier $identifier): Iterator
-    {
-        foreach ($this->orderBy as $sort) {
-            if (empty($sort[1])) {
-                yield $identifier->escapeQualified($sort[0]);
-            } else {
-                yield $identifier->escapeQualified($sort[0]) . ' ' . \strtoupper($sort[1]);
-            }
         }
     }
 

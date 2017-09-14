@@ -49,6 +49,10 @@ class QueryFactory
      */
     public function update(...$params): UpdateQuery
     {
+        if ($this->isMySQL()) {
+            return MySQL\UpdateQuery::make(...$params);
+        }
+
         if ($this->isPostgres()) {
             return Postgres\UpdateQuery::make(...$params);
         }
@@ -61,6 +65,10 @@ class QueryFactory
      */
     public function delete(...$params): DeleteQuery
     {
+        if ($this->isMySQL()) {
+            return MySQL\DeleteQuery::make(...$params);
+        }
+
         if ($this->isPostgres()) {
             return Postgres\DeleteQuery::make(...$params);
         }

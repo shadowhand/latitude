@@ -52,8 +52,8 @@ class QueryFactoryTest extends TestCase
                 'mysql',
                 SelectQuery::class,
                 InsertQuery::class,
-                UpdateQuery::class,
-                DeleteQuery::class,
+                MySQL\UpdateQuery::class,
+                MySQL\DeleteQuery::class,
                 MySQL\Identifier::class,
             ],
             'Postgres' => [
