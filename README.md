@@ -175,6 +175,19 @@ echo $update->sql();
 // UPDATE users SET username = ? WHERE id = ? RETURNING updated_at
 ```
 
+The MySQL extension supports `ORDER BY` and `LIMIT` to limit the number of rows updated:
+
+```php
+use Latitude\QueryBuilder\MySQL\UpdateQuery;
+
+$update = UpdateQuery::make(...)
+    ->orderBy(['username', 'DESC'])
+    ->limit(5);
+
+echo $update->sql();
+// UPDATE users SET updated_at = ? ORDER BY username DESC LIMIT 5
+```
+
 ### DELETE
 
 ```php
@@ -205,6 +218,19 @@ $delete = DeleteQuery::make(...)
 
 echo $delete->sql();
 // DELETE FROM users WHERE last_login IS NULL RETURNING id
+```
+
+The MySQL extension supports `ORDER BY` and `LIMIT` to limit the number of rows deleted:
+
+```php
+use Latitude\QueryBuilder\MySQL\DeleteQuery;
+
+$delete = DeleteQuery::make(...)
+    ->orderBy(['username', 'DESC'])
+    ->limit(5);
+
+echo $delete->sql();
+// DELETE FROM users ORDER BY username DESC LIMIT 5
 ```
 
 ### Factory
