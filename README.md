@@ -93,9 +93,9 @@ echo $select->sql();
 - `groupBy(string ...columns)`
 - `having(conditions)`
 - `orderBy(array ...pairs)` either `[column]` or `[column, direction]`
-- `limit(int limit)`
-- `offset(int offset)`
-- `distinct(bool or null)` defaults to `false`
+- `limit(int|null limit)`
+- `offset(int|null offset)`
+- `distinct(bool|null)` defaults to `false`
 
 Refer the source for more details. It aims to be easy to read!
 
