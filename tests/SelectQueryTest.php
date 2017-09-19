@@ -203,6 +203,35 @@ class SelectQueryTest extends TestCase
         );
     }
 
+    public function testLimitReset()
+    {
+        $select = SelectQuery::make()
+            ->from('users')
+            ->limit(50);
+
+        $select->limit(null);
+
+        $this->assertSame(
+            'SELECT * FROM users',
+            $select->sql()
+        );
+    }
+
+    public function testOffsetReset()
+    {
+        $select = SelectQuery::make()
+            ->from('users')
+            ->offset(100)
+            ->limit(50);
+
+        $select->offset(null);
+
+        $this->assertSame(
+            'SELECT * FROM users LIMIT 50',
+            $select->sql()
+        );
+    }
+
     public function testSubselect()
     {
         $user_ids_from_orders = SelectQuery::make('user_id')

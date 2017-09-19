@@ -5,7 +5,7 @@ namespace Latitude\QueryBuilder\Traits;
 
 trait CanLimit
 {
-    public function limit(int $limit): self
+    public function limit(int $limit = null): self
     {
         $this->limit = $limit;
         return $this;

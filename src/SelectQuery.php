@@ -103,7 +103,7 @@ class SelectQuery implements Statement
         return $this;
     }
 
-    public function offset(int $offset): self
+    public function offset(int $offset = null): self
     {
         $this->offset = $offset;
         return $this;
@@ -155,12 +155,12 @@ class SelectQuery implements Statement
         }
 
         // ORDER BY ...
-        if ($this->orderBy) {
+        if (isset($this->orderBy)) {
             $parts[] = $this->orderByAsSql($identifier);
         }
 
         // LIMIT ...
-        if ($this->limit) {
+        if (isset($this->limit)) {
             $parts[] = $this->limitAsSql();
         }
 
