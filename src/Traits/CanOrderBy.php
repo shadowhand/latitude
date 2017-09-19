@@ -10,7 +10,7 @@ trait CanOrderBy
 {
     public function orderBy(array ...$sorting): self
     {
-        $this->orderBy = $sorting;
+        $this->orderBy = $sorting ?: null;
         return $this;
     }
 

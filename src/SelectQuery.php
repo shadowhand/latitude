@@ -29,7 +29,7 @@ class SelectQuery implements Statement
 
     public function columns(...$columns): self
     {
-        $this->columns = $columns;
+        $this->columns = $columns ?: null;
         return $this;
     }
 
@@ -85,7 +85,13 @@ class SelectQuery implements Statement
         return $this->join($table, $conditions, 'FULL OUTER');
     }
 
-    public function where(Conditions $where): self
+    public function resetJoins()
+    {
+        $this->join = [];
+        return $this;
+    }
+
+    public function where(Conditions $where = null): self
     {
         $this->where = $where;
         return $this;
@@ -93,11 +99,11 @@ class SelectQuery implements Statement
 
     public function groupBy(...$columns): self
     {
-        $this->groupBy = $columns;
+        $this->groupBy = $columns ?: null;
         return $this;
     }
 
-    public function having(Conditions $having): self
+    public function having(Conditions $having = null): self
     {
         $this->having = $having;
         return $this;
