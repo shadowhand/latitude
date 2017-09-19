@@ -203,31 +203,32 @@ class SelectQueryTest extends TestCase
         );
     }
 
-    public function testLimitReset()
+    public function testResetQuery()
     {
         $select = SelectQuery::make()
+            ->columns(['id', 'name'])
+            ->join('roles', c::make('roles.user_id = users.id'), 'INNER')
             ->from('users')
-            ->limit(50);
+            ->where(c::make('foo = bar'))
+            ->groupBy('foos')
+            ->having(c::make('COUNT(DISTINCT bar) > 1'))
+            ->orderBy(['id', 'DESC'])
+            ->offset(200)
+            ->limit(50)
+        ;
 
-        $select->limit(null);
+        $select->columns()
+            ->where()
+            ->groupBy()
+            ->having()
+            ->orderBy()
+            ->offset()
+            ->limit()
+            ->resetJoins()
+        ;
 
         $this->assertSame(
             'SELECT * FROM users',
-            $select->sql()
-        );
-    }
-
-    public function testOffsetReset()
-    {
-        $select = SelectQuery::make()
-            ->from('users')
-            ->offset(100)
-            ->limit(50);
-
-        $select->offset(null);
-
-        $this->assertSame(
-            'SELECT * FROM users LIMIT 50',
             $select->sql()
         );
     }
