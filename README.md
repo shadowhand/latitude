@@ -349,12 +349,12 @@ print_r($statement->params());
 // ["\%\%hijack"];
 ```
 
-The `LikeValue` helper also supports adding wildcards before and after the
-value automatically:
+The `LikeValue` helper also supports adding wildcards value automatically:
 
 ```php
-echo like::any('John');
-// "%John%"
+echo like::any('John');  // "%John%"
+echo like::starts('John');  // "Joh%"
+echo like::ends('John');  // "%ohn"
 ```
 
 There is also a MSSQL extension that will escape character ranges:

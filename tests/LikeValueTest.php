@@ -22,4 +22,20 @@ class LikeValueTest extends TestCase
 
         $this->assertSame($expected, LikeValue::any($input));
     }
+
+    public function testLikeStarts()
+    {
+        $input = 'a % string';
+        $expected = 'a \\% string%';
+
+        $this->assertSame($expected, LikeValue::starts($input));
+    }
+
+    public function testLikeEnds()
+    {
+        $input = 'a % string';
+        $expected = '%a \\% string';
+
+        $this->assertSame($expected, LikeValue::ends($input));
+    }
 }
