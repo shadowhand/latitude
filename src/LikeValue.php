@@ -27,4 +27,22 @@ abstract class LikeValue
         $value = static::escape($value);
         return "%$value%";
     }
+
+    /**
+     * Escape input for a LIKE condition, ends with wildcards.
+     */
+    public static function starts(string $value): string
+    {
+        $value = static::escape($value);
+        return "$value%";
+    }
+
+    /**
+     * Escape input for a LIKE condition, starts with wildcards.
+     */
+    public static function ends(string $value): string
+    {
+        $value = static::escape($value);
+        return "%$value";
+    }
 }
