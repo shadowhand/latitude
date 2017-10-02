@@ -268,4 +268,27 @@ class SelectQueryTest extends TestCase
             $select->params()
         );
     }
+
+    public function testSubselectJoin()
+    {
+        $joinSelect = SelectQuery::make(
+                'fullname',
+                e::make('MAX(%s)', 'score')
+            )
+            ->from('scores')
+            ->where(c::make('fullname = ?', 'Jane Doe'))
+            ->groupBy('fullname');
+
+        $select = SelectQuery::make('a.fullname', 'a.id', 'a.score')
+            ->from('scores a')
+            ->innerJoin(a::make($joinSelect, 'b'), c::make('a.fullname = b.fullname')->with('a.score = b.score'))
+            ->where(c::make('a.score > ?', 50));
+
+        $expected = 'SELECT a.fullname, a.id, a.score FROM scores AS a INNER JOIN ('.
+            'SELECT fullname, MAX(score) FROM scores WHERE fullname = ? GROUP BY fullname' .
+            ') AS b ON a.fullname = b.fullname AND a.score = b.score WHERE a.score > ?';
+
+        $this->assertSame($expected, $select->sql());
+        $this->assertSame(['Jane Doe', 50], $select->params());
+    }
 }
