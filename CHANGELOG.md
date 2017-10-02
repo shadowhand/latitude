@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Add `Query` interface to differentiate between queries and statements
+- Add `Alias` and `Reference` objects for additional flexibility
 
 ## [2.2.0]
 
