@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteQueryTest extends TestCase
 {
+    public function testQuery()
+    {
+        $this->assertInstanceOf(Query::class, DeleteQuery::make('users'));
+    }
+
     public function testDelete()
     {
         $table = 'users';

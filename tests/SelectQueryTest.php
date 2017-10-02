@@ -3,12 +3,18 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-use Latitude\QueryBuilder\Expression as e;
+use Latitude\QueryBuilder\Alias as a;
 use Latitude\QueryBuilder\Conditions as c;
+use Latitude\QueryBuilder\Expression as e;
 use PHPUnit\Framework\TestCase;
 
 class SelectQueryTest extends TestCase
 {
+    public function testQuery()
+    {
+        $this->assertInstanceOf(Query::class, SelectQuery::make());
+    }
+
     public function testSelect()
     {
         $select = SelectQuery::make()

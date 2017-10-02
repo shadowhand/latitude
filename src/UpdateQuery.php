@@ -5,7 +5,7 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
-class UpdateQuery implements Statement
+class UpdateQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanReplaceBooleanAndNullValues;

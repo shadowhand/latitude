@@ -5,7 +5,7 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
-class DeleteQuery implements Statement
+class DeleteQuery implements Query
 {
     use Traits\CanUseDefaultIdentifier;
 

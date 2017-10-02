@@ -6,7 +6,7 @@ namespace Latitude\QueryBuilder;
 use InvalidArgumentException;
 use Iterator;
 
-class InsertQuery implements Statement
+class InsertQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanUseDefaultIdentifier;

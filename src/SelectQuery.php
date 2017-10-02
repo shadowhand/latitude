@@ -5,7 +5,7 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
-class SelectQuery implements Statement
+class SelectQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanLimit;

@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateQueryTest extends TestCase
 {
+    public function testQuery()
+    {
+        $this->assertInstanceOf(Query::class, UpdateQuery::make('users', []));
+    }
+
     public function testUpdate()
     {
         $table = 'users';
