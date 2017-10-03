@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.0]
+## [2.3.0]
 
 ### Added
 
 - Add `Query` interface to differentiate between queries and statements
 - Add `Alias` and `Reference` objects for additional flexibility
+
+### Changed
+
+- `SelectQuery` can now accept a query statement as a `join` table
 
 ## [2.2.0]
 
