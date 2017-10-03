@@ -1,58 +1,48 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 use Countable;
 use Iterator;
-
-class ValueList implements
-    Countable,
-    Statement
+class ValueList implements Countable, Statement
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanReplaceBooleanAndNullValues;
-
     /**
      * Create a new value list.
      */
-    public static function make(array $params): ValueList
+    public static function make(array $params)
     {
         $values = new static($params);
         $values->params = $params;
         return $values;
     }
-
     // Countable
     public function count()
     {
         return \count($this->params);
     }
-
     // Statement
-    public function sql(Identifier $identifier = null): string
+    public function sql(Identifier $identifier = null)
     {
         return '(' . $this->stringifyIterator($this->generatePlaceholders()) . ')';
     }
-
     // Statement
-    public function params(): array
+    public function params()
     {
         return $this->placeholderParams();
     }
-
     /**
      * @var array
      */
     protected $params;
-
     /**
      * Generate a placeholder.
      */
-    protected function generatePlaceholders(): Iterator
+    protected function generatePlaceholders()
     {
         foreach (\array_keys($this->params) as $index) {
-            yield $this->placeholderValue($index);
+            (yield $this->placeholderValue($index));
         }
     }
 }

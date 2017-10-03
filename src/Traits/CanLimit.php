@@ -1,21 +1,18 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Traits;
 
 trait CanLimit
 {
-    public function limit(int $limit = null): self
+    public function limit($limit = null)
     {
         $this->limit = $limit;
         return $this;
     }
-
-    protected function limitAsSql(): string
+    protected function limitAsSql()
     {
         return sprintf('LIMIT %d', $this->limit);
     }
-
     /**
      * @var int
      */

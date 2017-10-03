@@ -1,16 +1,14 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 class Conditions implements Statement
 {
     use Traits\CanUseDefaultIdentifier;
-
     /**
      * Create a new conditions instance.
      */
-    public static function make(string $condition = null, ...$params): Conditions
+    public static function make($condition = null, ...$params)
     {
         $statment = new static();
         if ($condition) {
@@ -18,59 +16,52 @@ class Conditions implements Statement
         }
         return $statment;
     }
-
     /**
      * Alias of andWith().
      */
-    public function with(string $condition, ...$params): self
+    public function with($condition, ...$params)
     {
         return $this->andWith($condition, ...$params);
     }
-
     /**
      * Add a condition that will be applied with a logical "AND".
      */
-    public function andWith(string $condition, ...$params): self
+    public function andWith($condition, ...$params)
     {
         return $this->addCondition('AND', $condition, $params);
     }
-
     /**
      * Add a condition that will be applied with a logical "OR".
      */
-    public function orWith(string $condition, ...$params): self
+    public function orWith($condition, ...$params)
     {
         return $this->addCondition('OR', $condition, $params);
     }
-
     /**
      * Alias for andGroup().
      */
-    public function group(): Conditions
+    public function group()
     {
         return $this->andGroup();
     }
-
     /**
      * Start a new grouping that will be applied with a logical "AND".
      *
      * Exit the group with end().
      */
-    public function andGroup(): Conditions
+    public function andGroup()
     {
         return $this->addConditionGroup('AND');
     }
-
     /**
      * Start a new grouping that will be applied with a logical "OR".
      *
      * Exit the group with end().
      */
-    public function orGroup(): Conditions
+    public function orGroup()
     {
         return $this->addConditionGroup('OR');
     }
-
     /**
      * Exit the current grouping and return the parent statement.
      *
@@ -78,65 +69,57 @@ class Conditions implements Statement
      *
      * @return Conditions
      */
-    public function end(): Conditions
+    public function end()
     {
         return $this->parent ?: $this;
     }
-
     // Statement
-    public function sql(Identifier $identifier = null): string
+    public function sql(Identifier $identifier = null)
     {
         $identifier = $this->getDefaultIdentifier($identifier);
         $expression = \array_reduce($this->parts, $this->sqlReducer(), '');
         return $identifier->escapeExpression($expression);
     }
-
     // Statement
-    public function params(): array
+    public function params()
     {
         return \array_reduce($this->parts, $this->paramReducer(), []);
     }
-
     /**
      * @var array
      */
     protected $parts = [];
-
     /**
      * @var Conditions
      */
     protected $parent;
-
     protected function __construct(Conditions $parent = null)
     {
         $this->parent = $parent;
     }
-
     /**
      * Add a condition to the current conditions, expanding IN values.
      */
-    protected function addCondition(string $type, string $condition, array $params): self
+    protected function addCondition($type, $condition, array $params)
     {
         $this->parts[] = compact('type', 'condition', 'params');
         return $this;
     }
-
     /**
      * Add a condition group to the current conditions.
      */
-    protected function addConditionGroup(string $type): Conditions
+    protected function addConditionGroup($type)
     {
         $condition = new static($this);
         $this->parts[] = compact('type', 'condition');
         return $condition;
     }
-
     /**
      * Get a function to reduce condition parts to a SQL string.
      */
-    protected function sqlReducer(): callable
+    protected function sqlReducer()
     {
-        return function (string $sql, array $part): string {
+        return function ($sql, array $part) {
             if ($this->isCondition($part['condition'])) {
                 // (...)
                 $statement = "({$part['condition']->sql()})";
@@ -146,19 +129,17 @@ class Conditions implements Statement
             }
             if ($sql) {
                 // AND ...
-                $statement = "{$part['type']} $statement";
+                $statement = "{$part['type']} {$statement}";
             }
             return \trim($sql . ' ' . $statement);
         };
     }
-
-
     /**
      * Get a function to reduce parameters to a single list.
      */
-    protected function paramReducer(): callable
+    protected function paramReducer()
     {
-        return function (array $params, array $part): array {
+        return function (array $params, array $part) {
             if ($this->isCondition($part['condition'])) {
                 // Conditions have a parameter list already
                 return \array_merge($params, $part['condition']->params());
@@ -167,13 +148,12 @@ class Conditions implements Statement
             return \array_merge($params, ...\array_map($this->paramLister(), $part['params']));
         };
     }
-
     /**
      * Convert all parameters to an array for flattening.
      */
-    protected function paramLister(): callable
+    protected function paramLister()
     {
-        return function ($param): array {
+        return function ($param) {
             if ($this->isStatement($param)) {
                 // Statements have a parameter list already
                 return $param->params();
@@ -182,33 +162,30 @@ class Conditions implements Statement
             return [$param];
         };
     }
-
     /**
      * Check if a condition is a sub-condition.
      */
-    protected function isCondition($condition): bool
+    protected function isCondition($condition)
     {
         if (\is_object($condition) === false) {
             return false;
         }
         return $condition instanceof Conditions;
     }
-
     /**
      * Check if a parameter is a statement.
      */
-    protected function isStatement($param): bool
+    protected function isStatement($param)
     {
         if (\is_object($param) === false) {
             return false;
         }
         return $param instanceof Statement;
     }
-
     /**
      * Check if any parameter is a statement.
      */
-    protected function hasStatementParam(array $params): bool
+    protected function hasStatementParam(array $params)
     {
         foreach ($params as $param) {
             if ($this->isStatement($param)) {
@@ -217,18 +194,17 @@ class Conditions implements Statement
         }
         return false;
     }
-
     /**
      * Replacement statement parameters with SQL expression.
      */
-    protected function replaceStatementParams(string $statement, array $params): string
+    protected function replaceStatementParams($statement, array $params)
     {
         if ($this->hasStatementParam($params) === false) {
             return $statement;
         }
         // Maintain an offset position, as preg_replace_callback() does not provide one
         $index = 0;
-        return \preg_replace_callback('/\?/', function ($matches) use (&$index, $params) {
+        return \preg_replace_callback('/\\?/', function ($matches) use(&$index, $params) {
             try {
                 if ($this->isStatement($params[$index])) {
                     // Replace any statement placeholder with the generated SQL

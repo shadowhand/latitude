@@ -1,17 +1,12 @@
 <?php
-declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 class IdentifierException extends \InvalidArgumentException
 {
     const INVALID_IDENTIFIER = 1;
-
-    public static function invalidIdentifier(string $identifier): IdentifierException
+    public static function invalidIdentifier($identifier)
     {
-        return new static(
-            "Invalid SQL identifier: $identifier",
-            self::INVALID_IDENTIFIER
-        );
+        return new static("Invalid SQL identifier: {$identifier}", self::INVALID_IDENTIFIER);
     }
 }
