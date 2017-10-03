@@ -5,7 +5,7 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
-class SelectQuery implements Statement
+class SelectQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
     use Traits\CanLimit;
@@ -39,48 +39,48 @@ class SelectQuery implements Statement
         return $this;
     }
 
-    public function join(string $table, Conditions $conditions, string $type = ''): self
+    public function join($table, Conditions $conditions, string $type = ''): self
     {
-        $this->join[] = [\strtoupper($type), $table, $conditions];
+        $this->join[] = [\strtoupper($type), reference($table), $conditions];
         return $this;
     }
 
-    public function innerJoin(string $table, Conditions $conditions): self
+    public function innerJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'INNER');
     }
 
-    public function outerJoin(string $table, Conditions $conditions): self
+    public function outerJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'OUTER');
     }
 
-    public function leftJoin(string $table, Conditions $conditions): self
+    public function leftJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'LEFT');
     }
 
-    public function leftOuterJoin(string $table, Conditions $conditions): self
+    public function leftOuterJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'LEFT OUTER');
     }
 
-    public function rightJoin(string $table, Conditions $conditions): self
+    public function rightJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'RIGHT');
     }
 
-    public function rightOuterJoin(string $table, Conditions $conditions): self
+    public function rightOuterJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'RIGHT OUTER');
     }
 
-    public function fullJoin(string $table, Conditions $conditions): self
+    public function fullJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'FULL');
     }
 
-    public function fullOuterJoin(string $table, Conditions $conditions): self
+    public function fullOuterJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'FULL OUTER');
     }
@@ -238,7 +238,7 @@ class SelectQuery implements Statement
             yield \trim(sprintf(
                 '%s JOIN %s ON %s',
                 $join[0],
-                $identifier->escapeAlias($join[1]),
+                $join[1]->sql($identifier),
                 $join[2]->sql($identifier)
             ));
         }
@@ -251,6 +251,7 @@ class SelectQuery implements Statement
     {
         $params = [];
         foreach ($this->join as $join) {
+            $params[] = $join[1]->params();
             $params[] = $join[2]->params();
         }
 

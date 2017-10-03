@@ -47,6 +47,7 @@ Helpers
 
 - [Factory](#factory)
 - [Conditions](#conditions)
+- [Aliases](#aliases)
 - [Expressions](#expressions)
 - [Identifier Escaping](#identifier-escaping)
 - [Booleans and Nulls](#booleans-and-nulls)
@@ -393,6 +394,38 @@ echo $select->sql();
 print_r($select->params());
 // ['2017-01-01', '2017-12-31']
 ```
+
+### Aliases
+
+The builder includes a wrapper for SQL aliases which can be used for column names
+in `SELECT` statements:
+
+```php
+use Latitude\QueryBuilder\Alias as a;
+
+$select = SelectQuery::make(
+        a::make('id', 'user_id')
+    )
+    ->from('users');
+
+echo $select->sql();
+// SELECT id AS user_id FROM users
+```
+
+**Note:** Aliases are automatically generated when using `'column alias'` as
+a column name. The same is true for `'table alias'` as a table alias.
+
+Aliases can also be used for complete queries:
+
+```php
+$select = SelectQuery::make('id')->from('users');
+$alias = a::make($select, 'u');
+
+echo $alias->sql();
+// (SELECT id FROM users) AS u
+```
+
+This is generally used to create a temporary table for a `JOIN` expression.
 
 ### Expressions
 

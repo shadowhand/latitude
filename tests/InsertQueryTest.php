@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class InsertQueryTest extends TestCase
 {
+    public function testQuery()
+    {
+        $this->assertInstanceOf(Query::class, InsertQuery::make('users'));
+    }
+
     public function testInsert()
     {
         $table = 'users';

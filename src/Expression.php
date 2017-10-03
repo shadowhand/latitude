@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-class Expression
+class Expression implements Statement
 {
     use Traits\CanUseDefaultIdentifier;
+    use Traits\HasNoParameters;
 
     /**
      * Create a new expression.
@@ -15,10 +16,8 @@ class Expression
         return new static($template, $identifiers);
     }
 
-    /**
-     * Get the SQL for the expression.
-     */
-    public function sql(Identifier $identifier = null)
+    // Statement
+    public function sql(Identifier $identifier = null): string
     {
         $identifier = $this->getDefaultIdentifier($identifier);
 
