@@ -24,4 +24,12 @@ class ValueListTest extends TestCase
         $this->assertSame('(TRUE, FALSE, NULL, NOW())', $values->sql());
         $this->assertSame([], $values->params());
     }
+
+    public function testMap()
+    {
+        $values = ValueList::make(['a' => 'a', 'b' => 'b', 'c' => 'c']);
+
+        $this->assertSame('(?, ?, ?)', $values->sql());
+        $this->assertSame(['a', 'b', 'c'], $values->params());
+    }
 }
