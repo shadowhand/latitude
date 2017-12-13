@@ -19,7 +19,7 @@ class ValueList implements
     public static function make(array $params): ValueList
     {
         $values = new static($params);
-        $values->params = $params;
+        $values->params = array_values($params);
         return $values;
     }
 
