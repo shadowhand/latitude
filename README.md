@@ -19,13 +19,6 @@ Latitude is heavily influenced by the design of [Aura.SqlQuery](https://github.c
 composer require latitude/latitude
 ```
 
-If you want to use Latitude and do not have access to PHP7, PHP 5.6 compatible
-versions are tagged in `0.x`:
-
-```
-composer require latitude/latitude '^0.1'
-```
-
 ## Usage
 
 Latitude includes both a query builder and a powerful set of escaping helpers.
