@@ -9,6 +9,10 @@ use Latitude\QueryBuilder\Traits\CanLimit;
 use Latitude\QueryBuilder\Traits\CanOrderBy;
 use Latitude\QueryBuilder\UpdateQuery as Query;
 
+/**
+ * Class UpdateQuery
+ * @package Latitude\QueryBuilder\MySQL
+ */
 class UpdateQuery extends Query
 {
     use CanConvertIteratorToString;

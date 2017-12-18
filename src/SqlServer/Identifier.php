@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder\SqlServer;
 
 use Latitude\QueryBuilder\Identifier as Base;
 
+/**
+ * Class Identifier
+ * @package Latitude\QueryBuilder\SqlServer
+ */
 class Identifier extends Base
 {
     protected function surround(string $identifier): string

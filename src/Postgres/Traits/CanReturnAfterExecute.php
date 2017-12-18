@@ -6,12 +6,17 @@ namespace Latitude\QueryBuilder\Postgres\Traits;
 use Latitude\QueryBuilder\Identifier;
 use Latitude\QueryBuilder\Traits\CanUseDefaultIdentifier;
 
+/**
+ * Trait CanReturnAfterExecute
+ * @package Latitude\QueryBuilder\Postgres\Traits
+ */
 trait CanReturnAfterExecute
 {
     use CanUseDefaultIdentifier;
 
     /**
      * Set the columns to return after insert.
+     * @return self
      */
     public function returning(array $columns): self
     {
@@ -20,6 +25,10 @@ trait CanReturnAfterExecute
     }
 
     // Statement
+    /**
+     * @param Identifier|null $identifier
+     * @return string
+     */
     public function sql(Identifier $identifier = null): string
     {
         $sql = parent::sql($identifier);

@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class Expression
+ * @package Latitude\QueryBuilder
+ */
 class Expression implements Statement
 {
     use Traits\CanUseDefaultIdentifier;

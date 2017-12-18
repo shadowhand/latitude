@@ -21,6 +21,7 @@ before_script:
 
 script:
   - composer test
+  - composer static-analyze
 
 after_script:
   - bash -c '[[ -f "build/logs/clover.xml" ]] && wget https://scrutinizer-ci.com/ocular.phar'

@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class Reference
+ * @package Latitude\QueryBuilder
+ */
 class Reference implements Statement
 {
     use Traits\CanUseDefaultIdentifier;
@@ -10,6 +14,9 @@ class Reference implements Statement
 
     /**
      * Create a new table or column reference.
+     *
+     * @param string $reference
+     * @return static
      */
     public static function make(string $reference)
     {
@@ -17,6 +24,11 @@ class Reference implements Statement
     }
 
     // Statement
+    /**
+     * @param Identifier|null $identifier
+     * @return string
+     * @throws \TypeError
+     */
     public function sql(Identifier $identifier = null): string
     {
         $identifier = $this->getDefaultIdentifier($identifier);

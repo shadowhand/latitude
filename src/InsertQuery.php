@@ -6,6 +6,10 @@ namespace Latitude\QueryBuilder;
 use InvalidArgumentException;
 use Iterator;
 
+/**
+ * Class InsertQuery
+ * @package Latitude\QueryBuilder
+ */
 class InsertQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
@@ -94,7 +98,7 @@ class InsertQuery implements Query
     /**
      * @var string
      */
-    protected $table;
+    protected $table = '';
 
     /**
      * @var array

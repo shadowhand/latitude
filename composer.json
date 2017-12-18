@@ -16,7 +16,8 @@
     "require-dev": {
         "eloquent/liberator": "^2.0",
         "phpunit/phpunit": "^5.7",
-        "spatie/7to5": "^1.0"
+        "spatie/7to5": "^1.0",
+        "vimeo/psalm": "^0.3"
     },
     "autoload": {
         "files": [
@@ -39,6 +40,7 @@
             "rm -rf tests && mv tests-php5 tests",
             "sed -i '' -e 's/=7.0/=5.6/' composer.json"
         ],
+        "static-analyze": "psalm",
         "test": "phpunit"
     }
 }

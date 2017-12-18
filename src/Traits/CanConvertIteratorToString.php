@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder\Traits;
 
 use Iterator;
 
+/**
+ * Trait CanConvertIteratorToString
+ * @package Latitude\QueryBuilder\Traits
+ */
 trait CanConvertIteratorToString
 {
     /**

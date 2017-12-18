@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
+/**
+ * Class UpdateQuery
+ * @package Latitude\QueryBuilder
+ */
 class UpdateQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
@@ -78,7 +82,7 @@ class UpdateQuery implements Query
     /**
      * @var string
      */
-    protected $table;
+    protected $table = '';
 
     /**
      * @var array
@@ -93,7 +97,7 @@ class UpdateQuery implements Query
     /**
      * @var Conditions
      */
-    protected $where;
+    protected $where = null;
 
     /**
      * Generate a column and placeholder pair.

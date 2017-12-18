@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder\SqlServer;
 
 use Latitude\QueryBuilder\LikeValue as Base;
 
+/**
+ * Class LikeValue
+ * @package Latitude\QueryBuilder\SqlServer
+ */
 abstract class LikeValue extends Base
 {
     public static function escape(string $value): string

@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class QueryFactory
+ * @package Latitude\QueryBuilder
+ */
 class QueryFactory
 {
     const ENGINES = [
@@ -11,6 +15,12 @@ class QueryFactory
         'sqlsrv' => 'SqlServer',
     ];
 
+    /**
+     * QueryFactory constructor.
+     *
+     * @param string|null $engine
+     * @param bool $setIdentifier
+     */
     public function __construct(string $engine = null, bool $setIdentifier = true)
     {
         if ($engine && \array_key_exists($engine, static::ENGINES)) {
@@ -26,6 +36,9 @@ class QueryFactory
 
     /**
      * Create a new SELECT query.
+     *
+     * @param array ...$params
+     * @return SelectQuery
      */
     public function select(...$params): SelectQuery
     {
@@ -34,6 +47,9 @@ class QueryFactory
 
     /**
      * Create a new INSERT query.
+     *
+     * @param array ...$params
+     * @return InsertQuery
      */
     public function insert(...$params): InsertQuery
     {
@@ -46,6 +62,9 @@ class QueryFactory
 
     /**
      * Create a new UPDATE query.
+     *
+     * @param array ...$params
+     * @return UpdateQuery
      */
     public function update(...$params): UpdateQuery
     {
@@ -62,6 +81,9 @@ class QueryFactory
 
     /**
      * Create a new DELETE query.
+     *
+     * @param array ...$params
+     * @return DeleteQuery
      */
     public function delete(...$params): DeleteQuery
     {
@@ -78,6 +100,8 @@ class QueryFactory
 
     /**
      * Create an identifier instance.
+     *
+     * @return Identifier
      */
     public function identifier(): Identifier
     {
@@ -94,6 +118,8 @@ class QueryFactory
 
     /**
      * Is the engine MySQL?
+     *
+     * @return bool
      */
     public function isMySQL(): bool
     {
@@ -102,6 +128,8 @@ class QueryFactory
 
     /**
      * Is the engine Postgres?
+     *
+     * @return bool
      */
     public function isPostgres(): bool
     {
@@ -110,6 +138,8 @@ class QueryFactory
 
     /**
      * Is the engine SQL Server?
+     *
+     * @return bool
      */
     public function isSqlServer(): bool
     {
@@ -119,10 +149,11 @@ class QueryFactory
     /**
      * @var string
      */
-    protected $engine;
+    protected $engine = '';
 
     /**
      * Set the default identifier for the engine.
+     * @return void
      */
     protected function setDefaultIdentifier()
     {

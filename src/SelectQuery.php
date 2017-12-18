@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
+/**
+ * Class SelectQuery
+ * @package Latitude\QueryBuilder
+ */
 class SelectQuery implements Query
 {
     use Traits\CanConvertIteratorToString;
@@ -12,6 +16,10 @@ class SelectQuery implements Query
     use Traits\CanOrderBy;
     use Traits\CanUseDefaultIdentifier;
 
+    /**
+     * @param array ...$columns
+     * @return SelectQuery
+     */
     public static function make(...$columns): SelectQuery
     {
         $query = new static();
@@ -21,88 +29,171 @@ class SelectQuery implements Query
         return $query;
     }
 
+    /**
+     * @param bool $distinct
+     * @return self
+     */
     public function distinct(bool $distinct = true): self
     {
         $this->distinct = $distinct;
         return $this;
     }
 
+    /**
+     * @param array ...$columns
+     * @return self
+     */
     public function columns(...$columns): self
     {
         $this->columns = $columns;
         return $this;
     }
 
+    /**
+     * @param array<int, string> $tables
+     * @return self
+     */
     public function from(string ...$tables): self
     {
         $this->from = $tables;
         return $this;
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @param string $type
+     * @return self
+     * @throws \TypeError
+     */
     public function join($table, Conditions $conditions, string $type = ''): self
     {
         $this->join[] = [\strtoupper($type), reference($table), $conditions];
         return $this;
     }
 
+    /**
+     * @param $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function innerJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'INNER');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function outerJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'OUTER');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function leftJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'LEFT');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function leftOuterJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'LEFT OUTER');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function rightJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'RIGHT');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function rightOuterJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'RIGHT OUTER');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function fullJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'FULL');
     }
 
+    /**
+     * @param string|Statement $table
+     * @param Conditions $conditions
+     * @return self
+     * @throws \TypeError
+     */
     public function fullOuterJoin($table, Conditions $conditions): self
     {
         return $this->join($table, $conditions, 'FULL OUTER');
     }
 
+    /**
+     * @param Conditions $where
+     * @return self
+     */
     public function where(Conditions $where): self
     {
         $this->where = $where;
         return $this;
     }
 
+    /**
+     * @param array ...$columns
+     * @return self
+     */
     public function groupBy(...$columns): self
     {
         $this->groupBy = $columns;
         return $this;
     }
 
+    /**
+     * @param Conditions $having
+     * @return self
+     */
     public function having(Conditions $having): self
     {
         $this->having = $having;
         return $this;
     }
 
+    /**
+     * @param int|null $offset
+     * @return self
+     */
     public function offset(int $offset = null): self
     {
         $this->offset = $offset;
@@ -110,6 +201,11 @@ class SelectQuery implements Query
     }
 
     // Statement
+
+    /**
+     * @param Identifier|null $identifier
+     * @return string
+     */
     public function sql(Identifier $identifier = null): string
     {
         $identifier = $this->getDefaultIdentifier($identifier);
@@ -174,6 +270,9 @@ class SelectQuery implements Query
     }
 
     // Statement
+    /**
+     * @return array
+     */
     public function params(): array
     {
         $params = [];
@@ -212,25 +311,28 @@ class SelectQuery implements Query
     /**
      * @var Conditions
      */
-    protected $where;
+    protected $where = null;
 
     /**
      * @var array
      */
-    protected $groupBy;
+    protected $groupBy = [];
 
     /**
      * @var Conditions
      */
-    protected $having;
+    protected $having = null;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $offset;
+    protected $offset = null;
 
     /**
      * Generate a list of JOIN statements.
+     *
+     * @param Identifier $identifier
+     * @return Iterator
      */
     protected function generateJoins(Identifier $identifier): Iterator
     {
@@ -246,6 +348,8 @@ class SelectQuery implements Query
 
     /**
      * Get a flattened array of join parameters.
+     *
+     * @return array
      */
     protected function joinParams(): array
     {

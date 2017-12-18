@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder;
 
 use Iterator;
 
+/**
+ * Class DeleteQuery
+ * @package Latitude\QueryBuilder
+ */
 class DeleteQuery implements Query
 {
     use Traits\CanUseDefaultIdentifier;
@@ -62,10 +66,10 @@ class DeleteQuery implements Query
     /**
      * @var string
      */
-    protected $table;
+    protected $table = '';
 
     /**
      * @var Conditions
      */
-    protected $where;
+    protected $where = null;
 }

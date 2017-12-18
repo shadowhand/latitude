@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class IdentifierException
+ * @package Latitude\QueryBuilder
+ */
 class IdentifierException extends \InvalidArgumentException
 {
     const INVALID_IDENTIFIER = 1;

@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class LikeValue
+ * @package Latitude\QueryBuilder
+ */
 abstract class LikeValue
 {
     /**

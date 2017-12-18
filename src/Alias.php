@@ -3,12 +3,19 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class Alias
+ * @package Latitude\QueryBuilder
+ */
 class Alias implements Statement
 {
     /**
      * Create a new alias.
      *
      * @param Statement|string $statement
+     * @param string $alias
+     * @return Alias
+     * @throws \TypeError
      */
     public static function make($statement, string $alias): Alias
     {
@@ -16,6 +23,10 @@ class Alias implements Statement
     }
 
     // Statement
+    /**
+     * @param Identifier|null $identifier
+     * @return string
+     */
     public function sql(Identifier $identifier = null): string
     {
         return sprintf(
@@ -26,6 +37,9 @@ class Alias implements Statement
     }
 
     // Statement
+    /**
+     * @return array
+     */
     public function params(): array
     {
         return $this->statement->params();

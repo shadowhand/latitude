@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder;
 
 use RuntimeException;
 
+/**
+ * Class QueryBuilderException
+ * @package Latitude\QueryBuilder
+ */
 class QueryBuilderException extends RuntimeException
 {
     const UPDATE_REQUIRES_WHERE = 1;
