@@ -16,7 +16,7 @@
     "require-dev": {
         "eloquent/liberator": "^2.0",
         "spatie/7to5": "^1.0",
-        "vimeo/psalm": "^0.3"
+        "vimeo/psalm": "^0.3",
         "phpstan/phpstan": "^0.9.1",
         "phpunit/phpunit": "^6.0"
     },
