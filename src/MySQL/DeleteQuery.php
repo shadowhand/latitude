@@ -7,6 +7,10 @@ use Latitude\QueryBuilder\Traits\CanConvertIteratorToString;
 use Latitude\QueryBuilder\Traits\CanLimit;
 use Latitude\QueryBuilder\Traits\CanOrderBy;
 
+/**
+ * Class DeleteQuery
+ * @package Latitude\QueryBuilder\MySQL
+ */
 class DeleteQuery extends Query
 {
     use CanConvertIteratorToString;

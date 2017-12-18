@@ -6,6 +6,10 @@ namespace Latitude\QueryBuilder;
 use Countable;
 use Iterator;
 
+/**
+ * Class ValueList
+ * @package Latitude\QueryBuilder
+ */
 class ValueList implements
     Countable,
     Statement
@@ -15,15 +19,19 @@ class ValueList implements
 
     /**
      * Create a new value list.
+     * @psalm-suppress TooManyArguments
      */
     public static function make(array $params): ValueList
     {
-        $values = new static($params);
+        $values = new static();
         $values->params = array_values($params);
         return $values;
     }
 
     // Countable
+    /**
+     * @return int
+     */
     public function count()
     {
         return \count($this->params);
@@ -44,7 +52,7 @@ class ValueList implements
     /**
      * @var array
      */
-    protected $params;
+    protected $params = [];
 
     /**
      * Generate a placeholder.

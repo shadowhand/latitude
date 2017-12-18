@@ -103,10 +103,14 @@ class Conditions implements Statement
     protected $parts = [];
 
     /**
-     * @var Conditions
+     * @var Conditions|null
      */
-    protected $parent;
+    protected $parent = null;
 
+    /**
+     * Conditions constructor.
+     * @param Conditions|null $parent
+     */
     protected function __construct(Conditions $parent = null)
     {
         $this->parent = $parent;
@@ -114,6 +118,7 @@ class Conditions implements Statement
 
     /**
      * Add a condition to the current conditions, expanding IN values.
+     * @return self
      */
     protected function addCondition(string $type, string $condition, array $params): self
     {
@@ -123,6 +128,7 @@ class Conditions implements Statement
 
     /**
      * Add a condition group to the current conditions.
+     * @return Conditions
      */
     protected function addConditionGroup(string $type): Conditions
     {
@@ -133,6 +139,7 @@ class Conditions implements Statement
 
     /**
      * Get a function to reduce condition parts to a SQL string.
+     * @return callable
      */
     protected function sqlReducer(): callable
     {
@@ -155,6 +162,7 @@ class Conditions implements Statement
 
     /**
      * Get a function to reduce parameters to a single list.
+     * @return callable
      */
     protected function paramReducer(): callable
     {
@@ -173,18 +181,27 @@ class Conditions implements Statement
      */
     protected function paramLister(): callable
     {
-        return function ($param): array {
-            if ($this->isStatement($param)) {
-                // Statements have a parameter list already
-                return $param->params();
-            }
-            // Otherwise convert to a list
-            return [$param];
-        };
+        return
+            /**
+             * @param mixed $param
+             * @return array
+             */
+            function ($param): array {
+                if ($this->isStatement($param)) {
+                    /** @var Statement $param */
+                    // Statements have a parameter list already
+                    return $param->params();
+                }
+                // Otherwise convert to a list
+                return [$param];
+            };
     }
 
     /**
      * Check if a condition is a sub-condition.
+     *
+     * @param mixed $condition
+     * @return bool
      */
     protected function isCondition($condition): bool
     {
@@ -196,6 +213,9 @@ class Conditions implements Statement
 
     /**
      * Check if a parameter is a statement.
+     *
+     * @param mixed $param
+     * @return bool
      */
     protected function isStatement($param): bool
     {
@@ -228,20 +248,28 @@ class Conditions implements Statement
         }
         // Maintain an offset position, as preg_replace_callback() does not provide one
         $index = 0;
-        return \preg_replace_callback('/\?/', function ($matches) use (&$index, $params) {
-            try {
-                if ($this->isStatement($params[$index])) {
-                    // Replace any statement placeholder with the generated SQL
-                    return $params[$index]->sql();
-                } else {
-                    // And leave all other placeholders intact
-                    return $matches[0];
+        return \preg_replace_callback(
+            '/\?/',
+            /**
+             * @param array<mixed, mixed> $matches
+             * @return string
+             */
+            function (array $matches) use (&$index, $params): string {
+              try {
+                    if ($this->isStatement($params[$index])) {
+                        // Replace any statement placeholder with the generated SQL
+                        return $params[$index]->sql();
+                    } else {
+                        // And leave all other placeholders intact
+                        return $matches[0];
+                    }
+                } finally {
+                    // This funky usage of finally allows us to increment the offset
+                    // after all other code in the block has been executed.
+                    $index++;
                 }
-            } finally {
-                // This funky usage of finally allows us to increment the offset
-                // after all other code in the block has been executed.
-                $index++;
-            }
-        }, $statement);
+            },
+            $statement
+        );
     }
 }

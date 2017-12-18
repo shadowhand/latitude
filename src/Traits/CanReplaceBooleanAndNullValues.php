@@ -5,6 +5,10 @@ namespace Latitude\QueryBuilder\Traits;
 
 use Latitude\QueryBuilder\Expression;
 
+/**
+ * Trait CanReplaceBooleanAndNullValues
+ * @package Latitude\QueryBuilder\Traits
+ */
 trait CanReplaceBooleanAndNullValues
 {
     /**
@@ -32,6 +36,8 @@ trait CanReplaceBooleanAndNullValues
 
     /**
      * Determine if a value can be represented by a placeholder.
+     * @param mixed $value
+     * @return bool
      */
     protected function isPlaceholderValue($value): bool
     {
@@ -52,9 +58,15 @@ trait CanReplaceBooleanAndNullValues
     protected function placeholderParams(): array
     {
         return \array_values(
-            \array_filter($this->params, function ($value) {
-                return $this->isPlaceholderValue($value);
-            })
+            \array_filter($this->params,
+                /**
+                 * @param mixed $value
+                 * @return bool
+                 */
+                function ($value): bool {
+                    return $this->isPlaceholderValue($value);
+                }
+            )
         );
     }
 }

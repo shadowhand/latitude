@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+/**
+ * Class Identifier
+ * @package Latitude\QueryBuilder
+ */
 class Identifier
 {
     const IDENTIFIER_REGEX = '/^[a-zA-Z](?:[a-zA-Z0-9_]+)?$/';
@@ -15,6 +19,9 @@ class Identifier
 
     /**
      * Set the default identifier instance.
+     *
+     * @param Identifier $default
+     * @return void
      */
     public static function setDefault(Identifier $default)
     {
@@ -52,11 +59,18 @@ class Identifier
 
     /**
      * Escape a (possibly) qualified identifier.
+     *
+     * @param Expression|string $identifier
+     * @return string
+     * @throws \TypeError
      */
     public function escapeQualified($identifier): string
     {
         if ($this->isExpression($identifier)) {
+            /** @var Expression $identifier */
             return $identifier->sql($this);
+        } elseif (!\is_string($identifier)) {
+            throw new \TypeError('Expected an Expression or a string.');
         }
 
         if (\strpos($identifier, '.') === false) {
@@ -69,11 +83,18 @@ class Identifier
 
     /**
      * Escape a identifier alias.
+     *
+     * @param Expression|string $alias
+     * @return string
+     * @throws \TypeError
      */
     public function escapeAlias($alias): string
     {
         if ($this->isExpression($alias)) {
+            /** @var Expression $alias */
             return $alias->sql($this);
+        } elseif (!\is_string($alias)) {
+            throw new \TypeError('Expected an Expression or a string.');
         }
 
         $parts = \preg_split('/ (?:AS )?/i', $alias);
@@ -131,6 +152,9 @@ class Identifier
 
     /**
      * Check if the identifier is an identifier expression.
+     *
+     * @param mixed $identifier
+     * @return bool
      */
     final protected function isExpression($identifier): bool
     {
@@ -140,6 +164,8 @@ class Identifier
     /**
      * Ensure that identifiers match SQL standard.
      *
+     * @param string $identifier
+     * @return void
      * @throws IdentifierException
      *  If the identifier is not valid.
      */

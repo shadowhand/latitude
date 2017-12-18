@@ -15,6 +15,8 @@
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
+        "spatie/7to5": "^1.0",
+        "vimeo/psalm": "^0.3",
         "phpstan/phpstan": "^0.9.1",
         "phpunit/phpunit": "^6.0"
     },
@@ -32,10 +34,19 @@
         }
     },
     "scripts": {
+        "php5ize": [
+            "php7to5 convert --overwrite --copy-all -- src/ src-php5/",
+            "php7to5 convert --overwrite --copy-all -- tests/ tests-php5/",
+            "rm -rf src && mv src-php5 src",
+            "rm -rf tests && mv tests-php5 tests",
+            "sed -i '' -e 's/=7.0/=5.6/' composer.json"
+        ],
+        "test-psalm": "psalm",
         "test-stan": "phpstan analyse --level=1 --no-progress src tests",
         "test-unit": "phpunit",
         "test": [
             "@test-stan",
+            "@test-psalm",
             "@test-unit"
         ]
     },
