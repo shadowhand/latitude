@@ -15,9 +15,10 @@
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
-        "phpunit/phpunit": "^5.7",
         "spatie/7to5": "^1.0",
         "vimeo/psalm": "^0.3"
+        "phpstan/phpstan": "^0.9.1",
+        "phpunit/phpunit": "^6.0"
     },
     "autoload": {
         "files": [
@@ -40,7 +41,16 @@
             "rm -rf tests && mv tests-php5 tests",
             "sed -i '' -e 's/=7.0/=5.6/' composer.json"
         ],
-        "static-analyze": "psalm",
-        "test": "phpunit"
+        "test-psalm": "psalm",
+        "test-stan": "phpstan analyse --level=1 --no-progress src tests",
+        "test-unit": "phpunit",
+        "test": [
+            "@test-stan",
+            "@test-psalm",
+            "@test-unit"
+        ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }
