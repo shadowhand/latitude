@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<psalm
+    name="Static Analysis"
+    stopOnFirstError="false"
+    useDocblockTypes="true"
+    totallyTyped="true"
+>
+    <projectFiles>
+        <directory name="src" />
+    </projectFiles>
+
+    <issueHandlers>
+        <MixedArgument errorLevel="info" />
+        <MixedArrayAccess errorLevel="info" />
+        <MixedAssignment errorLevel="info" />
+        <MixedInferredReturnType errorLevel="info" />
+        <MixedMethodCall errorLevel="info" />
+    </issueHandlers>
+</psalm>
