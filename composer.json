@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
+        "phpstan/phpstan": "^0.9.1",
         "phpunit/phpunit": "^6.0"
     },
     "autoload": {
@@ -31,6 +32,14 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test-stan": "phpstan analyse --level=1 --no-progress src tests",
+        "test-unit": "phpunit",
+        "test": [
+            "@test-stan",
+            "@test-unit"
+        ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }
