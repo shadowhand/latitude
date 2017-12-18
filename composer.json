@@ -16,7 +16,8 @@
     "require-dev": {
         "eloquent/liberator": "^2.0",
         "phpstan/phpstan": "^0.9.1",
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^6.0",
+        "vimeo/psalm": "dev-master"
     },
     "autoload": {
         "files": [

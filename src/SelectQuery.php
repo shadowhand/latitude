@@ -225,7 +225,7 @@ class SelectQuery implements Query
     protected $having;
 
     /**
-     * @var int
+     * @var ?int
      */
     protected $offset;
 
