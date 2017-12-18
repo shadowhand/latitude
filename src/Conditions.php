@@ -103,7 +103,7 @@ class Conditions implements Statement
     protected $parts = [];
 
     /**
-     * @var Conditions
+     * @var ?Conditions
      */
     protected $parent;
 

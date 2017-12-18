@@ -18,7 +18,7 @@ class ValueList implements
      */
     public static function make(array $params): ValueList
     {
-        $values = new static($params);
+        $values = new static();
         $values->params = array_values($params);
         return $values;
     }

@@ -17,7 +17,7 @@ trait CanLimit
     }
 
     /**
-     * @var int
+     * @var ?int
      */
     protected $limit;
 }
