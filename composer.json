@@ -38,7 +38,6 @@
         "test-unit": "phpunit",
         "test": [
             "@test-stan",
-            "@test-psalm",
             "@test-unit"
         ]
     },
