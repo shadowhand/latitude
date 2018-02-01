@@ -17,7 +17,7 @@
         "eloquent/liberator": "^2.0",
         "phpstan/phpstan": "^0.9.1",
         "phpunit/phpunit": "^6.0",
-        "vimeo/psalm": "^0.3.78"
+        "vimeo/psalm": "^0.3.88"
     },
     "autoload": {
         "files": [
