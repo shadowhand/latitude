@@ -6,6 +6,13 @@ namespace Latitude\QueryBuilder;
 interface EngineInterface
 {
     /**
+     * Create a new SELECT query
+     *
+     * @param string|StatementInterface ...$columns
+     */
+    public function select(...$columns): Query\SelectQuery;
+
+    /**
      * Escape a single identifier
      */
     public function escapeIdentifier(string $identifier): string;

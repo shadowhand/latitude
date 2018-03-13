@@ -34,6 +34,16 @@ class CriteriaTest extends TestCase
         $this->assertParams(['CA', 'US', 'MX'], $expr);
     }
 
+    public function testInQuery()
+    {
+        $expr = field('country')->in(
+            $this->engine->select('country')->distinct()->from('users')
+        );
+
+        $this->assertSql('country IN (SELECT DISTINCT country FROM users)', $expr);
+        $this->assertParams([], $expr);
+    }
+
     public function testEquals()
     {
         $expr = field('id')->eq(11);

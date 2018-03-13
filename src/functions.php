@@ -13,6 +13,24 @@ function alias($field, string $alias): ExpressionInterface
     return express('%s AS %s', identify($field), identify($alias));
 }
 
+function fn(string $function, string $field, string $alias = null): ExpressionInterface
+{
+    return express("$function(%s)", identify($field));
+}
+
+function on(string $left, string $right): CriteriaInterface
+{
+    return criteria('%s = %s', identify($left), identify($right));
+}
+
+function order(string $column, string $direction = null): StatementInterface
+{
+    if (empty($direction)) {
+        return identify($column);
+    }
+    return express(sprintf("%%s %s", strtoupper($direction)), identify($column));
+}
+
 function criteria(string $pattern, ...$replacements): CriteriaInterface
 {
     return new Partial\Criteria(express($pattern, ...$replacements));
