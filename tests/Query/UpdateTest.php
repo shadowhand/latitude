@@ -10,7 +10,7 @@ class UpdateTest extends TestCase
 {
     public function testUpdate()
     {
-        $update = $this->engine
+        $update = $this->factory
             ->update('users');
 
         $this->assertSql('UPDATE users', $update);
@@ -19,7 +19,7 @@ class UpdateTest extends TestCase
 
     public function testSet()
     {
-        $update = $this->engine
+        $update = $this->factory
             ->update('users', [
                 'last_login' => null,
             ]);
@@ -30,7 +30,7 @@ class UpdateTest extends TestCase
 
     public function testWhere()
     {
-        $update = $this->engine
+        $update = $this->factory
             ->update('users', [
                 'username' => 'wonder_woman',
             ])

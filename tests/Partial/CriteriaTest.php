@@ -37,7 +37,7 @@ class CriteriaTest extends TestCase
     public function testInQuery()
     {
         $expr = field('country')->in(
-            $this->engine->select('country')->distinct()->from('users')
+            $this->factory->selectDistinct('country')->from('users')
         );
 
         $this->assertSql('country IN (SELECT DISTINCT country FROM users)', $expr);

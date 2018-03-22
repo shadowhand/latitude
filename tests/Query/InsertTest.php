@@ -8,7 +8,7 @@ class InsertTest extends TestCase
 {
     public function testInsert()
     {
-        $insert = $this->engine
+        $insert = $this->factory
             ->insert('users');
 
         $this->assertSql('INSERT INTO users', $insert);
@@ -17,7 +17,7 @@ class InsertTest extends TestCase
 
     public function testMap()
     {
-        $insert = $this->engine
+        $insert = $this->factory
             ->insert('users', [
                 'id' => 1,
                 'username' => 'admin',
@@ -29,7 +29,7 @@ class InsertTest extends TestCase
 
     public function testMultiple()
     {
-        $insert = $this->engine
+        $insert = $this->factory
             ->insert('users')
             ->columns('id', 'username')
             ->values(2, 'jenny')

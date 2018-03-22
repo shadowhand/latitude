@@ -10,7 +10,7 @@ class UpdateTest extends TestCase
 
     public function testReturning()
     {
-        $update = $this->engine
+        $update = $this->factory
             ->update('users', [
                 'last_login' => null
             ])

@@ -7,9 +7,18 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /** @var EngineInterface */
     protected $engine;
 
+    /** @var QueryFactory */
+    protected $factory;
+
     public function setUp()
     {
-        $this->engine = new Engine\BasicEngine();
+        $this->engine = $this->getEngine();
+        $this->factory = new QueryFactory($this->engine);
+    }
+
+    protected function getEngine(): EngineInterface
+    {
+        return new Engine\BasicEngine();
     }
 
     public function assertSql(string $sql, StatementInterface $statement)

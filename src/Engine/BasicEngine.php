@@ -9,44 +9,24 @@ use Latitude\QueryBuilder\StatementInterface;
 
 class BasicEngine implements EngineInterface
 {
-    public function select(...$columns): Query\SelectQuery
+    public function makeSelect(): Query\SelectQuery
     {
-        $query = new Query\SelectQuery($this);
-        if (empty($columns) === false) {
-            $query = $query->columns(...$columns);
-        }
-        return $query;
+        return new Query\SelectQuery($this);
     }
 
-    public function insert($table, array $map = []): Query\InsertQuery
+    public function makeInsert(): Query\InsertQuery
     {
-        $query = new Query\InsertQuery($this);
-        if (empty($table) === false) {
-            $query = $query->into($table);
-        }
-        if (empty($map) === false) {
-            $query = $query->map($map);
-        }
-        return $query;
+        return new Query\InsertQuery($this);
     }
 
-    public function update($table, array $map = []): Query\UpdateQuery
+    public function makeUpdate(): Query\UpdateQuery
     {
-        $query = new Query\UpdateQuery($this);
-        $query = $query->table($table);
-        if (empty($map) === false) {
-            $query = $query->set($map);
-        }
-        return $query;
+        return new Query\UpdateQuery($this);
     }
 
-    public function delete($table): Query\DeleteQuery
+    public function makeDelete(): Query\DeleteQuery
     {
-        $query = new Query\DeleteQuery($this);
-        if (empty($table) === false) {
-            $query = $query->from($table);
-        }
-        return $query;
+        return new Query\DeleteQuery($this);
     }
 
     public function escapeIdentifier(string $identifier): string

@@ -10,7 +10,7 @@ class DeleteTest extends TestCase
 {
     public function testDelete()
     {
-        $insert = $this->engine
+        $insert = $this->factory
             ->delete('users');
 
         $this->assertSql('DELETE FROM users', $insert);
@@ -19,7 +19,7 @@ class DeleteTest extends TestCase
 
     public function testWhere()
     {
-        $insert = $this->engine
+        $insert = $this->factory
             ->delete('users')
             ->where(field('id')->eq(5));
 

@@ -7,25 +7,13 @@ use Latitude\QueryBuilder\Query;
 
 class PostgresEngine extends CommonEngine
 {
-    public function insert($table, array $map = []): Query\InsertQuery
+    public function makeInsert(): Query\InsertQuery
     {
-        $query = new Query\Postgres\InsertQuery($this);
-        if (empty($table) === false) {
-            $query = $query->into($table);
-        }
-        if (empty($map) === false) {
-            $query = $query->map($map);
-        }
-        return $query;
+        return new Query\Postgres\InsertQuery($this);
     }
 
-    public function update($table, array $map = []): Query\UpdateQuery
+    public function makeUpdate(): Query\UpdateQuery
     {
-        $query = new Query\Postgres\UpdateQuery($this);
-        $query = $query->table($table);
-        if (empty($map) === false) {
-            $query = $query->set($map);
-        }
-        return $query;
+        return new Query\Postgres\UpdateQuery($this);
     }
 }

@@ -2,12 +2,13 @@
 
 namespace Latitude\QueryBuilder\Query\Postgres;
 
-use Latitude\QueryBuilder\Engine\PostgresEngine;
+use Latitude\QueryBuilder\Engine;
+use Latitude\QueryBuilder\EngineInterface;
 
 trait PostgresEngineSetup
 {
-    public function setUp()
+    protected function getEngine(): EngineInterface
     {
-        $this->engine = new PostgresEngine();
+        return new Engine\PostgresEngine();
     }
 }

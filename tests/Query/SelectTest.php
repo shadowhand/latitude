@@ -13,7 +13,7 @@ class SelectTest extends TestCase
 {
     public function testSelect()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select()
             ->from('users');
 
@@ -23,7 +23,7 @@ class SelectTest extends TestCase
 
     public function testDistinct()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select()
             ->distinct();
 
@@ -33,7 +33,7 @@ class SelectTest extends TestCase
 
     public function testColumns()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select('id', 'username')
             ->from('users');
 
@@ -43,7 +43,7 @@ class SelectTest extends TestCase
 
     public function testJoin()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select('u.username', 'r.role', 'c.country')
             ->from(alias('users', 'u'))
             ->join(alias('roles', 'r'), on('u.role_id', 'r.id'))
@@ -62,7 +62,7 @@ class SelectTest extends TestCase
 
     public function testWhere()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select()
             ->from('users')
             ->where(field('id')->eq(1));
@@ -73,7 +73,7 @@ class SelectTest extends TestCase
 
     public function testWhereAnd()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select()
             ->from('users')
             ->andWhere(field('id')->eq(1))
@@ -85,7 +85,7 @@ class SelectTest extends TestCase
 
     public function testWhereOr()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select()
             ->from('countries')
             ->orWhere(field('country')->eq('JP'))
@@ -97,7 +97,7 @@ class SelectTest extends TestCase
 
     public function testGroupBy()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select(
                 alias(fn('COUNT', 'id'), 'total')
             )
@@ -116,7 +116,7 @@ class SelectTest extends TestCase
 
     public function testHaving()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select(
                 'department',
                 alias($sum = fn('SUM', 'salary'), 'total')
@@ -138,7 +138,7 @@ class SelectTest extends TestCase
 
     public function testOrderBy()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select()
             ->from('users')
             ->orderBy('birthday');
@@ -150,7 +150,7 @@ class SelectTest extends TestCase
 
     public function testOrderByDirection()
     {
-        $select = $this->engine
+        $select = $this->factory
             ->select(
                 'u.id',
                 'u.username',
@@ -176,8 +176,8 @@ class SelectTest extends TestCase
 
     public function testUnion()
     {
-        $a = $this->engine->select('supplier_id')->from('suppliers');
-        $b = $this->engine->select('supplier_id')->from('orders');
+        $a = $this->factory->select('supplier_id')->from('suppliers');
+        $b = $this->factory->select('supplier_id')->from('orders');
 
         $union = $a->union($b)->orderBy('supplier_id', 'desc');
 
@@ -194,9 +194,9 @@ class SelectTest extends TestCase
 
     public function testUnionAll()
     {
-        $a = $this->engine->select('first_name', 'last_name')->from('employees');
-        $b = $this->engine->select('first_name', 'last_name')->from('customers');
-        $c = $this->engine->select('first_name', 'last_name')->from('partners');
+        $a = $this->factory->select('first_name', 'last_name')->from('employees');
+        $b = $this->factory->select('first_name', 'last_name')->from('customers');
+        $c = $this->factory->select('first_name', 'last_name')->from('partners');
 
         $union = $a->unionAll($b)->unionAll($c);
 

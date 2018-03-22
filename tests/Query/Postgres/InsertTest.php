@@ -10,7 +10,7 @@ class InsertTest extends TestCase
 
     public function testReturning()
     {
-        $insert = $this->engine
+        $insert = $this->factory
             ->insert('users', [
                 'username' => 'james',
             ])

@@ -7,31 +7,23 @@ interface EngineInterface
 {
     /**
      * Create a new SELECT query
-     *
-     * @param string|StatementInterface ...$columns
      */
-    public function select(...$columns): Query\SelectQuery;
+    public function makeSelect(): Query\SelectQuery;
 
     /**
      * Create a new INSERT query
-     *
-     * @param string|StatementInterface $table
      */
-    public function insert($table, array $map = []): Query\InsertQuery;
+    public function makeInsert(): Query\InsertQuery;
 
     /**
      * Create a new UPDATE query
-     *
-     * @param string|StatementInterface $table
      */
-    public function update($table, array $map = []): Query\UpdateQuery;
+    public function makeUpdate(): Query\UpdateQuery;
 
     /**
      * Create a new DELETE query
-     *
-     * @param string|StatementInterface $table
      */
-    public function delete($table): Query\DeleteQuery;
+    public function makeDelete(): Query\DeleteQuery;
 
     /**
      * Escape a single identifier
