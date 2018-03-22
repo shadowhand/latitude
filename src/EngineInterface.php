@@ -13,6 +13,13 @@ interface EngineInterface
     public function select(...$columns): Query\SelectQuery;
 
     /**
+     * Create a new INSERT query
+     *
+     * @param string|StatementInterface $table
+     */
+    public function insert($table, array $map = []): Query\InsertQuery;
+
+    /**
      * Escape a single identifier
      */
     public function escapeIdentifier(string $identifier): string;

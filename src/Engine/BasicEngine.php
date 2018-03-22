@@ -18,6 +18,18 @@ class BasicEngine implements EngineInterface
         return $query;
     }
 
+    public function insert($table, array $map = []): Query\InsertQuery
+    {
+        $query = new Query\InsertQuery($this);
+        if (empty($table) === false) {
+            $query = $query->into($table);
+        }
+        if (empty($map) === false) {
+            $query = $query->map($map);
+        }
+        return $query;
+    }
+
     public function escapeIdentifier(string $identifier): string
     {
         return $identifier;
