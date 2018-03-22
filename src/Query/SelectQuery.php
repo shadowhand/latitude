@@ -16,6 +16,7 @@ use function Latitude\QueryBuilder\listing;
 class SelectQuery implements StatementInterface
 {
     use Capability\CanExpress;
+    use Capability\CanUnion;
     use Capability\HasFrom;
     use Capability\HasOrderBy;
     use Capability\HasWhere;

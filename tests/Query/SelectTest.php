@@ -173,4 +173,42 @@ class SelectTest extends TestCase
         $this->assertSql($expected, $select);
         $this->assertParams([], $select);
     }
+
+    public function testUnion()
+    {
+        $a = $this->engine->select('supplier_id')->from('suppliers');
+        $b = $this->engine->select('supplier_id')->from('orders');
+
+        $union = $a->union($b)->orderBy('supplier_id', 'desc');
+
+        $expected = implode(' ', [
+            'SELECT supplier_id FROM suppliers',
+            'UNION',
+            'SELECT supplier_id FROM orders',
+            'ORDER BY supplier_id DESC'
+        ]);
+
+        $this->assertSql($expected, $union);
+        $this->assertParams([], $union);
+    }
+
+    public function testUnionAll()
+    {
+        $a = $this->engine->select('first_name', 'last_name')->from('employees');
+        $b = $this->engine->select('first_name', 'last_name')->from('customers');
+        $c = $this->engine->select('first_name', 'last_name')->from('partners');
+
+        $union = $a->unionAll($b)->unionAll($c);
+
+        $expected = implode(' ', [
+            'SELECT first_name, last_name FROM employees',
+            'UNION ALL',
+            'SELECT first_name, last_name FROM customers',
+            'UNION ALL',
+            'SELECT first_name, last_name FROM partners',
+        ]);
+
+        $this->assertSql($expected, $union);
+        $this->assertParams([], $union);
+    }
 }
