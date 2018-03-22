@@ -5,11 +5,12 @@ namespace Latitude\QueryBuilder\Query;
 
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
+use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
 
-class DeleteQuery implements StatementInterface
+class DeleteQuery implements QueryInterface
 {
     use Capability\CanExpress;
     use Capability\HasFrom;

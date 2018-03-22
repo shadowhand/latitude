@@ -24,10 +24,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     public function assertSql(string $sql, StatementInterface $statement)
     {
         $this->assertSame($sql, $statement->sql($this->engine));
+        if ($statement instanceof QueryInterface) {
+            $this->assertSame($sql, $statement->compile()->sql());
+        }
     }
 
     public function assertParams(array $params, StatementInterface $statement)
     {
         $this->assertSame($params, $statement->params($this->engine));
+        if ($statement instanceof QueryInterface) {
+            $this->assertSame($params, $statement->compile()->params());
+        }
     }
 }

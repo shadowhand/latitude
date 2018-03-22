@@ -6,6 +6,7 @@ namespace Latitude\QueryBuilder\Query;
 use Latitude\QueryBuilder\CriteriaInterface;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
+use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
@@ -13,7 +14,7 @@ use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\identifyAll;
 use function Latitude\QueryBuilder\listing;
 
-class SelectQuery implements StatementInterface
+class SelectQuery implements QueryInterface
 {
     use Capability\CanExpress;
     use Capability\CanUnion;

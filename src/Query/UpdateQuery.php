@@ -5,6 +5,7 @@ namespace Latitude\QueryBuilder\Query;
 
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
+use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
@@ -12,7 +13,7 @@ use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\listing;
 use function Latitude\QueryBuilder\param;
 
-class UpdateQuery implements StatementInterface
+class UpdateQuery implements QueryInterface
 {
     use Capability\CanExpress;
     use Capability\HasWhere;
