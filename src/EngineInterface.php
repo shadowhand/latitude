@@ -20,6 +20,13 @@ interface EngineInterface
     public function insert($table, array $map = []): Query\InsertQuery;
 
     /**
+     * Create a new DELETE query
+     *
+     * @param string|StatementInterface $table
+     */
+    public function delete($table): Query\DeleteQuery;
+
+    /**
      * Escape a single identifier
      */
     public function escapeIdentifier(string $identifier): string;

@@ -30,6 +30,15 @@ class BasicEngine implements EngineInterface
         return $query;
     }
 
+    public function delete($table): Query\DeleteQuery
+    {
+        $query = new Query\DeleteQuery($this);
+        if (empty($table) === false) {
+            $query = $query->from($table);
+        }
+        return $query;
+    }
+
     public function escapeIdentifier(string $identifier): string
     {
         return $identifier;
