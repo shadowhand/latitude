@@ -30,6 +30,16 @@ class BasicEngine implements EngineInterface
         return $query;
     }
 
+    public function update($table, array $map = []): Query\UpdateQuery
+    {
+        $query = new Query\UpdateQuery($this);
+        $query = $query->table($table);
+        if (empty($map) === false) {
+            $query = $query->set($map);
+        }
+        return $query;
+    }
+
     public function delete($table): Query\DeleteQuery
     {
         $query = new Query\DeleteQuery($this);

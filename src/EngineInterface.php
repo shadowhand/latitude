@@ -20,6 +20,13 @@ interface EngineInterface
     public function insert($table, array $map = []): Query\InsertQuery;
 
     /**
+     * Create a new UPDATE query
+     *
+     * @param string|StatementInterface $table
+     */
+    public function update($table, array $map = []): Query\UpdateQuery;
+
+    /**
      * Create a new DELETE query
      *
      * @param string|StatementInterface $table
