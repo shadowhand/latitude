@@ -9,7 +9,6 @@ use function Latitude\QueryBuilder\express;
 
 class DeleteQuery extends AbstractQuery
 {
-    use Capability\CanExpress;
     use Capability\HasFrom;
     use Capability\HasWhere;
     use Capability\HasLimit;

@@ -9,14 +9,10 @@ use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
 
-class UnionQuery implements StatementInterface
+class UnionQuery extends AbstractQuery
 {
-    use Capability\CanExpress;
     use Capability\CanUnion;
     use Capability\HasOrderBy;
-
-    /** @var EngineInterface */
-    protected $engine;
 
     /** @var bool */
     protected $all = false;
@@ -32,7 +28,7 @@ class UnionQuery implements StatementInterface
         StatementInterface $left,
         StatementInterface $right
     ) {
-        $this->engine = $engine;
+        parent::__construct($engine);
         $this->left = $left;
         $this->right = $right;
     }
