@@ -50,8 +50,29 @@ class SelectQuery extends AbstractQuery
 
     public function join($table, CriteriaInterface $criteria, string $type = ''): self
     {
-        $this->joins[] = express(trim("$type JOIN %s ON %s"), identify($table), $criteria);
+        $join = trim(sprintf('%s JOIN', strtoupper($type)));
+        $this->joins[] = express("$join %s ON %s", identify($table), $criteria);
         return $this;
+    }
+
+    public function innerJoin($table, CriteriaInterface $criteria): self
+    {
+        return $this->join($table, $criteria, 'INNER');
+    }
+
+    public function leftJoin($table, CriteriaInterface $criteria): self
+    {
+        return $this->join($table, $criteria, 'LEFT');
+    }
+
+    public function rightJoin($table, CriteriaInterface $criteria): self
+    {
+        return $this->join($table, $criteria, 'RIGHT');
+    }
+
+    public function fullJoin($table, CriteriaInterface $criteria): self
+    {
+        return $this->join($table, $criteria, 'FULL');
     }
 
     public function groupBy(...$columns): self

@@ -60,6 +60,74 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
+    public function testJoinInner()
+    {
+        $select = $this->factory
+            ->select('u.username', 'c.country')
+            ->from(alias('users', 'u'))
+            ->innerJoin(alias('countries', 'c'), on('u.country_id', 'c.id'));
+
+        $expected = implode(' ', [
+            'SELECT u.username, c.country',
+            'FROM users AS u',
+            'INNER JOIN countries AS c ON u.country_id = c.id',
+        ]);
+
+        $this->assertSql($expected, $select);
+        $this->assertParams([], $select);
+    }
+
+    public function testJoinLeft()
+    {
+        $select = $this->factory
+            ->select('u.username', 'c.country')
+            ->from(alias('users', 'u'))
+            ->leftJoin(alias('countries', 'c'), on('u.country_id', 'c.id'));
+
+        $expected = implode(' ', [
+            'SELECT u.username, c.country',
+            'FROM users AS u',
+            'LEFT JOIN countries AS c ON u.country_id = c.id',
+        ]);
+
+        $this->assertSql($expected, $select);
+        $this->assertParams([], $select);
+    }
+
+    public function testJoinRight()
+    {
+        $select = $this->factory
+            ->select('u.username', 'c.country')
+            ->from(alias('users', 'u'))
+            ->rightJoin(alias('countries', 'c'), on('u.country_id', 'c.id'));
+
+        $expected = implode(' ', [
+            'SELECT u.username, c.country',
+            'FROM users AS u',
+            'RIGHT JOIN countries AS c ON u.country_id = c.id',
+        ]);
+
+        $this->assertSql($expected, $select);
+        $this->assertParams([], $select);
+    }
+
+    public function testJoinFull()
+    {
+        $select = $this->factory
+            ->select('u.username', 'c.country')
+            ->from(alias('users', 'u'))
+            ->fullJoin(alias('countries', 'c'), on('u.country_id', 'c.id'));
+
+        $expected = implode(' ', [
+            'SELECT u.username, c.country',
+            'FROM users AS u',
+            'FULL JOIN countries AS c ON u.country_id = c.id',
+        ]);
+
+        $this->assertSql($expected, $select);
+        $this->assertParams([], $select);
+    }
+
     public function testWhere()
     {
         $select = $this->factory
