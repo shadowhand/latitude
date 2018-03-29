@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query;
 
-use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
-use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
@@ -13,54 +11,47 @@ use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\listing;
 use function Latitude\QueryBuilder\param;
 
-class UpdateQuery implements QueryInterface
+class UpdateQuery extends AbstractQuery
 {
-    use Capability\CanExpress;
     use Capability\HasWhere;
 
-    /** @var EngineInterface */
-    private $engine;
+    /** @var StatementInterface */
+    protected $table;
 
     /** @var StatementInterface */
-    private $table;
-
-    /** @var StatementInterface */
-    private $set;
-
-    public function __construct(
-        EngineInterface $engine
-    ) {
-        $this->engine = $engine;
-    }
+    protected $set;
 
     public function table($table): self
     {
-        $copy = clone $this;
-        $copy->table = identify($table);
-        return $copy;
+        $this->table = identify($table);
+        return $this;
     }
 
     public function set(array $map): self
     {
-        $copy = clone $this;
-        $copy->set = listing(array_map(
+        $this->set = listing(array_map(
             function ($key, $value): StatementInterface {
                 return express('%s = %s', identify($key), param($value));
             },
             array_keys($map),
             $map
         ));
-        return $copy;
+        return $this;
     }
 
     public function asExpression(): ExpressionInterface
     {
-        $query = express('UPDATE');
+        $query = $this->startExpression();
         $query = $this->applyTable($query);
         $query = $this->applySet($query);
         $query = $this->applyWhere($query);
 
         return $query;
+    }
+
+    protected function startExpression(): ExpressionInterface
+    {
+        return express('UPDATE');
     }
 
     protected function applyTable(ExpressionInterface $query): ExpressionInterface

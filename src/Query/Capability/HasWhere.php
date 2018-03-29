@@ -9,7 +9,7 @@ use Latitude\QueryBuilder\ExpressionInterface;
 trait HasWhere
 {
     /** @var CriteriaInterface */
-    private $where;
+    protected $where;
 
     public function where(CriteriaInterface $criteria): self
     {

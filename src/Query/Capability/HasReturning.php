@@ -11,13 +11,12 @@ use function Latitude\QueryBuilder\identify;
 trait HasReturning
 {
     /** @var StatementInterface */
-    private $returning;
+    protected $returning;
 
     public function returning($column): self
     {
-        $copy = clone $this;
-        $copy->returning = identify($column);
-        return $copy;
+        $this->returning = identify($column);
+        return $this;
     }
 
     protected function applyReturning(ExpressionInterface $query): ExpressionInterface

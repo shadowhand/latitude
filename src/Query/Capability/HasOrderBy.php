@@ -12,13 +12,12 @@ use function Latitude\QueryBuilder\order;
 trait HasOrderBy
 {
     /** @var StatementInterface[] */
-    private $orderBy;
+    protected $orderBy;
 
     public function orderBy($column, string $direction = ''): self
     {
-        $copy = clone $this;
-        $copy->orderBy[] = order($column, $direction);
-        return $copy;
+        $this->orderBy[] = order($column, $direction);
+        return $this;
     }
 
     protected function applyOrderBy(ExpressionInterface $query): ExpressionInterface

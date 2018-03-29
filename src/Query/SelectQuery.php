@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Latitude\QueryBuilder\Query;
 
 use Latitude\QueryBuilder\CriteriaInterface;
-use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
-use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
@@ -14,76 +12,61 @@ use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\identifyAll;
 use function Latitude\QueryBuilder\listing;
 
-class SelectQuery implements QueryInterface
+class SelectQuery extends AbstractQuery
 {
-    use Capability\CanExpress;
     use Capability\CanUnion;
     use Capability\HasFrom;
     use Capability\HasOrderBy;
     use Capability\HasWhere;
 
-    /** @var EngineInterface */
-    private $engine;
-
     /** @var bool */
-    private $distinct = false;
+    protected $distinct = false;
 
     /** @var StatementInterface */
-    private $columns;
+    protected $columns;
 
     /** @var StatementInterface[] */
-    private $joins = [];
+    protected $joins = [];
 
     /** @var StatementInterface[] */
-    private $groupBy = [];
+    protected $groupBy = [];
 
     /** @var CriteriaInterface */
-    private $having;
-
-    public function __construct(
-        EngineInterface $engine
-    ) {
-        $this->engine = $engine;
-    }
+    protected $having;
 
     public function distinct($state = true): self
     {
-        $copy = clone $this;
-        $copy->distinct = $state;
-        return $copy;
+        $this->distinct = $state;
+        return $this;
     }
 
     public function columns(...$columns): self
     {
-        $copy = clone $this;
-        $copy->columns = listing(identifyAll($columns));
-        return $copy;
+        $this->columns = listing(identifyAll($columns));
+        return $this;
     }
 
     public function join($table, CriteriaInterface $criteria, string $type = ''): self
     {
-        $copy = clone $this;
-        $copy->joins[] = express(trim("$type JOIN %s ON %s"), identify($table), $criteria);
-        return $copy;
+        $this->joins[] = express(trim("$type JOIN %s ON %s"), identify($table), $criteria);
+        return $this;
     }
 
     public function groupBy(...$columns): self
     {
-        $copy = clone $this;
-        $copy->groupBy = identifyAll($columns);
-        return $copy;
+        $this->groupBy = identifyAll($columns);
+        return $this;
     }
 
     public function having(CriteriaInterface $criteria): self
     {
-        $copy = clone $this;
-        $copy->having = $criteria;
-        return $copy;
+        $this->having = $criteria;
+        return $this;
     }
 
     public function asExpression(): ExpressionInterface
     {
-        $query = express('SELECT');
+        $query = $this->startExpression();
         $query = $this->applyDistinct($query);
         $query = $this->applyColumns($query);
         $query = $this->applyFrom($query);
@@ -94,6 +77,11 @@ class SelectQuery implements QueryInterface
         $query = $this->applyOrderBy($query);
 
         return $query;
+    }
+
+    protected function startExpression(): ExpressionInterface
+    {
+        return express('SELECT');
     }
 
     protected function applyDistinct(ExpressionInterface $query): ExpressionInterface

@@ -11,6 +11,8 @@ trait CanExpress
 {
     abstract public function asExpression(): ExpressionInterface;
 
+    abstract protected function startExpression(): ExpressionInterface;
+
     public function compile(): Query
     {
         $query = $this->asExpression();

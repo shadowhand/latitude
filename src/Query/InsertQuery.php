@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query;
 
-use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
-use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
 use function Latitude\QueryBuilder\express;
@@ -14,33 +12,21 @@ use function Latitude\QueryBuilder\identifyAll;
 use function Latitude\QueryBuilder\listing;
 use function Latitude\QueryBuilder\paramAll;
 
-class InsertQuery implements QueryInterface
+class InsertQuery extends AbstractQuery
 {
-    use Capability\CanExpress;
-
-    /** @var EngineInterface */
-    private $engine;
+    /** @var StatementInterface */
+    protected $into;
 
     /** @var StatementInterface */
-    private $into;
-
-    /** @var StatementInterface */
-    private $columns;
+    protected $columns;
 
     /** @var StatementInterface[] */
-    private $values;
-
-    public function __construct(
-        EngineInterface $engine
-    ) {
-        $this->engine = $engine;
-    }
+    protected $values;
 
     public function into($table): self
     {
-        $copy = clone $this;
-        $copy->into = identify($table);
-        return $copy;
+        $this->into = identify($table);
+        return $this;
     }
 
     public function map(array $map): self
@@ -50,25 +36,28 @@ class InsertQuery implements QueryInterface
 
     public function columns(...$columns): self
     {
-        $copy = clone $this;
-        $copy->columns = listing(identifyAll($columns));
-        return $copy;
+        $this->columns = listing(identifyAll($columns));
+        return $this;
     }
 
     public function values(...$params): self
     {
-        $copy = clone $this;
-        $copy->values[] = express('(%s)', listing(paramAll($params)));
-        return $copy;
+        $this->values[] = express('(%s)', listing(paramAll($params)));
+        return $this;
     }
 
     public function asExpression(): ExpressionInterface
     {
-        $query = express('INSERT');
+        $query = $this->startExpression();
         $query = $this->applyInto($query);
         $query = $this->applyColumns($query);
         $query = $this->applyValues($query);
         return $query;
+    }
+
+    protected function startExpression(): ExpressionInterface
+    {
+        return express('INSERT');
     }
 
     protected function applyInto(ExpressionInterface $query): ExpressionInterface

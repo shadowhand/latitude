@@ -11,13 +11,12 @@ use function Latitude\QueryBuilder\identify;
 trait HasFrom
 {
     /** @var StatementInterface */
-    private $from;
+    protected $from;
 
     public function from($table): self
     {
-        $copy = clone $this;
-        $copy->from = identify($table);
-        return $copy;
+        $this->from = identify($table);
+        return $this;
     }
 
     protected function applyFrom(ExpressionInterface $query): ExpressionInterface

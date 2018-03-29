@@ -16,16 +16,16 @@ class UnionQuery implements StatementInterface
     use Capability\HasOrderBy;
 
     /** @var EngineInterface */
-    private $engine;
+    protected $engine;
 
     /** @var bool */
-    private $all = false;
+    protected $all = false;
 
     /** @var StatementInterface */
-    private $left;
+    protected $left;
 
     /** @var StatementInterface */
-    private $right;
+    protected $right;
 
     public function __construct(
         EngineInterface $engine,
@@ -39,18 +39,22 @@ class UnionQuery implements StatementInterface
 
     public function all($state = true): self
     {
-        $copy = clone $this;
-        $copy->all = $state;
-        return $copy;
+        $this->all = $state;
+        return $this;
     }
 
     public function asExpression(): ExpressionInterface
     {
-        $query = express('%s UNION', $this->left);
+        $query = $this->startExpression();
         $query = $this->applyAll($query);
         $query = $this->applyRight($query);
         $query = $this->applyOrderBy($query);
         return $query;
+    }
+
+    protected function startExpression(): ExpressionInterface
+    {
+        return express('%s UNION', $this->left);
     }
 
     protected function applyAll(ExpressionInterface $query): ExpressionInterface
