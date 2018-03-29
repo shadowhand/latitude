@@ -75,6 +75,13 @@ use function Latitude\QueryBuilder\criteria;
 criteria('%s > %s', identify('orders.total'), 100.00)
 ```
 
+```php
+use function Latitude\QueryBuilder\literal;
+
+// "orders"."is_complete" = 1
+criteria('%s = %d', identify('orders.is_complete'), literal(1))
+```
+
 ## [](#aliases)Aliases
 
 ```php

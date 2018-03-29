@@ -174,6 +174,18 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
+    public function testOffsetLimit()
+    {
+        $select = $this->factory
+            ->select()
+            ->from('users')
+            ->limit(10)
+            ->offset(100);
+
+        $this->assertSql('SELECT * FROM users LIMIT 10 OFFSET 100', $select);
+        $this->assertParams([], $select);
+    }
+
     public function testUnion()
     {
         $a = $this->factory->select('supplier_id')->from('suppliers');

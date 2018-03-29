@@ -18,6 +18,11 @@ function fn(string $function, string $field, string $alias = null): ExpressionIn
     return express("$function(%s)", identify($field));
 }
 
+function literal($value): StatementInterface
+{
+    return isStatement($value) ? $value : new Partial\Literal($value);
+}
+
 function on(string $left, string $right): CriteriaInterface
 {
     return criteria('%s = %s', identify($left), identify($right));

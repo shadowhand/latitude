@@ -16,6 +16,8 @@ class SelectQuery extends AbstractQuery
 {
     use Capability\CanUnion;
     use Capability\HasFrom;
+    use Capability\HasLimit;
+    use Capability\HasOffset;
     use Capability\HasOrderBy;
     use Capability\HasWhere;
 
@@ -75,6 +77,8 @@ class SelectQuery extends AbstractQuery
         $query = $this->applyGroupBy($query);
         $query = $this->applyHaving($query);
         $query = $this->applyOrderBy($query);
+        $query = $this->applyLimit($query);
+        $query = $this->applyOffset($query);
 
         return $query;
     }
