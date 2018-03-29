@@ -98,6 +98,8 @@ use function Latitude\QueryBuilder\fn;
 
 // COUNT("users"."id")
 fn('COUNT', 'users.id')
+// CONCAT("first_name", "last_name")
+fn('CONCAT', 'first_name', 'last_name')
 ```
 
 ## [](#ordering)Ordering

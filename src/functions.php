@@ -13,9 +13,9 @@ function alias($field, string $alias): ExpressionInterface
     return express('%s AS %s', identify($field), identify($alias));
 }
 
-function fn(string $function, string $field, string $alias = null): ExpressionInterface
+function fn(string $function, string ...$fields): ExpressionInterface
 {
-    return express("$function(%s)", identify($field));
+    return express("$function(%s)", listing(identifyAll($fields)));
 }
 
 function literal($value): StatementInterface
