@@ -12,12 +12,15 @@ class DeleteQuery extends AbstractQuery
     use Capability\CanExpress;
     use Capability\HasFrom;
     use Capability\HasWhere;
+    use Capability\HasLimit;
 
     public function asExpression(): ExpressionInterface
     {
         $query = $this->startExpression();
         $query = $this->applyFrom($query);
         $query = $this->applyWhere($query);
+        $query = $this->applyLimit($query);
+
         return $query;
     }
 

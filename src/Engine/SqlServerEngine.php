@@ -12,6 +12,11 @@ class SqlServerEngine extends BasicEngine
         return new Query\SqlServer\SelectQuery($this);
     }
 
+    public function makeDelete(): Query\DeleteQuery
+    {
+        return new Query\SqlServer\DeleteQuery($this);
+    }
+
     public function escapeIdentifier(string $identifier): string
     {
         return "[$identifier]";
