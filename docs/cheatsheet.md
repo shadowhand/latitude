@@ -57,6 +57,16 @@ use function Latitude\QueryBuilder\on;
 on('countries.id', 'users.country_id')
 ```
 
+```php
+use function Latitude\QueryBuilder\group;
+
+// ("username" = ? OR "first_name" = ?) AND "is_active" = ?
+group(
+    field('username')->eq('tom')
+        ->or(field('first_name')->eq('Tom'))
+)->and(field('is_active')->eq(1))
+```
+
 ### [](#expressions)Expressions
 
 _All expressions are written in [sprintf](http://php.net/sprintf) format, where

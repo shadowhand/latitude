@@ -5,6 +5,7 @@ namespace Latitude\QueryBuilder\Partial;
 use Latitude\QueryBuilder\TestCase;
 
 use function Latitude\QueryBuilder\field;
+use function Latitude\QueryBuilder\group;
 
 class CriteriaTest extends TestCase
 {
@@ -110,5 +111,15 @@ class CriteriaTest extends TestCase
         $expr = $expr->or(field('is_inactive')->eq(true));
 
         $this->assertSql('is_deleted = ? OR is_inactive = ?', $expr);
+    }
+
+    public function testGroup()
+    {
+        $expr = group(
+            field('username')->eq('jane')
+                ->or(field('first_name')->eq('Jane'))
+        )->and(field('last_login')->isNotNull());
+
+        $this->assertSql('(username = ? OR first_name = ?) AND last_login IS NOT NULL', $expr);
     }
 }

@@ -41,6 +41,11 @@ function criteria(string $pattern, ...$replacements): CriteriaInterface
     return new Partial\Criteria(express($pattern, ...$replacements));
 }
 
+function group(CriteriaInterface $criteria): CriteriaInterface
+{
+    return criteria('(%s)', $criteria);
+}
+
 function field($name): Builder\CriteriaBuilder
 {
     return new Builder\CriteriaBuilder(identify($name));
