@@ -33,6 +33,10 @@ field('countries.id')->in($select)
 field('total')->gt(9000)
 // "salary" <= ?
 field('salary')->lte(3000)
+// "deleted_at" IS NULL
+field('deleted_at')->isNull();
+// "parent_id" IS NOT NULL
+field('parent_id')->isNotNull();
 ```
 
 ```php

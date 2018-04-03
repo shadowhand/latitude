@@ -68,4 +68,14 @@ class CriteriaBuilder
     {
         return criteria('%s <= %s', $this->statement, $value);
     }
+
+    public function isNull(): CriteriaInterface
+    {
+        return criteria('%s IS NULL', $this->statement);
+    }
+
+    public function isNotNull(): CriteriaInterface
+    {
+        return criteria('%s IS NOT NULL', $this->statement);
+    }
 }

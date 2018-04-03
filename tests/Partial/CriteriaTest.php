@@ -83,6 +83,19 @@ class CriteriaTest extends TestCase
         $this->assertParams([30], $expr);
     }
 
+    public function testNull()
+    {
+        $expr = field('deleted_at')->isNull();
+
+        $this->assertSql('deleted_at IS NULL', $expr);
+        $this->assertParams([], $expr);
+
+        $expr = field('deleted_at')->isNotNull();
+
+        $this->assertSql('deleted_at IS NOT NULL', $expr);
+        $this->assertParams([], $expr);
+    }
+
     public function testAnd()
     {
         $expr = field('id')->eq(5);
