@@ -3,10 +3,16 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+use Latitude\QueryBuilder\Ruler\Context;
+use Latitude\QueryBuilder\Ruler\Visitor;
+
 class QueryFactory
 {
     /** @var EngineInterface */
     protected $engine;
+
+    /** @var Visitor */
+    protected $visitor;
 
     public function __construct(
         EngineInterface $engine = null
@@ -75,5 +81,24 @@ class QueryFactory
             $query = $query->set($map);
         }
         return $query;
+    }
+
+    /**
+     * Create a new criteria from an expression
+     *
+     * @link https://hoa-project.net/En/Literature/Hack/Ruler.html
+     */
+    public function criteria(string $expression): CriteriaInterface
+    {
+        return $this->visitor()->visit(\Hoa\Ruler\Ruler::interpret($expression));
+    }
+
+    protected function visitor(): Visitor
+    {
+        if ($this->visitor === null) {
+            $this->visitor = new Visitor();
+        }
+
+        return $this->visitor;
     }
 }
