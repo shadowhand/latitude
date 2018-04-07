@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0]
+
+### Changed
+
+- Completely new interface
+- Improved handling of sub-queries and composition
+- Functional based criteria builders
+- Removal of all static methods
+- Requires PHP 7.1 or better
+
 ## [2.3.1]
 
 ### Fixed
