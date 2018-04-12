@@ -12,12 +12,9 @@ php:
 matrix:
   allow_failures:
     - php: nightly
-  include:
-    - php: 7.1
-      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
 
 before_script:
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+  - travis_retry composer install
 
 script:
   - composer test
