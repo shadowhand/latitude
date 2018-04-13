@@ -46,6 +46,10 @@ Getting Started
 - [Quick Reference](cheatsheet)
 - [Engines](engines)
 
+Criteria
+
+- [String Transformation](criteria-strings)
+
 Query Types
 
 - [SELECT](query-select)
