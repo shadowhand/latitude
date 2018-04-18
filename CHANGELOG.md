@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.1]
+
+### Fixed
+
+- Boolean and null parameters should be output in SQL (#55)
+
 ## [3.0.0]
 
 ### Changed
