@@ -8,21 +8,28 @@ use Latitude\QueryBuilder\StatementInterface;
 
 final class Parameter implements StatementInterface
 {
-    /** @var mixed */
-    private $value;
+    /** @var string */
+    private $sql = '?';
+
+    /** @var array */
+    private $params = [];
 
     public function __construct($value)
     {
-        $this->value = $value;
+        if (is_bool($value) || is_null($value)) {
+            $this->sql = var_export($value, true);
+        } else {
+            $this->params[] = $value;
+        }
     }
 
     public function sql(EngineInterface $engine): string
     {
-        return '?';
+        return $this->sql;
     }
 
     public function params(EngineInterface $engine): array
     {
-        return [$this->value];
+        return $this->params;
     }
 }

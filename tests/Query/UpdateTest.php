@@ -24,8 +24,8 @@ class UpdateTest extends TestCase
                 'last_login' => null,
             ]);
 
-        $this->assertSql('UPDATE users SET last_login = ?', $update);
-        $this->assertParams([null], $update);
+        $this->assertSql('UPDATE users SET last_login = NULL', $update);
+        $this->assertParams([], $update);
     }
 
     public function testWhere()

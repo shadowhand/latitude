@@ -97,18 +97,29 @@ class CriteriaTest extends TestCase
         $this->assertParams([], $expr);
     }
 
+    public function testBoolean()
+    {
+        $expr = field('is_active')->eq(true);
+
+        $this->assertSql('is_active = true', $expr);
+
+        $expr = field('is_active')->eq(false);
+
+        $this->assertSql('is_active = false', $expr);
+    }
+
     public function testAnd()
     {
         $expr = field('id')->eq(5);
-        $expr = $expr->and(field('is_active')->eq(true));
+        $expr = $expr->and(field('is_active')->eq(1));
 
         $this->assertSql('id = ? AND is_active = ?', $expr);
     }
 
     public function testOr()
     {
-        $expr = field('is_deleted')->eq(true);
-        $expr = $expr->or(field('is_inactive')->eq(true));
+        $expr = field('is_deleted')->eq(1);
+        $expr = $expr->or(field('is_inactive')->eq(1));
 
         $this->assertSql('is_deleted = ? OR is_inactive = ?', $expr);
     }
