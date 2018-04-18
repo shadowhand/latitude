@@ -11,13 +11,18 @@
         }
     ],
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.1"
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
+        "hoa/devtools": "^1.17",
+        "hoa/ruler": "2.17.05.16",
         "phpstan/phpstan": "^0.9.1",
         "phpunit/phpunit": "^6.0",
         "vimeo/psalm": "^0.3.88"
+    },
+    "suggest": {
+        "hoa/ruler": "Adds support for creating criteria from strings"
     },
     "autoload": {
         "files": [
@@ -33,11 +38,11 @@
         }
     },
     "scripts": {
-        "test-stan": "phpstan analyse --level=1 --no-progress src tests",
+        "test-flex": "hoa devtools:expandflexentities -o src/hoa.php",
         "test-psalm": "psalm --show-info=false",
         "test-unit": "phpunit",
         "test": [
-            "@test-stan",
+            "@test-flex",
             "@test-psalm",
             "@test-unit"
         ]
