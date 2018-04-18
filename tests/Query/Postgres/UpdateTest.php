@@ -16,7 +16,7 @@ class UpdateTest extends TestCase
             ])
             ->returning('id');
 
-        $this->assertSql('UPDATE "users" SET "last_login" = ? RETURNING "id"', $update);
-        $this->assertParams([null], $update);
+        $this->assertSql('UPDATE "users" SET "last_login" = NULL RETURNING "id"', $update);
+        $this->assertParams([], $update);
     }
 }
