@@ -116,6 +116,17 @@ fn('COUNT', 'users.id')
 fn('CONCAT', 'first_name', 'last_name')
 ```
 
+_By default functions assume identifiers as parameters, use `param()` for scalar values._
+
+
+```php
+use function Latitude\QueryBuilder\fn;
+use function Latitude\QueryBuilder\param;
+
+// POINT(?, ?)
+fn('POINT', param(1), param(2))
+```
+
 ## [](#ordering)Ordering
 
 ```php
