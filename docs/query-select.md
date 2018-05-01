@@ -41,6 +41,19 @@ $query->sql(); // SELECT "id", "username", "password" FROM "users"
 $query->params(); // []
 ```
 
+As well as additional tables:
+
+```php
+$query = $factory
+    ->select('users.username', 'groups.name')
+    ->from('users')
+    ->addFrom('groups')
+    ->compile();
+
+$query->sql(); // SELECT "users"."username", "groups"."name" FROM "users", "groups"
+$query->params(); // []
+```
+
 # WHERE
 
 Criteria can be applied to the `WHERE` condition:
