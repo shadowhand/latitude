@@ -24,8 +24,8 @@ class SelectQuery extends AbstractQuery
     /** @var bool */
     protected $distinct = false;
 
-    /** @var StatementInterface */
-    protected $columns;
+    /** @var StatementInterface[] */
+    protected $columns = [];
 
     /** @var StatementInterface[] */
     protected $joins = [];
@@ -44,8 +44,13 @@ class SelectQuery extends AbstractQuery
 
     public function columns(...$columns): self
     {
-        $this->columns = listing(identifyAll($columns));
+        $this->columns = identifyAll($columns);
         return $this;
+    }
+
+    public function addColumns(...$columns): self
+    {
+        return $this->columns(...array_merge($this->columns, $columns));
     }
 
     public function join($table, CriteriaInterface $criteria, string $type = ''): self
@@ -116,7 +121,7 @@ class SelectQuery extends AbstractQuery
 
     protected function applyColumns(ExpressionInterface $query): ExpressionInterface
     {
-        return $this->columns ? $query->append('%s', $this->columns) : $query->append('*');
+        return $this->columns ? $query->append('%s', listing($this->columns)) : $query->append('*');
     }
 
     protected function applyJoins(ExpressionInterface $query): ExpressionInterface

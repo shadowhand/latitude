@@ -28,6 +28,19 @@ $query->sql(); // SELECT "id", "username" FROM "users"
 $query->params(); // []
 ```
 
+Additional columns can be added:
+
+```php
+$query = $factory
+    ->select('id', 'username')
+    ->addColumns('password')
+    ->from('users')
+    ->compile();
+
+$query->sql(); // SELECT "id", "username", "password" FROM "users"
+$query->params(); // []
+```
+
 # WHERE
 
 Criteria can be applied to the `WHERE` condition:
