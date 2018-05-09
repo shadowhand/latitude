@@ -12,7 +12,7 @@ trait HasLimit
     /** @var int|null */
     protected $limit;
 
-    public function limit(int $limit): self
+    public function limit(?int $limit): self
     {
         $this->limit = $limit;
         return $this;

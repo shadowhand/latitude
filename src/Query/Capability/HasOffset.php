@@ -12,7 +12,7 @@ trait HasOffset
     /** @var int|null */
     protected $offset;
 
-    public function offset(int $offset): self
+    public function offset(?int $offset): self
     {
         $this->offset = $offset;
         return $this;
