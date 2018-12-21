@@ -213,7 +213,6 @@ class SelectTest extends TestCase
 
         $this->assertSql('SELECT * FROM users ORDER BY birthday', $select);
         $this->assertParams([], $select);
-
     }
 
     public function testOrderByDirection()
@@ -239,6 +238,19 @@ class SelectTest extends TestCase
         ]);
 
         $this->assertSql($expected, $select);
+        $this->assertParams([], $select);
+    }
+
+    public function testOrderByReset()
+    {
+        $select = $this->factory
+            ->select()
+            ->from('users')
+            ->orderBy('birthday');
+
+        $select->orderBy(null);
+
+        $this->assertSql('SELECT * FROM users', $select);
         $this->assertParams([], $select);
     }
 

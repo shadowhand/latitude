@@ -129,6 +129,10 @@ $query = $factory
     ->from('users')
     ->orderBy('username', 'asc');
 ```
+Ordering can be reset:
+```php
+$query->orderBy(null);
+```
 
 # LIMIT and OFFSET
 
