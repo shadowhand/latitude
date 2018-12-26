@@ -42,20 +42,20 @@ databases that follow SQL standards.
 
 Getting Started
 
-- [Installation](install)
-- [Quick Reference](cheatsheet)
-- [Engines](engines)
+- [Installation](install.md)
+- [Quick Reference](cheatsheet.md)
+- [Engines](engines.md)
 
 Criteria
 
-- [String Transformation](criteria-strings)
+- [String Transformation](criteria-strings.md)
 
 Query Types
 
-- [SELECT](query-select)
-- [INSERT](query-insert)
-- [UPDATE](query-update)
-- [DELETE](query-delete)
+- [SELECT](query-select.md)
+- [INSERT](query-insert.md)
+- [UPDATE](query-update.md)
+- [DELETE](query-delete.md)
 
 ## Booleans and Nulls
 
