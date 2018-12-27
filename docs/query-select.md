@@ -130,6 +130,7 @@ $query = $factory
     ->orderBy('username', 'asc');
 ```
 Ordering can be reset:
+
 ```php
 $query->orderBy(null);
 ```
