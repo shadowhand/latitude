@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.2.0]
+
+### Added
+
+- Allow clearing ordering with `orderBy(null)` (#77 by @felixpenrose)
+
 ## [3.1.1]
 
 ### Fixed
