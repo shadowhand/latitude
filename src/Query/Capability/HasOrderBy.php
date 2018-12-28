@@ -16,6 +16,11 @@ trait HasOrderBy
 
     public function orderBy($column, string $direction = ''): self
     {
+        if (empty($column)) {
+            $this->orderBy = [];
+            return $this;
+        }
+        
         $this->orderBy[] = order($column, $direction);
         return $this;
     }
