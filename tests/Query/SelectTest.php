@@ -260,10 +260,10 @@ class SelectTest extends TestCase
         $select = $this->factory
             ->select()
             ->from('users')
-            ->orderBy(express("FIELD(`status`, 'off')"), 'DESC');
+            ->orderBy(express("FIELD(%s, 'off')", 'status'), 'DESC');
 
-        $this->assertSql("SELECT * FROM users ORDER BY FIELD(`status`, 'off') DESC", $select);
-        $this->assertParams([], $select);
+        $this->assertSql("SELECT * FROM users ORDER BY FIELD(?, 'off') DESC", $select);
+        $this->assertParams(['status'], $select);
     }
 
     public function testOffsetLimit()
