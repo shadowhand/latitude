@@ -8,6 +8,7 @@ use function Latitude\QueryBuilder\alias;
 use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\field;
 use function Latitude\QueryBuilder\fn;
+use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\on;
 
 class SelectTest extends TestCase
@@ -260,10 +261,10 @@ class SelectTest extends TestCase
         $select = $this->factory
             ->select()
             ->from('users')
-            ->orderBy(express("FIELD(%s, 'off')", 'status'), 'DESC');
+            ->orderBy(express("FIELD(%s, 'off')", identify('status')), 'DESC');
 
-        $this->assertSql("SELECT * FROM users ORDER BY FIELD(?, 'off') DESC", $select);
-        $this->assertParams(['status'], $select);
+        $this->assertSql("SELECT * FROM users ORDER BY FIELD(status, 'off') DESC", $select);
+        $this->assertParams([], $select);
     }
 
     public function testOffsetLimit()
