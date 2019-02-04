@@ -28,7 +28,7 @@ function on(string $left, string $right): CriteriaInterface
     return criteria('%s = %s', identify($left), identify($right));
 }
 
-function order(string $column, string $direction = null): StatementInterface
+function order($column, string $direction = null): StatementInterface
 {
     if (empty($direction)) {
         return identify($column);
