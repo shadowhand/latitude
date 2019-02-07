@@ -28,7 +28,7 @@ escapes all identifiers using backticks.
 
 ## Postgres Engine
 
-The MySQL engine is `Latitude\QueryBuilder\Engine\PostgresEngine`. This engine
+The Postgres engine is `Latitude\QueryBuilder\Engine\PostgresEngine`. This engine
 extends the `CommonEngine` to provide additional features:
 
 - `RETURNING <identifier>` is added to `INSERT` and `UPDATE` queries
