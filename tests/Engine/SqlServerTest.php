@@ -9,7 +9,7 @@ use function Latitude\QueryBuilder\search;
 
 class SqlServerTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->engine = new SqlServerEngine();
     }
