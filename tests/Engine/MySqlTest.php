@@ -8,7 +8,7 @@ use function Latitude\QueryBuilder\identify;
 
 class MySqlTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->engine = new MySqlEngine();
     }

@@ -8,7 +8,7 @@ use function Latitude\QueryBuilder\identify;
 
 class PostgresTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->engine = new PostgresEngine();
     }
