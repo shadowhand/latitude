@@ -14,6 +14,7 @@ use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\listing;
 use function Latitude\QueryBuilder\literal;
 use function Latitude\QueryBuilder\param;
+use function Latitude\QueryBuilder\group;
 
 class Visitor implements VisitorInterface
 {
@@ -100,6 +101,10 @@ class Visitor implements VisitorInterface
     protected function visitOperator(Ast\Operator $element, &$handle = null, $eldnah = null)
     {
         $values = array_map($this->remapper($handle, $eldnah), $element->getArguments());
+
+        if ($element->getName() === 'or') {
+            return group(criteria(sprintf('%%s %s %%s', $element->getName()), $values[0], $values[1]));
+        }
 
         if ($element->isFunction()) {
             return criteria(sprintf('%s(%%s)', strtoupper($element->getName())), listing($values));
