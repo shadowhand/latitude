@@ -106,7 +106,14 @@ class Visitor implements VisitorInterface
         }
 
         if (count($values) === 2) {
-            return criteria(sprintf('%%s %s %%s', $element->getName()), $values[0], $values[1]);
+            $operator = $element->getName();
+            // `NULL` requires operator replacements: `=` becomes `IS` and `!=` becomes `IS NOT`
+            $parameter = $element->getArguments()[1];
+            if ($parameter instanceof Ast\Bag\Scalar and is_null($parameter->getValue())) {
+                $operator = $element->getName() === '!=' ? 'IS NOT' : 'IS';
+            }
+
+            return criteria(sprintf('%%s %s %%s', strtoupper($operator)), $values[0], $values[1]);
         }
 
         return criteria(sprintf('%s (%%s)', $element->getName()), listing($values, ' '));

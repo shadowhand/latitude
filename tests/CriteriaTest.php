@@ -18,7 +18,7 @@ class CriteriaTest extends TestCase
     {
         $criteria = $this->factory->criteria('employees.role in ["manager", "supervisor"]');
 
-        $this->assertSql('employees.role in (?, ?)', $criteria);
+        $this->assertSql('employees.role IN (?, ?)', $criteria);
         $this->assertParams(['manager', 'supervisor'], $criteria);
     }
 
@@ -42,8 +42,19 @@ class CriteriaTest extends TestCase
     {
         $criteria = $this->factory->criteria('not (id in [1, 2])');
 
-        $this->assertSql('not (id in (?, ?))', $criteria);
+        $this->assertSql('not (id IN (?, ?))', $criteria);
         $this->assertParams([1, 2], $criteria);
+    }
+
+    public function testNullComparision()
+    {
+        $criteria = $this->factory->criteria('users.active = null');
+
+        $this->assertSql('users.active IS NULL', $criteria);
+
+        $criteria = $this->factory->criteria('users.active != null');
+
+        $this->assertSql('users.active IS NOT NULL', $criteria);
     }
 
     public function testMethodNotSupported()
