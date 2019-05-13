@@ -103,7 +103,11 @@ class Visitor implements VisitorInterface
         $values = array_map($this->remapper($handle, $eldnah), $element->getArguments());
 
         if ($element->getName() === 'or') {
-            return group(criteria(sprintf('%%s %s %%s', $element->getName()), $values[0], $values[1]));
+            return group(criteria(
+                sprintf('%%s %s %%s', strtoupper($element->getName())),
+                $values[0],
+                $values[1]
+            ));
         }
 
         if ($element->isFunction()) {
