@@ -67,36 +67,36 @@ class CriteriaTest extends TestCase
 
     public function testGrouping()
     {
-        $criteria = $this->factory->criteria('(users.id = 25 or users.role = "admin") and users.active = true');
-        $this->assertSql('(users.id = ? or users.role = ?) and users.active = true', $criteria);
+        $criteria = $this->factory->criteria('(users.id = 25 OR users.role = "admin") AND users.active = true');
+        $this->assertSql('(users.id = ? OR users.role = ?) AND users.active = true', $criteria);
         $this->assertParams([25, 'admin'], $criteria);
 
-        $criteria = $this->factory->criteria('users.active = true and users.id = 33 or users.role = "operator"');
-        $this->assertSql('(users.active = true and users.id = ? or users.role = ?)', $criteria);
+        $criteria = $this->factory->criteria('users.active = true AND users.id = 33 OR users.role = "operator"');
+        $this->assertSql('(users.active = true AND users.id = ? OR users.role = ?)', $criteria);
         $this->assertParams([33, 'operator'], $criteria);
 
-        $criteria = $this->factory->criteria('users.active = true and (users.id = 68 or users.role = "admin")');
-        $this->assertSql('users.active = true and (users.id = ? or users.role = ?)', $criteria);
+        $criteria = $this->factory->criteria('users.active = true AND (users.id = 68 OR users.role = "admin")');
+        $this->assertSql('users.active = true AND (users.id = ? OR users.role = ?)', $criteria);
         $this->assertParams([68, 'admin'], $criteria);
 
         $criteria = $this->factory->criteria(
-            'users.active = true and (users.id = 69 or users.role = "admin" or users.name = "John")'
+            'users.active = true AND (users.id = 69 OR users.role = "admin" OR users.name = "John")'
         );
-        $this->assertSql('users.active = true and (users.id = ? or (users.role = ? or users.name = ?))', $criteria);
+        $this->assertSql('users.active = true AND (users.id = ? OR (users.role = ? OR users.name = ?))', $criteria);
         $this->assertParams([69, 'admin', 'John'], $criteria);
 
         $criteria = $this->factory->criteria(
-            'users.active = true and (users.id = 34 or users.role = "admin" and users.name = "Sam")'
+            'users.active = true AND (users.id = 34 OR users.role = "admin" AND users.name = "Sam")'
         );
-        $this->assertSql('users.active = true and (users.id = ? or users.role = ? and users.name = ?)', $criteria);
+        $this->assertSql('users.active = true AND (users.id = ? OR users.role = ? AND users.name = ?)', $criteria);
         $this->assertParams([34, 'admin', 'Sam'], $criteria);
 
         $criteria = $this->factory->criteria(
-            'users.active = true and (users.id = 71 or users.role = "admin" ' .
-            'and (users.name = "Adam" or users.name = "Natalie"))'
+            'users.active = true AND (users.id = 71 OR users.role = "admin" ' .
+            'AND (users.name = "Adam" OR users.name = "Natalie"))'
         );
         $this->assertSql(
-            'users.active = true and (users.id = ? or users.role = ? and (users.name = ? or users.name = ?))',
+            'users.active = true AND (users.id = ? OR users.role = ? AND (users.name = ? OR users.name = ?))',
             $criteria
         );
         $this->assertParams([71, 'admin', 'Adam', 'Natalie'], $criteria);
