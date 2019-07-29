@@ -67,11 +67,15 @@ function identify($name): StatementInterface
         return $name;
     }
 
-    if (strpos($name, '.') === false) {
-        return new Partial\Identifier($name);
+    if (strpos($name, '.') !== false) {
+        return new Partial\IdentifierQualified(...identifyAll(explode('.', $name)));
     }
 
-    return new Partial\IdentifierQualified(...identifyAll(explode('.', $name)));
+    if ($name === '*') {
+        return new Partial\Literal($name);
+    }
+
+    return new Partial\Identifier($name);
 }
 
 /**
