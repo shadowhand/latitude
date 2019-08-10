@@ -1,7 +1,7 @@
 {
     "name": "latitude/latitude",
-    "description": "A SQL query builder with zero dependencies",
     "type": "library",
+    "description": "A SQL query builder with zero dependencies",
     "license": "MIT",
     "authors": [
         {
@@ -25,13 +25,16 @@
     "suggest": {
         "hoa/ruler": "Adds support for creating criteria from strings"
     },
+    "config": {
+        "sort-packages": true
+    },
     "autoload": {
-        "files": [
-            "src/functions.php"
-        ],
         "psr-4": {
             "Latitude\\QueryBuilder\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -39,16 +42,13 @@
         }
     },
     "scripts": {
-        "test-flex": "hoa devtools:expandflexentities -o src/hoa.php",
-	"test-static": "phpstan analyse -l 0 -c phpstan.neon src tests --memory-limit=256M",
-        "test-unit": "phpunit",
         "test": [
             "@test-flex",
-	    "@test-static",
+            "@test-static",
             "@test-unit"
-        ]
-    },
-    "config": {
-        "sort-packages": true
+        ],
+        "test-flex": "hoa devtools:expandflexentities -o src/hoa.php",
+        "test-static": "phpstan analyse -l 0 -c phpstan.neon src tests --memory-limit=256M",
+        "test-unit": "phpunit"
     }
 }
