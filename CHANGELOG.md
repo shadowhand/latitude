@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0]
+
+### Changed
+
+- Renamed `fn` to `func` for PHP 7.4 compatibility (#95)
+
 ## [3.3.1]
 
 ### Fixed
