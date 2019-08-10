@@ -1,4 +1,1 @@
-includes:
-    - vendor/eloquent/phpstan-phony/phony.neon
-    - vendor/phpstan/phpstan-phpunit/extension.neon
 
