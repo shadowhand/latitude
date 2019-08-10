@@ -8,7 +8,7 @@ class DeleteTest extends TestCase
 {
     use SqlServerEngineSetup;
 
-    public function testLimit()
+    public function testLimit(): void
     {
         $delete = $this->factory
             ->delete('users')

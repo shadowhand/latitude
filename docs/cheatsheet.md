@@ -108,23 +108,23 @@ alias('users.id', 'uid')
 ## [](#functions)Functions
 
 ```php
-use function Latitude\QueryBuilder\fn;
+use function Latitude\QueryBuilder\func;
 
 // COUNT("users"."id")
-fn('COUNT', 'users.id')
+func('COUNT', 'users.id')
 // CONCAT("first_name", "last_name")
-fn('CONCAT', 'first_name', 'last_name')
+func('CONCAT', 'first_name', 'last_name')
 ```
 
 _By default functions assume identifiers as parameters, use `param()` for scalar values._
 
 
 ```php
-use function Latitude\QueryBuilder\fn;
+use function Latitude\QueryBuilder\func;
 use function Latitude\QueryBuilder\param;
 
 // POINT(?, ?)
-fn('POINT', param(1), param(2))
+func('POINT', param(1), param(2))
 ```
 
 ## [](#ordering)Ordering

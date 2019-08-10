@@ -1,7 +1,7 @@
 {
     "name": "latitude/latitude",
-    "description": "A SQL query builder with zero dependencies",
     "type": "library",
+    "description": "A SQL query builder with zero dependencies",
     "license": "MIT",
     "authors": [
         {
@@ -11,27 +11,26 @@
         }
     ],
     "require": {
-        "php": ">=7.1"
+        "php": ">=7.2"
     },
     "require-dev": {
         "eloquent/liberator": "^2.0",
-        "eloquent/phpstan-phony": "^0.4.0",
-        "hoa/devtools": "^1.17",
-        "hoa/ruler": "2.17.05.16",
-        "phpstan/phpstan": "^0.11.6",
-        "phpstan/phpstan-phpunit": "^0.11.1",
-        "phpunit/phpunit": "^7.5"
+        "eloquent/phpstan-phony": "^0.5.0",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.11.12",
+        "phpstan/phpstan-phpunit": "^0.11.2",
+        "phpunit/phpunit": "^8.3"
     },
-    "suggest": {
-        "hoa/ruler": "Adds support for creating criteria from strings"
+    "config": {
+        "sort-packages": true
     },
     "autoload": {
-        "files": [
-            "src/functions.php"
-        ],
         "psr-4": {
             "Latitude\\QueryBuilder\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -39,16 +38,11 @@
         }
     },
     "scripts": {
-        "test-flex": "hoa devtools:expandflexentities -o src/hoa.php",
-	"test-static": "phpstan analyse -l 0 -c phpstan.neon src tests --memory-limit=256M",
-        "test-unit": "phpunit",
         "test": [
-            "@test-flex",
-	    "@test-static",
+            "@test-static",
             "@test-unit"
-        ]
-    },
-    "config": {
-        "sort-packages": true
+        ],
+        "test-static": "phpstan analyse -l 0 -c phpstan.neon src tests --memory-limit=256M",
+        "test-unit": "phpunit"
     }
 }

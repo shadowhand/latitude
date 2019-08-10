@@ -13,7 +13,7 @@ function alias($field, string $alias): ExpressionInterface
     return express('%s AS %s', identify($field), identify($alias));
 }
 
-function fn(string $function, ...$replacements): ExpressionInterface
+function func(string $function, ...$replacements): ExpressionInterface
 {
     return express("$function(%s)", listing(identifyAll($replacements)));
 }

@@ -8,7 +8,7 @@ use function Latitude\QueryBuilder\field;
 
 class UpdateTest extends TestCase
 {
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $update = $this->factory
             ->update('users');
@@ -17,7 +17,7 @@ class UpdateTest extends TestCase
         $this->assertParams([], $update);
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $update = $this->factory
             ->update('users', [
@@ -28,7 +28,7 @@ class UpdateTest extends TestCase
         $this->assertParams([], $update);
     }
 
-    public function testWhere()
+    public function testWhere(): void
     {
         $update = $this->factory
             ->update('users', [

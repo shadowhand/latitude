@@ -9,14 +9,14 @@ use Latitude\QueryBuilder\TestCase;
  */
 class ResetLimitAndOffsetTest extends TestCase
 {
-    public function testResetLimit()
+    public function testResetLimit(): void
     {
         $query = $this->factory->select()->from('users')->limit(5)->limit(null);
 
         $this->assertSql('SELECT * FROM users', $query);
     }
 
-    public function testResetOffset()
+    public function testResetOffset(): void
     {
         $query = $this->factory->select()->from('users')->offset(5)->offset(null);
 

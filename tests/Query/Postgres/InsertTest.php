@@ -8,7 +8,7 @@ class InsertTest extends TestCase
 {
     use PostgresEngineSetup;
 
-    public function testReturning()
+    public function testReturning(): void
     {
         $insert = $this->factory
             ->insert('users', [

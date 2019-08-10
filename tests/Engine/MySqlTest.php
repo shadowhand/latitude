@@ -8,12 +8,12 @@ use function Latitude\QueryBuilder\identify;
 
 class MySqlTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new MySqlEngine();
     }
 
-    public function testIdentifier()
+    public function testIdentifier(): void
     {
         $field = identify('id');
 

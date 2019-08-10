@@ -8,7 +8,7 @@ use function Latitude\QueryBuilder\field;
 
 class DeleteTest extends TestCase
 {
-    public function testDelete()
+    public function testDelete(): void
     {
         $insert = $this->factory
             ->delete('users');
@@ -17,7 +17,7 @@ class DeleteTest extends TestCase
         $this->assertParams([], $insert);
     }
 
-    public function testWhere()
+    public function testWhere(): void
     {
         $insert = $this->factory
             ->delete('users')

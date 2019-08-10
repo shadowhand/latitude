@@ -1,6 +1,6 @@
 composer.phar
 composer.lock
 phpunit.xml
-src/hoa.php
+.phpunit.result.cache
 vendor/
 build/
