@@ -13,7 +13,7 @@ use function Latitude\QueryBuilder\on;
 
 class SelectTest extends TestCase
 {
-    public function testSelect()
+    public function testSelect(): void
     {
         $select = $this->factory
             ->select()
@@ -23,7 +23,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testDistinct()
+    public function testDistinct(): void
     {
         $select = $this->factory
             ->select()
@@ -33,7 +33,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testColumns()
+    public function testColumns(): void
     {
         $select = $this->factory
             ->select('id', 'username')
@@ -43,7 +43,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testJoin()
+    public function testJoin(): void
     {
         $select = $this->factory
             ->select('u.username', 'r.role', 'c.country')
@@ -62,7 +62,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testJoinInner()
+    public function testJoinInner(): void
     {
         $select = $this->factory
             ->select('u.username', 'c.country')
@@ -79,7 +79,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testJoinLeft()
+    public function testJoinLeft(): void
     {
         $select = $this->factory
             ->select('u.username', 'c.country')
@@ -96,7 +96,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testJoinRight()
+    public function testJoinRight(): void
     {
         $select = $this->factory
             ->select('u.username', 'c.country')
@@ -113,7 +113,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testJoinFull()
+    public function testJoinFull(): void
     {
         $select = $this->factory
             ->select('u.username', 'c.country')
@@ -130,7 +130,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testWhere()
+    public function testWhere(): void
     {
         $select = $this->factory
             ->select()
@@ -141,7 +141,7 @@ class SelectTest extends TestCase
         $this->assertParams([1], $select);
     }
 
-    public function testWhereAnd()
+    public function testWhereAnd(): void
     {
         $select = $this->factory
             ->select()
@@ -153,7 +153,7 @@ class SelectTest extends TestCase
         $this->assertParams([1, 'admin'], $select);
     }
 
-    public function testWhereOr()
+    public function testWhereOr(): void
     {
         $select = $this->factory
             ->select()
@@ -165,7 +165,7 @@ class SelectTest extends TestCase
         $this->assertParams(['JP', 'CN'], $select);
     }
 
-    public function testGroupBy()
+    public function testGroupBy(): void
     {
         $select = $this->factory
             ->select(
@@ -184,7 +184,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testHaving()
+    public function testHaving(): void
     {
         $select = $this->factory
             ->select(
@@ -206,7 +206,7 @@ class SelectTest extends TestCase
         $this->assertParams([5000], $select);
     }
 
-    public function testOrderBy()
+    public function testOrderBy(): void
     {
         $select = $this->factory
             ->select()
@@ -217,7 +217,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testOrderByDirection()
+    public function testOrderByDirection(): void
     {
         $select = $this->factory
             ->select(
@@ -243,7 +243,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testOrderByReset()
+    public function testOrderByReset(): void
     {
         $select = $this->factory
             ->select()
@@ -256,7 +256,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testOrderByExpression()
+    public function testOrderByExpression(): void
     {
         $select = $this->factory
             ->select()
@@ -267,7 +267,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testOffsetLimit()
+    public function testOffsetLimit(): void
     {
         $select = $this->factory
             ->select()
@@ -279,7 +279,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testUnion()
+    public function testUnion(): void
     {
         $a = $this->factory->select('supplier_id')->from('suppliers');
         $b = $this->factory->select('supplier_id')->from('orders');
@@ -297,7 +297,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $union);
     }
 
-    public function testUnionAll()
+    public function testUnionAll(): void
     {
         $a = $this->factory->select('first_name', 'last_name')->from('employees');
         $b = $this->factory->select('first_name', 'last_name')->from('customers');

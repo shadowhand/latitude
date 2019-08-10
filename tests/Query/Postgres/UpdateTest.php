@@ -8,7 +8,7 @@ class UpdateTest extends TestCase
 {
     use PostgresEngineSetup;
 
-    public function testReturning()
+    public function testReturning(): void
     {
         $update = $this->factory
             ->update('users', [

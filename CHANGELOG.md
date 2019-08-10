@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- Require PHP >= 7.2 (#95)
 - Renamed `fn` to `func` for PHP 7.4 compatibility (#95)
 
 ### Removed

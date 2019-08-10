@@ -8,7 +8,7 @@ use function Latitude\QueryBuilder\search;
 
 class LikeTest extends TestCase
 {
-    public function testBegins()
+    public function testBegins(): void
     {
         $expr = search('username')->begins('sal');
 
@@ -21,7 +21,7 @@ class LikeTest extends TestCase
         $this->assertParams(['kim%'], $expr);
     }
 
-    public function testContains()
+    public function testContains(): void
     {
         $expr = search('username')->contains('ill');
 
@@ -34,7 +34,7 @@ class LikeTest extends TestCase
         $this->assertParams(['%ar%'], $expr);
     }
 
-    public function testEnds()
+    public function testEnds(): void
     {
         $expr = search('username')->ends('ly');
 

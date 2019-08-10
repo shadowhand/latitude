@@ -8,12 +8,12 @@ use function Latitude\QueryBuilder\identify;
 
 class PostgresTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = new PostgresEngine();
     }
 
-    public function testIdentifier()
+    public function testIdentifier(): void
     {
         $field = identify('id');
 

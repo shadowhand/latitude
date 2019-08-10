@@ -6,7 +6,7 @@ use Latitude\QueryBuilder\TestCase;
 
 class InsertTest extends TestCase
 {
-    public function testInsert()
+    public function testInsert(): void
     {
         $insert = $this->factory
             ->insert('users');
@@ -15,7 +15,7 @@ class InsertTest extends TestCase
         $this->assertParams([], $insert);
     }
 
-    public function testMap()
+    public function testMap(): void
     {
         $insert = $this->factory
             ->insert('users', [
@@ -27,7 +27,7 @@ class InsertTest extends TestCase
         $this->assertParams([1, 'admin'], $insert);
     }
 
-    public function testMultiple()
+    public function testMultiple(): void
     {
         $insert = $this->factory
             ->insert('users')

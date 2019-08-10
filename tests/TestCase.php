@@ -10,7 +10,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     /** @var QueryFactory */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->engine = $this->getEngine();
         $this->factory = new QueryFactory($this->engine);

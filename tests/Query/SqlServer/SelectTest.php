@@ -8,7 +8,7 @@ class SelectTest extends TestCase
 {
     use SqlServerEngineSetup;
 
-    public function testLimitWithoutOffset()
+    public function testLimitWithoutOffset(): void
     {
         $select = $this->factory
             ->select()
@@ -20,7 +20,7 @@ class SelectTest extends TestCase
         $this->assertParams([], $select);
     }
 
-    public function testOffsetLimit()
+    public function testOffsetLimit(): void
     {
         $select = $this->factory
             ->select()
