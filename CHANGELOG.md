@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Renamed `fn` to `func` for PHP 7.4 compatibility (#95)
 
+### Removed
+
+- Removed support for criteria strings (#95)
+
 ## [3.3.1]
 
 ### Fixed

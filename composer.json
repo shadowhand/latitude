@@ -16,14 +16,9 @@
     "require-dev": {
         "eloquent/liberator": "^2.0",
         "eloquent/phpstan-phony": "^0.4.0",
-        "hoa/devtools": "^1.17",
-        "hoa/ruler": "2.17.05.16",
         "phpstan/phpstan": "^0.11.6",
         "phpstan/phpstan-phpunit": "^0.11.1",
         "phpunit/phpunit": "^7.5"
-    },
-    "suggest": {
-        "hoa/ruler": "Adds support for creating criteria from strings"
     },
     "config": {
         "sort-packages": true
@@ -43,11 +38,9 @@
     },
     "scripts": {
         "test": [
-            "@test-flex",
             "@test-static",
             "@test-unit"
         ],
-        "test-flex": "hoa devtools:expandflexentities -o src/hoa.php",
         "test-static": "phpstan analyse -l 0 -c phpstan.neon src tests --memory-limit=256M",
         "test-unit": "phpunit"
     }
