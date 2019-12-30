@@ -42,6 +42,15 @@ class BasicEngine implements EngineInterface
         return str_replace(['%', '_'], ['\\%', '\\_'], $parameter);
     }
 
+    public function getSqlParamValue($value): string
+    {
+        if (is_null($value) or is_bool($value)) {
+            return var_export($value, true);
+        }
+
+        return $value;
+    }
+
     final public function extractParams(): callable
     {
         return function (StatementInterface $statement): array {

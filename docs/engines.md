@@ -18,9 +18,6 @@ The standard SQL-92 engine is `Latitude\QueryBuilder\Engine\CommonEngine`.
 This engine escapes all identifiers using double quotes. No other additional
 features are provided.
 
-This engine is recommended for most databases without a more specific engine,
-such as SQLite.
-
 ## MySQL Engine
 
 The MySQL engine is `Latitude\QueryBuilder\Engine\MySqlEngine`. This engine
@@ -40,3 +37,11 @@ escapes all identifiers using brackets. It also escapes brackets used in `LIKE`
 expressions, preventing the usage of character ranges.
 
 _**Note**: This engine relies on features found in SQL Server 2012 and above._
+
+## SQLite Engine
+
+The SQLite engine is `Latitude\QueryBuilder\Engine\SqliteEngine`. This engine
+converts boolean values into small integers because SQLite does not have
+a separate boolean storage class. Instead, boolean values are stored as
+integers: `0` (false) and `1` (true).
+
