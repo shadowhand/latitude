@@ -44,7 +44,7 @@ class BasicEngine implements EngineInterface
 
     public function exportParameter($param): string
     {
-        if (is_null($param) or is_bool($param)) {
+        if (is_null($param) || is_bool($param)) {
             return var_export($param, true);
         }
 
