@@ -25,7 +25,7 @@ final class Parameter implements StatementInterface
 
     public function sql(EngineInterface $engine): string
     {
-        return $engine->getSqlParamValue($this->sql);
+        return $engine->exportParameter($this->sql);
     }
 
     public function params(EngineInterface $engine): array

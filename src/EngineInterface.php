@@ -60,8 +60,7 @@ interface EngineInterface
     public function flattenSql(string $separator = ' ', StatementInterface ...$statements): string;
 
     /**
-     * Get a query parameter that does not need to be escaped but may be a subject of conversion (like `true` → `1` for
-     * SQLite).
+     * Export a query parameter that may need engine-specific formatting
      */
-    public function getSqlParamValue($value): string;
+    public function exportParameter($param): string;
 }
