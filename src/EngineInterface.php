@@ -58,4 +58,9 @@ interface EngineInterface
      * Flatten all SQL from multiple statements
      */
     public function flattenSql(string $separator = ' ', StatementInterface ...$statements): string;
+
+    /**
+     * Export a query parameter that may need engine-specific formatting
+     */
+    public function exportParameter($param): string;
 }

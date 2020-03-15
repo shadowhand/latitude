@@ -42,6 +42,15 @@ class BasicEngine implements EngineInterface
         return str_replace(['%', '_'], ['\\%', '\\_'], $parameter);
     }
 
+    public function exportParameter($param): string
+    {
+        if (is_null($param) || is_bool($param)) {
+            return var_export($param, true);
+        }
+
+        return $param;
+    }
+
     final public function extractParams(): callable
     {
         return function (StatementInterface $statement): array {
