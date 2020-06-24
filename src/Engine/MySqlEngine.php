@@ -12,6 +12,11 @@ class MySqlEngine extends BasicEngine
         return new Query\MySql\SelectQuery($this);
     }
 
+    public function makeInsert(): Query\InsertQuery
+    {
+        return new Query\MySql\InsertQuery($this);
+    }
+
     public function escapeIdentifier(string $identifier): string
     {
         return "`$identifier`";
