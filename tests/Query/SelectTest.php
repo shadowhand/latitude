@@ -10,6 +10,7 @@ use function Latitude\QueryBuilder\field;
 use function Latitude\QueryBuilder\func;
 use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\on;
+use function Latitude\QueryBuilder\subSelect;
 
 class SelectTest extends TestCase
 {
@@ -315,5 +316,31 @@ class SelectTest extends TestCase
 
         $this->assertSql($expected, $union);
         $this->assertParams([], $union);
+    }
+
+    public function testSubSelect(): void
+    {
+        $inner = $this->factory
+            ->select(
+                'department',
+                alias($sum = func('SUM', 'salary'), 'total')
+            )
+            ->from('employees')
+            ->groupBy('department');
+
+        $outer = $this->factory
+            ->select(alias(func('count', '*'), 'paginator_row_count'))
+            ->from(subSelect($inner, 'inner'));
+
+        $expected = implode(' ', [
+            'SELECT count(*) AS paginator_row_count',
+            'FROM',
+            '(SELECT department, SUM(salary) AS total',
+            'FROM employees',
+            'GROUP BY department)',
+            'AS inner'
+        ]);
+
+        $this->assertSql($expected, $outer);
     }
 }

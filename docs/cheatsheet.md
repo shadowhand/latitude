@@ -13,6 +13,7 @@ title: Cheatsheet
 - [Identifiers](#identifiers)
 - [Parameters](#parameters)
 - [Lists](#lists)
+- [SubSelect](#subselect)
 
 ## [](#criteria)Criteria
 
@@ -171,6 +172,14 @@ use function Latitude\QueryBuilder\listing;
 listing([1, 1, 2, 3, 5])
 // "id", "username", "email"
 listing(identifyAll(['id', 'username', 'email']))
+```
+
+## [](#subselect)SubSelect
+
+```php
+use function Latitude\QueryBuilder\subSelect;
+
+$select->from(subSelect($innerSelect, 'alias'))
 ```
 
 **[Back](../)**
