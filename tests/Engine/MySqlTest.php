@@ -26,25 +26,25 @@ class MySqlTest extends TestCase
         $criteria = field('active')->eq(true);
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertEquals('`active` = true', $sql);
+        $this->assertSame('`active` = true', $sql);
         $this->assertEquals([], $params);
 
         $criteria = field('active')->eq(false);
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertEquals('`active` = false', $sql);
+        $this->assertSame('`active` = false', $sql);
         $this->assertEquals([], $params);
 
         $criteria = field('active')->eq(null);
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertEquals('`active` = NULL', $sql);
+        $this->assertSame('`active` = NULL', $sql);
         $this->assertEquals([], $params);
 
         $criteria = field('active')->eq('yes');
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertEquals('`active` = ?', $sql);
+        $this->assertSame('`active` = ?', $sql);
         $this->assertEquals(['yes'], $params);
     }
 }
