@@ -151,4 +151,29 @@ $query = $factory
 _**Note:** When using the SQL Server engine an offset **must** be defined for
 the limit to be applied! Use `offset(0)` when no offset is desired._
 
+# Sub SELECT
+
+```php
+$inner = $factory
+    ->select(
+        'department',
+        alias($sum = func('SUM', 'salary'), 'total')
+    )
+    ->from('employees')
+    ->groupBy('department');
+
+$outer = $factory
+    ->select(alias(func('count', '*'), 'paginator_row_count'))
+    ->from(subSelect($inner, 'inner'))
+    ->compile();
+```
+
+Would produce:
+
+```sql
+SELECT count(*) AS paginator_row_count FROM
+(SELECT department, SUM(salary) AS total FROM employees GROUP BY department) 
+AS inner
+```
+
 **[Back](../)**

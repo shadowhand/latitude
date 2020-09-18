@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
+
+use Latitude\QueryBuilder\Query\SelectQuery;
 
 function isStatement($value): bool
 {
@@ -102,4 +105,9 @@ function paramAll(array $values): array
 function listing(array $values, string $separator = ', '): Partial\Listing
 {
     return new Partial\Listing($separator, ...paramAll($values));
+}
+
+function subSelect(SelectQuery $inner, string $alias): ExpressionInterface
+{
+    return alias(express('(%s)', $inner), $alias);
 }
