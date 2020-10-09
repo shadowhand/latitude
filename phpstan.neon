@@ -1,1 +1,8 @@
+parameters:
+  parallel:
+    maximumNumberOfProcesses: 4
+  level: 1
+  paths:
+    - src
+    - tests
 
