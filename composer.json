@@ -11,11 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=7.4"
+        "php": "^7.4 || ^8.0"
     },
     "require-dev": {
         "doctrine/coding-standard": "^8.1",
-        "eloquent/liberator": "^2.0",
         "eloquent/phpstan-phony": "^0.7.1",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.48",

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Partial;
@@ -7,25 +8,27 @@ use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
+use function array_map;
+use function sprintf;
+use function vsprintf;
+
 final class Expression implements ExpressionInterface
 {
-    /** @var string */
-    private $pattern;
+    private string $pattern;
+    private array $replacements;
 
-    /** @var StatementInterface[] */
-    private $replacements;
-
-    public function __construct(
-        string $pattern,
-        StatementInterface ...$replacements
-    ) {
+    public function __construct(string $pattern, StatementInterface ...$replacements)
+    {
         $this->pattern = $pattern;
         $this->replacements = $replacements;
     }
 
     public function append(string $pattern, StatementInterface ...$replacements): ExpressionInterface
     {
-        return new self("{$this->pattern} $pattern", ...array_merge($this->replacements, $replacements));
+        $pattern = sprintf('%s %s', $this->pattern, $pattern);
+        $replacements = [...$this->replacements, ...$replacements];
+
+        return new self($pattern, ...$replacements);
     }
 
     public function sql(EngineInterface $engine): string

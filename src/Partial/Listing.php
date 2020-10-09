@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Partial;
@@ -8,11 +9,10 @@ use Latitude\QueryBuilder\StatementInterface;
 
 final class Listing implements StatementInterface
 {
-    /** @var string */
-    private $separator;
+    private string $separator;
 
     /** @var StatementInterface[] */
-    private $statements;
+    private array $statements;
 
     public function __construct(
         string $separator,

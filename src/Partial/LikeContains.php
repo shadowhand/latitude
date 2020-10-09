@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Partial;
@@ -8,8 +9,7 @@ use Latitude\QueryBuilder\StatementInterface;
 
 final class LikeContains implements StatementInterface
 {
-    /** @var string */
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
@@ -24,6 +24,7 @@ final class LikeContains implements StatementInterface
     public function params(EngineInterface $engine): array
     {
         $value = $engine->escapeLike($this->value);
-        return ["%$value%"];
+
+        return ['%' . $value . '%'];
     }
 }

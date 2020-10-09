@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query;
@@ -14,14 +15,9 @@ class UnionQuery extends AbstractQuery
     use Capability\CanUnion;
     use Capability\HasOrderBy;
 
-    /** @var bool */
-    protected $all = false;
-
-    /** @var StatementInterface */
-    protected $left;
-
-    /** @var StatementInterface */
-    protected $right;
+    protected bool $all = false;
+    protected StatementInterface $left;
+    protected StatementInterface $right;
 
     public function __construct(
         EngineInterface $engine,
@@ -33,9 +29,10 @@ class UnionQuery extends AbstractQuery
         $this->right = $right;
     }
 
-    public function all($state = true): self
+    public function all(bool $state = true): self
     {
         $this->all = $state;
+
         return $this;
     }
 
@@ -45,6 +42,7 @@ class UnionQuery extends AbstractQuery
         $query = $this->applyAll($query);
         $query = $this->applyRight($query);
         $query = $this->applyOrderBy($query);
+
         return $query;
     }
 

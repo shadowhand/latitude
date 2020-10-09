@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Query\MySql;
 
 use Latitude\QueryBuilder\TestCase;
@@ -12,7 +14,7 @@ class InsertTest extends TestCase
     {
         $insert = $this->factory
             ->insert('users', [
-                     'username' => 'james',
+                'username' => 'james',
             ])
             ->ignore(true);
 

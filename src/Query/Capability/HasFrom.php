@@ -1,25 +1,32 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query\Capability;
 
 use Latitude\QueryBuilder\ExpressionInterface;
-use Latitude\QueryBuilder\StatementInterface;
 
+use function array_merge;
 use function Latitude\QueryBuilder\identifyAll;
 use function Latitude\QueryBuilder\listing;
 
 trait HasFrom
 {
-    /** @var StatementInterface[] */
-    protected $from = [];
+    protected array $from = [];
 
+    /**
+     * @param mixed ...$tables
+     */
     public function from(...$tables): self
     {
         $this->from = identifyAll($tables);
+
         return $this;
     }
 
+    /**
+     * @param mixed ...$tables
+     */
     public function addFrom(...$tables): self
     {
         return $this->from(...array_merge($this->from, $tables));

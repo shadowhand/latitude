@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Engine;
@@ -6,6 +7,13 @@ namespace Latitude\QueryBuilder\Engine;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query;
 use Latitude\QueryBuilder\StatementInterface;
+
+use function array_map;
+use function array_merge;
+use function implode;
+use function is_string;
+use function str_replace;
+use function var_export;
 
 class BasicEngine implements EngineInterface
 {
@@ -38,17 +46,21 @@ class BasicEngine implements EngineInterface
     {
         // Backslash is used to escape wildcards.
         $parameter = str_replace('\\', '\\\\', $parameter);
+
         // Standard wildcards are underscore and percent sign.
         return str_replace(['%', '_'], ['\\%', '\\_'], $parameter);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function exportParameter($param): string
     {
-        if (is_null($param) || is_bool($param)) {
-            return var_export($param, true);
+        if (is_string($param)) {
+            return $param;
         }
 
-        return $param;
+        return var_export($param, true);
     }
 
     final public function extractParams(): callable
@@ -70,7 +82,7 @@ class BasicEngine implements EngineInterface
         return array_merge([], ...array_map($this->extractParams(), $statements));
     }
 
-    final public function flattenSql(string $separator = ' ', StatementInterface ...$statements): string
+    final public function flattenSql(string $separator, StatementInterface ...$statements): string
     {
         return implode($separator, array_map($this->extractSql(), $statements));
     }

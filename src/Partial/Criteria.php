@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Partial;
@@ -7,12 +8,9 @@ use Latitude\QueryBuilder\CriteriaInterface;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
 
-use function Latitude\QueryBuilder\express;
-
 final class Criteria implements CriteriaInterface
 {
-    /** @var ExpressionInterface */
-    private $expression;
+    private ExpressionInterface $expression;
 
     public function __construct(
         ExpressionInterface $expression

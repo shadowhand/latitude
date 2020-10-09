@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Engine;
 
 use Latitude\QueryBuilder\TestCase;
@@ -14,14 +16,14 @@ class SqliteTest extends TestCase
         $this->engine = new SqliteEngine();
     }
 
-    public function testIdentifier()
+    public function testIdentifier(): void
     {
         $field = identify('id');
 
         $this->assertSql('id', $field);
     }
 
-    public function testBooleanParameterValue()
+    public function testBooleanParameterValue(): void
     {
         $criteria = field('active')->eq(true);
         $sql = $criteria->sql($this->engine);

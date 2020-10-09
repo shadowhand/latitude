@@ -1,9 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Engine;
 
 use Latitude\QueryBuilder\Query;
+
+use function sprintf;
 
 class MySqlEngine extends BasicEngine
 {
@@ -19,6 +22,6 @@ class MySqlEngine extends BasicEngine
 
     public function escapeIdentifier(string $identifier): string
     {
-        return "`$identifier`";
+        return sprintf('`%s`', $identifier);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query\Capability;
@@ -8,12 +9,12 @@ use Latitude\QueryBuilder\ExpressionInterface;
 
 trait HasWhere
 {
-    /** @var CriteriaInterface */
-    protected $where;
+    protected ?CriteriaInterface $where = null;
 
     public function where(CriteriaInterface $criteria): self
     {
         $this->where = $criteria;
+
         return $this;
     }
 
@@ -24,6 +25,7 @@ trait HasWhere
         }
 
         $this->where = $this->where->and($criteria);
+
         return $this;
     }
 
@@ -34,6 +36,7 @@ trait HasWhere
         }
 
         $this->where = $this->where->or($criteria);
+
         return $this;
     }
 

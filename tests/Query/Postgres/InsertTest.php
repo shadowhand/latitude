@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Query\Postgres;
 
 use Latitude\QueryBuilder\TestCase;
