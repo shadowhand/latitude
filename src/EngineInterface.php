@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
@@ -57,10 +58,12 @@ interface EngineInterface
     /**
      * Flatten all SQL from multiple statements
      */
-    public function flattenSql(string $separator = ' ', StatementInterface ...$statements): string;
+    public function flattenSql(string $separator, StatementInterface ...$statements): string;
 
     /**
      * Export a query parameter that may need engine-specific formatting
+     *
+     * @param mixed $param
      */
     public function exportParameter($param): string;
 }

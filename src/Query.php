@@ -1,20 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
 final class Query
 {
-    /** @var string */
-    private $sql;
+    private string $sql;
+    private array $params;
 
-    /** @var array */
-    private $params;
-
-    public function __construct(
-        string $sql,
-        array $params
-    ) {
+    public function __construct(string $sql, array $params)
+    {
         $this->sql = $sql;
         $this->params = $params;
     }

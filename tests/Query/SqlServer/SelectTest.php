@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Query\SqlServer;
 
 use Latitude\QueryBuilder\TestCase;
+
+use function implode;
 
 class SelectTest extends TestCase
 {

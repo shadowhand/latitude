@@ -1,9 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Engine;
 
 use Latitude\QueryBuilder\Query;
+
+use function sprintf;
+use function str_replace;
 
 class SqlServerEngine extends BasicEngine
 {
@@ -19,7 +23,7 @@ class SqlServerEngine extends BasicEngine
 
     public function escapeIdentifier(string $identifier): string
     {
-        return "[$identifier]";
+        return sprintf('[%s]', $identifier);
     }
 
     public function escapeLike(string $parameter): string

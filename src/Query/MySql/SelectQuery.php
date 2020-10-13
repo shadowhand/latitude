@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query\MySql;
@@ -8,12 +9,12 @@ use Latitude\QueryBuilder\Query;
 
 class SelectQuery extends Query\SelectQuery
 {
-    /** @var bool */
-    protected $calcFoundRows = false;
+    protected bool $calcFoundRows = false;
 
     public function calcFoundRows(bool $status): self
     {
         $this->calcFoundRows = $status;
+
         return $this;
     }
 
@@ -23,6 +24,7 @@ class SelectQuery extends Query\SelectQuery
         if ($this->calcFoundRows) {
             $query = $query->append('SQL_CALC_FOUND_ROWS');
         }
+
         return $query;
     }
 }

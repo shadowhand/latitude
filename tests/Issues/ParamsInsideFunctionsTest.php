@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Issues;
 
 use Latitude\QueryBuilder\TestCase;
@@ -18,7 +20,6 @@ class ParamsInsideFunctionsTest extends TestCase
 
         $this->assertSql('COUNT(id)', $expr);
         $this->assertParams([], $expr);
-
     }
 
     public function testFuncParams(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Query\Postgres;
 
 use Latitude\QueryBuilder\TestCase;
@@ -12,7 +14,7 @@ class UpdateTest extends TestCase
     {
         $update = $this->factory
             ->update('users', [
-                'last_login' => null
+                'last_login' => null,
             ])
             ->returning('id');
 

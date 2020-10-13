@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query\Capability;
@@ -10,12 +11,15 @@ use function Latitude\QueryBuilder\identify;
 
 trait HasReturning
 {
-    /** @var StatementInterface */
-    protected $returning;
+    protected ?StatementInterface $returning = null;
 
+    /**
+     * @param mixed $column
+     */
     public function returning($column): self
     {
         $this->returning = identify($column);
+
         return $this;
     }
 

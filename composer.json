@@ -11,15 +11,15 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "eloquent/liberator": "^2.0",
-        "eloquent/phpstan-phony": "^0.5.0",
+        "doctrine/coding-standard": "^8.1",
+        "eloquent/phpstan-phony": "^0.7.1",
         "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan": "^0.11.12",
-        "phpstan/phpstan-phpunit": "^0.11.2",
-        "phpunit/phpunit": "^8.3"
+        "phpstan/phpstan": "^0.12.48",
+        "phpstan/phpstan-phpunit": "^0.12.16",
+        "phpunit/phpunit": "^9.4"
     },
     "config": {
         "sort-packages": true
@@ -39,10 +39,12 @@
     },
     "scripts": {
         "test": [
-            "@test-static",
-            "@test-unit"
+            "@check",
+            "phpunit"
         ],
-        "test-static": "phpstan analyse -l 0 -c phpstan.neon src tests --memory-limit=256M",
-        "test-unit": "phpunit"
+        "check": [
+            "phpstan analyse",
+            "phpcs"
+        ]
     }
 }

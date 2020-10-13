@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query;
@@ -6,6 +7,8 @@ namespace Latitude\QueryBuilder\Query;
 use Latitude\QueryBuilder\ExpressionInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
+use function array_keys;
+use function array_map;
 use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\listing;
@@ -15,27 +18,26 @@ class UpdateQuery extends AbstractQuery
 {
     use Capability\HasWhere;
 
-    /** @var StatementInterface */
-    protected $table;
+    protected ?StatementInterface $table = null;
+    protected ?StatementInterface $set = null;
 
-    /** @var StatementInterface */
-    protected $set;
-
+    /**
+     * @param string|StatementInterface $table
+     */
     public function table($table): self
     {
         $this->table = identify($table);
+
         return $this;
     }
 
     public function set(array $map): self
     {
-        $this->set = listing(array_map(
-            function ($key, $value): StatementInterface {
-                return express('%s = %s', identify($key), param($value));
-            },
-            array_keys($map),
-            $map
-        ));
+        $pattern = '%s = %s';
+        $express = static fn ($key, $value) => express($pattern, identify($key), param($value));
+
+        $this->set = listing(array_map($express, array_keys($map), $map));
+
         return $this;
     }
 
@@ -61,6 +63,6 @@ class UpdateQuery extends AbstractQuery
 
     protected function applySet(ExpressionInterface $query): ExpressionInterface
     {
-        return $this->set ? $query->append('SET %s', $this->set): $query;
+        return $this->set ? $query->append('SET %s', $this->set) : $query;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query;
@@ -7,10 +8,14 @@ use Latitude\QueryBuilder\CriteriaInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
+use function array_merge;
 use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\identifyAll;
 use function Latitude\QueryBuilder\listing;
+use function sprintf;
+use function strtoupper;
+use function trim;
 
 class SelectQuery extends AbstractQuery
 {
@@ -21,74 +26,96 @@ class SelectQuery extends AbstractQuery
     use Capability\HasOrderBy;
     use Capability\HasWhere;
 
-    /** @var bool */
-    protected $distinct = false;
+    protected bool $distinct = false;
+    protected array $columns = [];
+    protected array $joins = [];
+    protected array $groupBy = [];
 
-    /** @var StatementInterface[] */
-    protected $columns = [];
+    protected ?CriteriaInterface $having = null;
 
-    /** @var StatementInterface[] */
-    protected $joins = [];
-
-    /** @var StatementInterface[] */
-    protected $groupBy = [];
-
-    /** @var CriteriaInterface */
-    protected $having;
-
-    public function distinct($state = true): self
+    public function distinct(bool $state = true): self
     {
         $this->distinct = $state;
+
         return $this;
     }
 
+    /**
+     * @param mixed ...$columns
+     */
     public function columns(...$columns): self
     {
         $this->columns = identifyAll($columns);
+
         return $this;
     }
 
+    /**
+     * @param mixed ...$columns
+     */
     public function addColumns(...$columns): self
     {
         return $this->columns(...array_merge($this->columns, $columns));
     }
 
+    /**
+     * @param StatementInterface|string $table
+     */
     public function join($table, CriteriaInterface $criteria, string $type = ''): self
     {
-        $join = trim(sprintf('%s JOIN', strtoupper($type)));
-        $this->joins[] = express("$join %s ON %s", identify($table), $criteria);
+        $sql = trim(sprintf('%s JOIN %%s ON %%s', strtoupper($type)));
+
+        $this->joins[] = express($sql, identify($table), $criteria);
+
         return $this;
     }
 
+    /**
+     * @param StatementInterface|string $table
+     */
     public function innerJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'INNER');
     }
 
+    /**
+     * @param StatementInterface|string $table
+     */
     public function leftJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'LEFT');
     }
 
+    /**
+     * @param StatementInterface|string $table
+     */
     public function rightJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'RIGHT');
     }
 
+    /**
+     * @param StatementInterface|string $table
+     */
     public function fullJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'FULL');
     }
 
+    /**
+     * @param mixed ...$columns
+     */
     public function groupBy(...$columns): self
     {
         $this->groupBy = identifyAll($columns);
+
         return $this;
     }
 
     public function having(CriteriaInterface $criteria): self
     {
         $this->having = $criteria;
+
         return $this;
     }
 

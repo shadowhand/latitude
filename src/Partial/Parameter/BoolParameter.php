@@ -2,29 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Latitude\QueryBuilder\Partial;
+namespace Latitude\QueryBuilder\Partial\Parameter;
 
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\StatementInterface;
 
-final class LikeBegins implements StatementInterface
+final class BoolParameter implements StatementInterface
 {
-    private string $value;
+    private bool $value;
 
-    public function __construct(string $value)
+    public function __construct(bool $value)
     {
         $this->value = $value;
     }
 
     public function sql(EngineInterface $engine): string
     {
-        return '?';
+        return $engine->exportParameter($this->value);
     }
 
     public function params(EngineInterface $engine): array
     {
-        $value = $engine->escapeLike($this->value);
-
-        return [$value . '%'];
+        return [];
     }
 }

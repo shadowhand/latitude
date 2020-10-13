@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Query;
 
 use Latitude\QueryBuilder\TestCase;
 
+use function implode;
 use function Latitude\QueryBuilder\alias;
 use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\field;
@@ -290,7 +293,7 @@ class SelectTest extends TestCase
             'SELECT supplier_id FROM suppliers',
             'UNION',
             'SELECT supplier_id FROM orders',
-            'ORDER BY supplier_id DESC'
+            'ORDER BY supplier_id DESC',
         ]);
 
         $this->assertSql($expected, $union);

@@ -1,19 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
-use Latitude\QueryBuilder\Ruler\Context;
+use Latitude\QueryBuilder\Engine\BasicEngine;
 
 class QueryFactory
 {
-    /** @var EngineInterface */
-    protected $engine;
+    protected EngineInterface $engine;
 
-    public function __construct(
-        EngineInterface $engine = null
-    ) {
-        $this->engine = $engine ?: new Engine\BasicEngine();
+    public function __construct(?EngineInterface $engine = null)
+    {
+        $this->engine = $engine ?? new BasicEngine();
     }
 
     /**
@@ -27,6 +26,7 @@ class QueryFactory
         if (empty($columns) === false) {
             $query = $query->columns(...$columns);
         }
+
         return $query;
     }
 
@@ -48,9 +48,11 @@ class QueryFactory
     public function insert($table, array $map = []): Query\InsertQuery
     {
         $query = $this->engine->makeInsert()->into($table);
-        if (empty($map) === false) {
+
+        if ($map) {
             $query = $query->map($map);
         }
+
         return $query;
     }
 
@@ -72,9 +74,11 @@ class QueryFactory
     public function update($table, array $map = []): Query\UpdateQuery
     {
         $query = $this->engine->makeUpdate()->table($table);
-        if (empty($map) === false) {
+
+        if ($map) {
             $query = $query->set($map);
         }
+
         return $query;
     }
 }

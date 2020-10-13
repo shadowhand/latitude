@@ -1,17 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Query;
 
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
-use Latitude\QueryBuilder\QueryInterface;
 use Latitude\QueryBuilder\Query;
+use Latitude\QueryBuilder\QueryInterface;
 
 abstract class AbstractQuery implements QueryInterface
 {
-    /** @var EngineInterface */
-    protected $engine;
+    protected EngineInterface $engine;
 
     public function __construct(
         EngineInterface $engine
@@ -26,6 +26,7 @@ abstract class AbstractQuery implements QueryInterface
     public function compile(): Query
     {
         $query = $this->asExpression();
+
         return new Query(
             $query->sql($this->engine),
             $query->params($this->engine)

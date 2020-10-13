@@ -2,5 +2,6 @@ composer.phar
 composer.lock
 phpunit.xml
 .phpunit.result.cache
+.phpcs.cache
 vendor/
 build/

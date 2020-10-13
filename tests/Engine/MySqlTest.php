@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder\Engine;
 
 use Latitude\QueryBuilder\TestCase;
@@ -21,7 +23,7 @@ class MySqlTest extends TestCase
         $this->assertSql('`id`', $field);
     }
 
-    public function testBooleanParameterValue()
+    public function testBooleanParameterValue(): void
     {
         $criteria = field('active')->eq(true);
         $sql = $criteria->sql($this->engine);

@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Latitude\QueryBuilder;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    /** @var EngineInterface */
-    protected $engine;
+    protected EngineInterface $engine;
 
-    /** @var QueryFactory */
-    protected $factory;
+    protected QueryFactory $factory;
 
     protected function setUp(): void
     {
@@ -21,19 +21,23 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         return new Engine\BasicEngine();
     }
 
-    public function assertSql(string $sql, StatementInterface $statement)
+    public function assertSql(string $sql, StatementInterface $statement): void
     {
         $this->assertSame($sql, $statement->sql($this->engine));
-        if ($statement instanceof QueryInterface) {
-            $this->assertSame($sql, $statement->compile()->sql());
+        if (! ($statement instanceof QueryInterface)) {
+            return;
         }
+
+        $this->assertSame($sql, $statement->compile()->sql());
     }
 
-    public function assertParams(array $params, StatementInterface $statement)
+    public function assertParams(array $params, StatementInterface $statement): void
     {
         $this->assertSame($params, $statement->params($this->engine));
-        if ($statement instanceof QueryInterface) {
-            $this->assertSame($params, $statement->compile()->params());
+        if (! ($statement instanceof QueryInterface)) {
+            return;
         }
+
+        $this->assertSame($params, $statement->compile()->params());
     }
 }
