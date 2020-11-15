@@ -1,0 +1,12 @@
+name = "latitude"
+type = "webpack"
+account_id = "91f98aba0f3e8f739ceadd58ecffa572"
+workers_dev = true
+
+[site]
+bucket = "./_site"
+
+[env.production]
+route = "https://latitude.shadowhand.com/*"
+zone_id = "a82c94af2f575563e02ba6b1ddc90d85"
+

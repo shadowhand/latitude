@@ -17,7 +17,7 @@ composer require latitude/latitude
 
 ## Documentation
 
-The latest stable documentation is [available online](https://latitude.shadowhand.me)
+The latest stable documentation is [available online](https://latitude.shadowhand.com/)
 and can be found in the [docs/](docs/) directory.
 
 ## License
