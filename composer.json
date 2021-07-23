@@ -19,7 +19,7 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.48",
         "phpstan/phpstan-phpunit": "^0.12.16",
-        "phpunit/phpunit": "^9.4"
+        "phpunit/phpunit": "^9.5"
     },
     "config": {
         "sort-packages": true
