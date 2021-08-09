@@ -28,8 +28,8 @@ $query = $factory
     ->returning('id')
     ->compile();
 
-$query->sql(); // UPDATE "users" SET "is_active" = ? WHERE "login_at" < ? RETURNING "id"
-$query->params(); // [false, '2018-01-01']
+$query->sql(); // UPDATE "users" SET "is_active" = false WHERE "login_at" < ? RETURNING "id"
+$query->params(); // ['2018-01-01']
 ```
 
 **[Back](../)**
