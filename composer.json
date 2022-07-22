@@ -22,6 +22,10 @@
         "phpunit/phpunit": "^9.5"
     },
     "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        },
         "sort-packages": true
     },
     "autoload": {
