@@ -21,43 +21,43 @@ class LikeBuilder
         $this->statement = $statement;
     }
 
-    public function begins(string $value): CriteriaInterface
+    public function begins(string $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return $this->like(new LikeBegins($value));
+        return $this->like(new LikeBegins($value), $caseSensitive);
     }
 
-    public function notBegins(string $value): CriteriaInterface
+    public function notBegins(string $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return $this->notLike(new LikeBegins($value));
+        return $this->notLike(new LikeBegins($value), $caseSensitive);
     }
 
-    public function contains(string $value): CriteriaInterface
+    public function contains(string $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return $this->like(new LikeContains($value));
+        return $this->like(new LikeContains($value), $caseSensitive);
     }
 
-    public function notContains(string $value): CriteriaInterface
+    public function notContains(string $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return $this->notLike(new LikeContains($value));
+        return $this->notLike(new LikeContains($value), $caseSensitive);
     }
 
-    public function ends(string $value): CriteriaInterface
+    public function ends(string $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return $this->like(new LikeEnds($value));
+        return $this->like(new LikeEnds($value), $caseSensitive);
     }
 
-    public function notEnds(string $value): CriteriaInterface
+    public function notEnds(string $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return $this->notLike(new LikeEnds($value));
+        return $this->notLike(new LikeEnds($value), $caseSensitive);
     }
 
-    protected function like(StatementInterface $value): CriteriaInterface
+    protected function like(StatementInterface $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return criteria('%s LIKE %s', $this->statement, $value);
+        return criteria($caseSensitive ? '%s LIKE %s' : '%s ILIKE %s', $this->statement, $value);
     }
 
-    protected function notLike(StatementInterface $value): CriteriaInterface
+    protected function notLike(StatementInterface $value, bool $caseSensitive = true): CriteriaInterface
     {
-        return criteria('%s NOT LIKE %s', $this->statement, $value);
+        return criteria($caseSensitive ? '%s NOT LIKE %s' : '%s NOT ILIKE %s', $this->statement, $value);
     }
 }

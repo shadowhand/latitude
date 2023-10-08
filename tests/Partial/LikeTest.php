@@ -21,6 +21,16 @@ class LikeTest extends TestCase
 
         $this->assertSql('username NOT LIKE ?', $expr);
         $this->assertParams(['kim%'], $expr);
+
+        $expr = search('username')->begins('sal', false);
+
+        $this->assertSql('username ILIKE ?', $expr);
+        $this->assertParams(['sal%'], $expr);
+
+        $expr = search('username')->notBegins('kim', false);
+
+        $this->assertSql('username NOT ILIKE ?', $expr);
+        $this->assertParams(['kim%'], $expr);
     }
 
     public function testContains(): void
@@ -34,6 +44,16 @@ class LikeTest extends TestCase
 
         $this->assertSql('username NOT LIKE ?', $expr);
         $this->assertParams(['%ar%'], $expr);
+
+        $expr = search('username')->contains('ill', false);
+
+        $this->assertSql('username ILIKE ?', $expr);
+        $this->assertParams(['%ill%'], $expr);
+
+        $expr = search('username')->notContains('ar', false);
+
+        $this->assertSql('username NOT ILIKE ?', $expr);
+        $this->assertParams(['%ar%'], $expr);
     }
 
     public function testEnds(): void
@@ -46,6 +66,16 @@ class LikeTest extends TestCase
         $expr = search('username')->notEnds('am');
 
         $this->assertSql('username NOT LIKE ?', $expr);
+        $this->assertParams(['%am'], $expr);
+
+        $expr = search('username')->ends('ly', false);
+
+        $this->assertSql('username ILIKE ?', $expr);
+        $this->assertParams(['%ly'], $expr);
+
+        $expr = search('username')->notEnds('am', false);
+
+        $this->assertSql('username NOT ILIKE ?', $expr);
         $this->assertParams(['%am'], $expr);
     }
 }
