@@ -40,9 +40,7 @@ class SelectQuery extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param mixed ...$columns
-     */
+    /** @param mixed ...$columns */
     public function columns(...$columns): self
     {
         $this->columns = identifyAll($columns);
@@ -50,17 +48,13 @@ class SelectQuery extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param mixed ...$columns
-     */
+    /** @param mixed ...$columns */
     public function addColumns(...$columns): self
     {
         return $this->columns(...array_merge($this->columns, $columns));
     }
 
-    /**
-     * @param StatementInterface|string $table
-     */
+    /** @param StatementInterface|string $table */
     public function join($table, CriteriaInterface $criteria, string $type = ''): self
     {
         $sql = trim(sprintf('%s JOIN %%s ON %%s', strtoupper($type)));
@@ -70,41 +64,31 @@ class SelectQuery extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param StatementInterface|string $table
-     */
+    /** @param StatementInterface|string $table */
     public function innerJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'INNER');
     }
 
-    /**
-     * @param StatementInterface|string $table
-     */
+    /** @param StatementInterface|string $table */
     public function leftJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'LEFT');
     }
 
-    /**
-     * @param StatementInterface|string $table
-     */
+    /** @param StatementInterface|string $table */
     public function rightJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'RIGHT');
     }
 
-    /**
-     * @param StatementInterface|string $table
-     */
+    /** @param StatementInterface|string $table */
     public function fullJoin($table, CriteriaInterface $criteria): self
     {
         return $this->join($table, $criteria, 'FULL');
     }
 
-    /**
-     * @param mixed ...$columns
-     */
+    /** @param mixed ...$columns */
     public function groupBy(...$columns): self
     {
         $this->groupBy = identifyAll($columns);

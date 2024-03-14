@@ -21,9 +21,7 @@ class UpdateQuery extends AbstractQuery
     protected ?StatementInterface $table = null;
     protected ?StatementInterface $set = null;
 
-    /**
-     * @param string|StatementInterface $table
-     */
+    /** @param string|StatementInterface $table */
     public function table($table): self
     {
         $this->table = identify($table);

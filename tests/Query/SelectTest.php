@@ -172,7 +172,7 @@ class SelectTest extends TestCase
     {
         $select = $this->factory
             ->select(
-                alias(func('COUNT', 'id'), 'total')
+                alias(func('COUNT', 'id'), 'total'),
             )
             ->from('employees')
             ->groupBy('department');
@@ -192,7 +192,7 @@ class SelectTest extends TestCase
         $select = $this->factory
             ->select(
                 'department',
-                alias($sum = func('SUM', 'salary'), 'total')
+                alias($sum = func('SUM', 'salary'), 'total'),
             )
             ->from('employees')
             ->groupBy('department')
@@ -226,7 +226,7 @@ class SelectTest extends TestCase
             ->select(
                 'u.id',
                 'u.username',
-                alias(func('COUNT', 'l.id'), 'total')
+                alias(func('COUNT', 'l.id'), 'total'),
             )
             ->from(alias('users', 'u'))
             ->join(alias('logins', 'l'), on('u.id', 'l.user_id'))

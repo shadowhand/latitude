@@ -21,9 +21,7 @@ class InsertQuery extends AbstractQuery
     protected ?StatementInterface $columns = null;
     protected array $values = [];
 
-    /**
-     * @param mixed $table
-     */
+    /** @param mixed $table */
     public function into($table): self
     {
         $this->into = identify($table);
@@ -36,9 +34,7 @@ class InsertQuery extends AbstractQuery
         return $this->columns(...array_keys($map))->values(...array_values($map));
     }
 
-    /**
-     * @param mixed ...$columns
-     */
+    /** @param mixed ...$columns */
     public function columns(...$columns): self
     {
         $this->columns = listing(identifyAll($columns));
@@ -46,9 +42,7 @@ class InsertQuery extends AbstractQuery
         return $this;
     }
 
-    /**
-     * @param mixed ...$params
-     */
+    /** @param mixed ...$params */
     public function values(...$params): self
     {
         $this->values[] = express('(%s)', listing(paramAll($params)));

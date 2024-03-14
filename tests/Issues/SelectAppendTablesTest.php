@@ -6,9 +6,7 @@ namespace Latitude\QueryBuilder\Issues;
 
 use Latitude\QueryBuilder\TestCase;
 
-/**
- * @link https://github.com/shadowhand/latitude/issues/58
- */
+/** @link https://github.com/shadowhand/latitude/issues/58 */
 class SelectAppendTablesTest extends TestCase
 {
     public function testSelectTable(): void

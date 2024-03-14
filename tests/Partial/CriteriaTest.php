@@ -40,7 +40,7 @@ class CriteriaTest extends TestCase
     public function testInQuery(): void
     {
         $expr = field('country')->in(
-            $this->factory->selectDistinct('country')->from('users')
+            $this->factory->selectDistinct('country')->from('users'),
         );
 
         $this->assertSql('country IN (SELECT DISTINCT country FROM users)', $expr);
@@ -130,7 +130,7 @@ class CriteriaTest extends TestCase
     {
         $expr = group(
             field('username')->eq('jane')
-                ->or(field('first_name')->eq('Jane'))
+                ->or(field('first_name')->eq('Jane')),
         )->and(field('last_login')->isNotNull());
 
         $this->assertSql('(username = ? OR first_name = ?) AND last_login IS NOT NULL', $expr);

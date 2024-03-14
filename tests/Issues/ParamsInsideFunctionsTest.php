@@ -9,9 +9,7 @@ use Latitude\QueryBuilder\TestCase;
 use function Latitude\QueryBuilder\func;
 use function Latitude\QueryBuilder\param;
 
-/**
- * @link https://github.com/shadowhand/latitude/issues/57
- */
+/** @link https://github.com/shadowhand/latitude/issues/57 */
 class ParamsInsideFunctionsTest extends TestCase
 {
     public function testFuncColumns(): void

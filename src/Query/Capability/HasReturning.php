@@ -13,9 +13,7 @@ trait HasReturning
 {
     protected ?StatementInterface $returning = null;
 
-    /**
-     * @param mixed $column
-     */
+    /** @param mixed $column */
     public function returning($column): self
     {
         $this->returning = identify($column);
