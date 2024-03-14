@@ -8,9 +8,7 @@ use function is_bool;
 
 class SqliteEngine extends BasicEngine
 {
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function exportParameter($param): string
     {
         if (is_bool($param)) {
