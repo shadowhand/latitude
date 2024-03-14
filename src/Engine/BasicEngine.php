@@ -51,9 +51,7 @@ class BasicEngine implements EngineInterface
         return str_replace(['%', '_'], ['\\%', '\\_'], $parameter);
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function exportParameter($param): string
     {
         if (is_string($param)) {

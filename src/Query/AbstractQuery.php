@@ -29,7 +29,7 @@ abstract class AbstractQuery implements QueryInterface
 
         return new Query(
             $query->sql($this->engine),
-            $query->params($this->engine)
+            $query->params($this->engine),
         );
     }
 
