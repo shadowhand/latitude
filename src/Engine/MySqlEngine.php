@@ -22,6 +22,6 @@ class MySqlEngine extends BasicEngine
 
     public function escapeIdentifier(string $identifier): string
     {
-        return sprintf('`%s`', $identifier);
+        return sprintf('`%s`', str_replace('`', '``', $identifier));
     }
 }
