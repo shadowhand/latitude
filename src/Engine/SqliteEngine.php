@@ -6,7 +6,7 @@ namespace Latitude\QueryBuilder\Engine;
 
 use function is_bool;
 
-class SqliteEngine extends BasicEngine
+class SqliteEngine extends CommonEngine
 {
     /**
      * @inheritDoc
