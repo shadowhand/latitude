@@ -21,6 +21,10 @@ class MySqlTest extends TestCase
         $field = identify('id');
 
         $this->assertSql('`id`', $field);
+
+        $field = identify('contains`backticks');
+
+        $this->assertSql('`contains``backticks`', $field);
     }
 
     public function testBooleanParameterValue(): void

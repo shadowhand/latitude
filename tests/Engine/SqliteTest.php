@@ -21,6 +21,10 @@ class SqliteTest extends TestCase
         $field = identify('id');
 
         $this->assertSql('"id"', $field);
+
+        $field = identify('contains"quotes');
+
+        $this->assertSql('"contains""quotes"', $field);
     }
 
     public function testBooleanParameterValue(): void
