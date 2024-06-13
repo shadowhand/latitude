@@ -25,6 +25,7 @@ class UnionQuery extends AbstractQuery
         StatementInterface $right
     ) {
         parent::__construct($engine);
+
         $this->left = $left;
         $this->right = $right;
     }

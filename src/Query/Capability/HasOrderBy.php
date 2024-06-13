@@ -13,9 +13,7 @@ trait HasOrderBy
 {
     protected array $orderBy = [];
 
-    /**
-     * @param mixed $column
-     */
+    /** @param mixed $column */
     public function orderBy($column, string $direction = ''): self
     {
         if (! $column) {

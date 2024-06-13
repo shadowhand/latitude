@@ -7,6 +7,7 @@ namespace Latitude\QueryBuilder\Engine;
 use Latitude\QueryBuilder\Query;
 
 use function sprintf;
+use function str_replace;
 
 class MySqlEngine extends BasicEngine
 {
@@ -22,6 +23,6 @@ class MySqlEngine extends BasicEngine
 
     public function escapeIdentifier(string $identifier): string
     {
-        return sprintf('`%s`', $identifier);
+        return sprintf('`%s`', str_replace('`', '``', $identifier));
     }
 }

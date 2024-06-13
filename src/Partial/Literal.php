@@ -12,9 +12,7 @@ final class Literal implements StatementInterface
     /** @var mixed */
     private $value;
 
-    /**
-     * @param mixed $value
-     */
+    /** @param mixed $value */
     public function __construct($value)
     {
         $this->value = $value;
