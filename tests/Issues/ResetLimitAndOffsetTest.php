@@ -6,9 +6,7 @@ namespace Latitude\QueryBuilder\Issues;
 
 use Latitude\QueryBuilder\TestCase;
 
-/**
- * @link https://github.com/shadowhand/latitude/issues/66
- */
+/** @link https://github.com/shadowhand/latitude/issues/66 */
 class ResetLimitAndOffsetTest extends TestCase
 {
     public function testResetLimit(): void

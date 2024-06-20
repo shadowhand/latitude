@@ -13,9 +13,7 @@ use function is_bool;
 
 final class Parameter implements StatementInterface
 {
-    /**
-     * @param mixed $value
-     */
+    /** @param mixed $value */
     public static function create($value): StatementInterface
     {
         if ($value === null) {
@@ -32,9 +30,7 @@ final class Parameter implements StatementInterface
     private string $sql = '?';
     private array $params;
 
-    /**
-     * @param string|float|int $value
-     */
+    /** @param string|float|int $value */
     public function __construct($value)
     {
         $this->params = [$value];
