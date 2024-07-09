@@ -15,7 +15,7 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^8.1 || ^10.0 || ^11.0",
-        "eloquent/phpstan-phony": "^0.7.1",
+        "eloquent/phpstan-phony": "^0.7.1 || ^0.8.0",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.48",
         "phpstan/phpstan-phpunit": "^0.12.16",
