@@ -3,17 +3,23 @@ name: tests
 on:
     pull_request:
     push:
-        branches: [ master ]
+        branches:
+          - master
+          - main
 
 jobs:
     run:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-24.04
         strategy:
             fail-fast: false
             matrix:
                 php:
                     - '7.4'
                     - '8.0'
+                    - '8.1'
+                    - '8.2'
+                    - '8.3'
+                    - '8.4'
                 minimum_versions: [false]
                 coverage: ['none']
                 include:
@@ -21,15 +27,15 @@ jobs:
                       php: '7.4'
                       minimum_versions: true
                     - description: 'Log Code Coverage'
-                      php: '8.0'
-                      coverage: 'xdebug'
+                      php: '8.4'
+                      coverage: 'pcov'
 
         name: PHP ${{ matrix.php }} ${{ matrix.description }}
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v4
               with:
                   path: ~/.composer/cache/files
                   key: ${{ matrix.php }}
@@ -53,7 +59,7 @@ jobs:
 
             - name: Upload code coverage
               uses: codecov/codecov-action@v2
-              if: matrix.coverage == 'xdebug'
+              if: matrix.coverage == 'pcov'
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
                   file: './build/logs/clover.xml'
