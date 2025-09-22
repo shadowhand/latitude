@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.1]
+
+### Updated
+
+- Update testing matrix for newer PHP versions
+- Improve identifier escaping (#163 by @donatj)
+
+## [4.3.0]
+
+### Updated
+
+- Require PHP >= 7.4
+- Updated code style, add types where possible
+
 ## [4.2.0]
 
 ### Added
