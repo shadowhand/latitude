@@ -5,11 +5,10 @@ title: Introduction
 
 # Introduction
 
+[![Become a Supporter](https://img.shields.io/badge/patreon-sponsor%20me-e6461a.svg)](https://www.patreon.com/shadowhand)
 [![Latest Stable Version](https://img.shields.io/packagist/v/latitude/latitude.svg)](https://packagist.org/packages/latitude/latitude)
-[![License](https://img.shields.io/github/license/shadowhand/latitude.svg)](https://github.com/shadowhand/latitude/blob/master/LICENSE)
-[![Build Status](https://img.shields.io/travis/shadowhand/latitude/master.svg)](https://travis-ci.org/shadowhand/latitude)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/shadowhand/latitude/master.svg)](https://scrutinizer-ci.com/g/shadowhand/latitude/?branch=master)
-[![Code Quality](https://img.shields.io/scrutinizer/g/shadowhand/latitude.svg)](https://scrutinizer-ci.com/g/shadowhand/latitude/?branch=master)
+[![License](https://img.shields.io/packagist/l/latitude/latitude.svg)](https://github.com/shadowhand/latitude/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/shadowhand/latitude/tests.yaml?branch=main)](https://github.com/shadowhand/latitude)
 
 Latitude is a SQL query builder with zero dependencies and a fluent interface.
 It supports most of [SQL-92](https://en.wikipedia.org/wiki/SQL-92) as well as
