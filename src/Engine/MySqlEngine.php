@@ -7,6 +7,7 @@ namespace Latitude\QueryBuilder\Engine;
 use Latitude\QueryBuilder\Query;
 
 use function sprintf;
+use function str_replace;
 
 class MySqlEngine extends BasicEngine
 {
