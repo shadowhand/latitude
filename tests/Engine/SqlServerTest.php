@@ -21,6 +21,10 @@ class SqlServerTest extends TestCase
         $field = identify('id');
 
         $this->assertSql('[id]', $field);
+
+        $field = identify('contains[brackets]');
+
+        $this->assertSql('[contains[brackets]]]', $field);
     }
 
     public function testLike(): void

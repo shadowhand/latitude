@@ -20,7 +20,11 @@ class SqliteTest extends TestCase
     {
         $field = identify('id');
 
-        $this->assertSql('id', $field);
+        $this->assertSql('"id"', $field);
+
+        $field = identify('contains"quotes');
+
+        $this->assertSql('"contains""quotes"', $field);
     }
 
     public function testBooleanParameterValue(): void
@@ -28,25 +32,25 @@ class SqliteTest extends TestCase
         $criteria = field('active')->eq(true);
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertSame('active = 1', $sql);
+        $this->assertSame('"active" = 1', $sql);
         $this->assertEquals([], $params);
 
         $criteria = field('active')->eq(false);
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertSame('active = 0', $sql);
+        $this->assertSame('"active" = 0', $sql);
         $this->assertEquals([], $params);
 
         $criteria = field('active')->eq(null);
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertSame('active = NULL', $sql);
+        $this->assertSame('"active" = NULL', $sql);
         $this->assertEquals([], $params);
 
         $criteria = field('active')->eq('yes');
         $sql = $criteria->sql($this->engine);
         $params = $criteria->params($this->engine);
-        $this->assertSame('active = ?', $sql);
+        $this->assertSame('"active" = ?', $sql);
         $this->assertEquals(['yes'], $params);
     }
 }
