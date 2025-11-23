@@ -6,8 +6,13 @@ namespace Latitude\QueryBuilder;
 
 use Latitude\QueryBuilder\Partial\Parameter;
 
+use function array_key_exists;
 use function array_map;
 use function explode;
+use function ini_get;
+use function ini_set;
+use function is_bool;
+use function is_null;
 use function sprintf;
 use function strpos;
 use function strtoupper;
@@ -151,4 +156,47 @@ function paramAll(array $values): array
 function listing(array $values, string $separator = ', '): Partial\Listing
 {
     return new Partial\Listing($separator, ...paramAll($values));
+}
+
+function compileRawSql(string $sql, array $params): string
+{
+    if (!$params) {
+        return $sql;
+    }
+
+    $ini = ini_get('pcre.jit');
+
+    ini_set('pcre.jit', '0');
+
+    try {
+        $index = 0;
+
+        return preg_replace_callback(
+            '/(?:\'(?:\\\\.|[^\\\\\'])*\'|\"(?:\\\\.|[^\\\\\"])*\"|\`(?:\\\\.|[^\\\\\`])*\`|\[(?:\\\\.|[^\[\]])*?\]|(\?)(?=(?:[^\'\"\`\[\]]|\'(?:\\\\.|[^\\\\\'])*\'|\"(?:\\\\.|[^\\\\"])*\"|\`(?:\\\\.|[^\\\\\`])*\`|\[(?:\\\\.|[^\[\]])*?\])*$)|(?:--[^\r\n]*|\/\*[\s\S]*?\*\/|\#.*))/m',
+            function (array $match) use ($params, &$index): mixed {
+                if (count($match) == 1) {
+                    return $match[0];
+                }
+
+                $key = $match[1];
+
+                if (!array_key_exists($key, $this->params)) {
+                    throw new \Exception('sql placeholder and param count do not match');
+                }
+
+                $value = $params[$index];
+
+                $index++;
+
+                return !is_null($value) ? $value : 'NULL';
+            },
+            $sql
+        );
+    } catch (\Throwable $exception) {
+        throw $exception;
+    } finally {
+        if (!is_bool($ini)) {
+            ini_set('pcre.jit', $ini);
+        }
+    }
 }

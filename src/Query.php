@@ -24,4 +24,9 @@ final class Query
     {
         return $this->params;
     }
+
+    public function rawSql(): string
+    {
+        return compileRawSql($this->sql, $this->params);
+    }
 }
