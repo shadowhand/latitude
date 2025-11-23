@@ -179,9 +179,7 @@ function compileRawSql(string $sql, array $params): string
                     return $match[0];
                 }
 
-                $key = $match[1];
-
-                if (!array_key_exists($key, $this->params)) {
+                if (!array_key_exists($index, $params)) {
                     throw new Exception('sql placeholder and param count do not match');
                 }
 
