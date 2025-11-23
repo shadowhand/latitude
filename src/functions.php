@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+use Exception;
 use Latitude\QueryBuilder\Partial\Parameter;
 
 use function array_key_exists;
@@ -181,7 +182,7 @@ function compileRawSql(string $sql, array $params): string
                 $key = $match[1];
 
                 if (!array_key_exists($key, $this->params)) {
-                    throw new \Exception('sql placeholder and param count do not match');
+                    throw new Exception('sql placeholder and param count do not match');
                 }
 
                 $value = $params[$index];
@@ -192,7 +193,7 @@ function compileRawSql(string $sql, array $params): string
             },
             $sql
         );
-    } catch (\Throwable $exception) {
+    } catch (Exception $exception) {
         throw $exception;
     } finally {
         if (!is_bool($ini)) {
