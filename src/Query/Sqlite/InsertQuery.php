@@ -56,8 +56,13 @@ class InsertQuery extends Query\InsertQuery
     {
         $query = parent::asExpression();
 
-        $query = $this->applyOnConstraintViolation($query);
-        $query = $this->applyReturning($query);
+        if ($this->supportsOnConflict()) {
+            $query = $this->applyOnConstraintViolation($query);
+        }
+
+        if ($this->supportsReturning()) {
+            $query = $this->applyReturning($query);
+        }
 
         return $query;
     }
@@ -87,5 +92,15 @@ class InsertQuery extends Query\InsertQuery
                 )
             )
         );
+    }
+
+    protected function supportsOnConflict(): bool
+    {
+        return PHP_VERSION_ID >= 70400;
+    }
+
+    protected function supportsReturning(): bool
+    {
+        return PHP_VERSION_ID >= 80000;
     }
 }
