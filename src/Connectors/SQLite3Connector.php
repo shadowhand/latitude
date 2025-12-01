@@ -2,11 +2,13 @@
 
 namespace Latitude\QueryBuilder\Connectors;
 
+use SQLite3;
+use SQLite3Stmt;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query\AbstractQuery;
-use SQLite3Stmt;
+use function gettype;
 
-class SQLite3 extends \SQLite3
+class SQLite3Connector extends SQLite3
 {
     public function createStatementFromQuery(EngineInterface $engine, AbstractQuery $query): SQLite3Stmt
     {
@@ -17,11 +19,11 @@ class SQLite3 extends \SQLite3
                 $i + 1,
                 $value,
                 [
-                    'null' => SQLITE3_NULL,
-                    'int' => SQLITE3_INTEGER,
-                    'float' => SQLITE3_FLOAT,
+                    'NULL' => SQLITE3_NULL,
+                    'integer' => SQLITE3_INTEGER,
+                    'double' => SQLITE3_FLOAT,
                     'string' => SQLITE3_TEXT
-                ][get_debug_type($value)] ?? SQLITE3_TEXT
+                ][gettype($value)] ?? SQLITE3_TEXT
             );
         }
 

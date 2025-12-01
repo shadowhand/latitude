@@ -2,11 +2,13 @@
 
 namespace Latitude\QueryBuilder\Connectors;
 
+use mysqli;
+use mysqli_stmt;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query\AbstractQuery;
-use mysqli_stmt;
+use function gettype;
 
-class mysqli extends \mysqli
+class MysqliConnector extends mysqli
 {
     public function createStatementFromQuery(EngineInterface $engine, AbstractQuery $query): mysqli_stmt
     {
@@ -17,11 +19,11 @@ class mysqli extends \mysqli
 
         foreach ($query->params($engine) as $i => $value) {
             $types[] = [
-                'null' => 's',
-                'int' => 'i',
+                'NULL' => 's',
+                'integer' => 'i',
                 'float' => 'd',
                 'string' => 's',
-            ][get_debug_type($value)] ?? 's';
+            ][gettype($value)] ?? 's';
 
             $values[] = $value;
         }
