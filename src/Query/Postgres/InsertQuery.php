@@ -18,7 +18,7 @@ class InsertQuery extends Query\InsertQuery
 {
     use Query\Capability\HasReturning;
 
-    protected bool $onConflictDoIgnore = false;
+    protected bool $onConflictDoNothing = false;
     protected bool $onConflictDoUpdate = false;
     protected ?ExpressionInterface $onConflictConstraint = null;
     protected array $onDuplicateKeyUpdatesMap = [];
@@ -26,9 +26,9 @@ class InsertQuery extends Query\InsertQuery
     /**
      * @param array|string $constraint
      */
-    public function onConflictDoIgnore($constraint): self
+    public function onConflictDoNothing($constraint): self
     {
-        $this->onConflictDoIgnore = true;
+        $this->onConflictDoNothing = true;
         $this->onConflictDoUpdate = false;
 
         $this->setOnConflictConstraint($constraint);
@@ -42,7 +42,7 @@ class InsertQuery extends Query\InsertQuery
      */
     public function onConflictDoUpdate($constraint, array $updatesMap): self
     {
-        $this->onConflictDoIgnore = false;
+        $this->onConflictDoNothing = false;
         $this->onConflictDoUpdate = true;
 
         $this->setOnConflictConstraint($constraint);
@@ -74,13 +74,13 @@ class InsertQuery extends Query\InsertQuery
 
     protected function applyOnConstraintViolation(ExpressionInterface $query): ExpressionInterface
     {
-        if (!$this->onConflictDoIgnore && !$this->onConflictDoUpdate) {
+        if (!$this->onConflictDoNothing && !$this->onConflictDoUpdate) {
             return $query;
         }
 
         $query = $query->append('ON CONFLICT %s', $this->onConflictConstraint);
 
-        if ($this->onConflictDoIgnore) {
+        if ($this->onConflictDoNothing) {
             return $query->append('DO NOTHING');
         }
 
