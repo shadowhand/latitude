@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Latitude\QueryBuilder\Query\Postgres;
+namespace Latitude\QueryBuilder\Query\Sqlite;
 
 use Latitude\QueryBuilder\TestCase;
 
