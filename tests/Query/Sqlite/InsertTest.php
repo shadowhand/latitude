@@ -18,8 +18,13 @@ class InsertTest extends TestCase
             ])
             ->returning('id');
 
-        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) RETURNING "id"', $insert);
-        $this->assertParams(['james'], $insert);
+        if (PHP_VERSION_ID < 80100) {
+            $this->assertSql('INSERT INTO "users" ("username") VALUES (?)', $insert);
+            $this->assertParams(['james'], $insert);
+        } else {
+            $this->assertSql('INSERT INTO "users" ("username") VALUES (?) RETURNING "id"', $insert);
+            $this->assertParams(['james'], $insert);
+        }
     }
 
     public function testOnConflictDoNothing(): void
@@ -30,8 +35,13 @@ class InsertTest extends TestCase
             ])
             ->ignoreOnConstraint(['email']);
 
-        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ("email") DO NOTHING', $insert);
-        $this->assertParams(['james'], $insert);
+        if (PHP_VERSION_ID < 80000) {
+            $this->assertSql('INSERT INTO "users" ("username") VALUES (?)', $insert);
+            $this->assertParams(['james'], $insert);
+        } else {
+            $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ("email") DO NOTHING', $insert);
+            $this->assertParams(['james'], $insert);
+        }
     }
 
     public function testOnConflictDoUpdate(): void
@@ -47,7 +57,12 @@ class InsertTest extends TestCase
                 ]
             );
 
-        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ("username") DO UPDATE "username" = ?', $insert);
-        $this->assertParams(['james', 'rick'], $insert);
+        if (PHP_VERSION_ID < 80000) {
+            $this->assertSql('INSERT INTO "users" ("username") VALUES (?)', $insert);
+            $this->assertParams(['james'], $insert);
+        } else {
+            $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ("username") DO UPDATE "username" = ?', $insert);
+            $this->assertParams(['james', 'rick'], $insert);
+        }
     }
 }
