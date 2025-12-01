@@ -23,10 +23,7 @@ class InsertQuery extends Query\InsertQuery
     protected ?ExpressionInterface $onConflictConstraint = null;
     protected array $onDuplicateKeyUpdatesMap = [];
 
-    /**
-     * @param array|string $constraint
-     */
-    public function onConflictDoNothing($constraint): self
+    public function onConflictDoNothing(array $constraint): self
     {
         $this->onConflictDoNothing = true;
         $this->onConflictDoUpdate = false;
@@ -36,30 +33,29 @@ class InsertQuery extends Query\InsertQuery
         return $this;
     }
 
-    /**
-     * @param array|string $constraint
-     * @param array $updatesMap
-     */
-    public function onConflictDoUpdate($constraint, array $updatesMap): self
+    public function onConflictDoUpdate(array $constraint, array $map): self
     {
         $this->onConflictDoNothing = false;
         $this->onConflictDoUpdate = true;
 
         $this->setOnConflictConstraint($constraint);
 
-        $this->onDuplicateKeyUpdatesMap = $updatesMap;
+        $this->onDuplicateKeyUpdatesMap = $map;
 
         return $this;
     }
 
-    /**
-     * @param array|string $constraint
-     */
-    protected function setOnConflictConstraint($constraint): void
+    protected function setOnConflictConstraint(array $constraint): void
     {
-        $this->onConflictConstraint = is_string($constraint)
-            ? express('ON CONSTRAINT %s', identify($constraint))
-            : express('(%s)', listing(identifyAll($constraint)));
+        $this->onConflictConstraint = express(
+            '(%s)',
+            listing(identifyAll($constraint))
+        );
+
+        // Support for named constraints:
+        // $this->onConflictConstraint = is_string($constraint)
+        //     ? express('ON CONSTRAINT %s', identify($constraint))
+        //     : express('(%s)', listing(identifyAll($constraint)));
     }
 
     public function asExpression(): ExpressionInterface

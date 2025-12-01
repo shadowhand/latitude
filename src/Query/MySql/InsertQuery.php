@@ -35,7 +35,7 @@ class InsertQuery extends Query\InsertQuery
     {
         $this->ignore = false;
         $this->onDuplicateKeyUpdate = true;
-        $this->onDuplicateKeyUpdatesMap = $updatesMap;
+        $this->onDuplicateKeyUpdatesMap = $map;
 
         return $this;
     }

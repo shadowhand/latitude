@@ -32,14 +32,14 @@ class InsertQuery extends Query\InsertQuery
         return $this;
     }
 
-    public function onConflictDoUpdate(array $constraint, array $updatesMap): self
+    public function onConflictDoUpdate(array $constraint, array $map): self
     {
         $this->onConflictDoNothing = false;
         $this->onConflictDoUpdate = true;
 
         $this->setOnConflictConstraint($constraint);
 
-        $this->onDuplicateKeyUpdatesMap = $updatesMap;
+        $this->onDuplicateKeyUpdatesMap = $map;
 
         return $this;
     }
