@@ -22,7 +22,7 @@ class InsertTest extends TestCase
         $this->assertParams(['james'], $insert);
     }
 
-    public function testInsertIgnore(): void
+    public function testOnConflictDoNothing(): void
     {
         $insert = $this->factory
             ->insert('users', [
@@ -36,7 +36,7 @@ class InsertTest extends TestCase
         $this->assertParams(['james'], $insert);
     }
 
-    public function testUpsert(): void
+    public function testOnConflictDoUpdate(): void
     {
         $insert = $this->factory
             ->insert('users', [
@@ -49,7 +49,7 @@ class InsertTest extends TestCase
                 ]
             );
 
-        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT "users_uniq" DO UPDATE "username" = ?', $insert);
+        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ON CONSTRAINT "users_uniq" DO UPDATE "username" = ?', $insert);
         $this->assertParams(['james', 'rick'], $insert);
     }
 }

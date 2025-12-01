@@ -16,14 +16,26 @@ use function Latitude\QueryBuilder\param;
 
 class InsertQuery extends Query\InsertQuery
 {
-    use Query\Capability\HasOnConstraint;
+    protected bool $ignore = false;
+    protected bool $onDuplicateKeyUpdate = false;
+    protected array $onDuplicateKeyUpdatesMap = [];
 
-    /**
-     * This method will be deprecated in favor of ->ignoreOnConstraint()
-     */
     public function ignore(bool $status): self
     {
         $this->ignore = $status;
+
+        if ($status && $this->onDuplicateKeyUpdate) {
+            $this->onDuplicateKeyUpdate = false;
+        }
+
+        return $this;
+    }
+
+    public function onDuplicateKeyUpdate(array $updatesMap): self
+    {
+        $this->ignore = false;
+        $this->onDuplicateKeyUpdate = true;
+        $this->onDuplicateKeyUpdatesMap = $updatesMap;
 
         return $this;
     }
@@ -41,7 +53,7 @@ class InsertQuery extends Query\InsertQuery
     {
         $query = parent::asExpression();
 
-        $query = $this->applyOnConstraintViolation($query);
+        $query = $this->applyOnDuplicateKeyUpdate($query);
 
         return $query;
     }
@@ -55,9 +67,9 @@ class InsertQuery extends Query\InsertQuery
         return $query;
     }
 
-    protected function applyOnConstraintViolation(ExpressionInterface $query): ExpressionInterface
+    protected function applyOnDuplicateKeyUpdate(ExpressionInterface $query): ExpressionInterface
     {
-        if (!$this->onConstraint || $this->ignore === true) {
+        if (!$this->onDuplicateKeyUpdate) {
             return $query;
         }
 
@@ -66,8 +78,8 @@ class InsertQuery extends Query\InsertQuery
             listing(
                 array_map(
                     fn($key, $value) => express('%s = %s', identify($key), param($value)),
-                    array_keys($this->updatesMap),
-                    $this->updatesMap
+                    array_keys($this->onDuplicateKeyUpdatesMap),
+                    $this->onDuplicateKeyUpdatesMap
                 )
             )
         );
