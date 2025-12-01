@@ -8,7 +8,7 @@ use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query\AbstractQuery;
 use function gettype;
 
-class MysqliConnector extends mysqli
+class MySqliConnector extends mysqli
 {
     public function createStatementFromQuery(EngineInterface $engine, AbstractQuery $query): mysqli_stmt
     {
