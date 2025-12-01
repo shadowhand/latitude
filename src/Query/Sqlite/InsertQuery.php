@@ -96,11 +96,11 @@ class InsertQuery extends Query\InsertQuery
 
     protected function supportsOnConflict(): bool
     {
-        return PHP_VERSION_ID >= 70400;
+        return PHP_VERSION_ID >= 80000;
     }
 
     protected function supportsReturning(): bool
     {
-        return PHP_VERSION_ID >= 80000;
+        return PHP_VERSION_ID >= 80100;
     }
 }
