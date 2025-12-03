@@ -31,7 +31,7 @@ class MySqliConnector extends mysqli
         $types = [];
         $values = [];
 
-        foreach ($query->params($engine) as $i => $value) {
+        foreach ($query->params($engine) as $value) {
             $types[] = static::$typeMap[gettype($value)] ?? static::$defaultType;
             $values[] = $value;
         }
