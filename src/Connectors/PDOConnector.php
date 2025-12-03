@@ -6,10 +6,20 @@ use PDO;
 use PDOStatement;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query\AbstractQuery;
+
 use function gettype;
 
 class PDOConnector extends PDO
 {
+    protected static $typeMap = [
+        'NULL' => self::PARAM_NULL,
+        'boolean' => self::PARAM_BOOL,
+        'integer' => self::PARAM_INT,
+        'double' => self::PARAM_STR,
+        'string' => self::PARAM_STR
+    ];
+    protected static $defaultType = self::PARAM_STR;
+
     public function createStatementFromQuery(EngineInterface $engine, AbstractQuery $query): PDOStatement
     {
         $statement = $this->prepare($query->sql($engine));
@@ -18,13 +28,7 @@ class PDOConnector extends PDO
             $statement->bindValue(
                 $i + 1,
                 $value,
-                [
-                    'NULL' => static::PARAM_NULL,
-                    'boolean' => static::PARAM_BOOL,
-                    'integer' => static::PARAM_INT,
-                    'double' => static::PARAM_STR,
-                    'string' => static::PARAM_STR,
-                ][gettype($value)] ?? static::PARAM_STR
+                static::$typeMap[gettype($value)] ?? static::$defaultType
             );
         }
 

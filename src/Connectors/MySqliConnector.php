@@ -2,14 +2,28 @@
 
 namespace Latitude\QueryBuilder\Connectors;
 
-use mysqli;
-use mysqli_stmt;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query\AbstractQuery;
+
+use mysqli;
+use mysqli_stmt;
+
 use function gettype;
 
 class MySqliConnector extends mysqli
 {
+    public const MYSQLI_INT = 'i';
+    public const MYSQLI_FLOAT = 'd';
+    public const MYSQLI_STRING = 's';
+
+    protected static $typeMap = [
+        'NULL' => self::MYSQLI_STRING,
+        'integer' => self::MYSQLI_INT,
+        'float' => self::MYSQLI_FLOAT,
+        'string' => self::MYSQLI_STRING
+    ];
+    protected static $defaultType = self::MYSQLI_STRING;
+
     public function createStatementFromQuery(EngineInterface $engine, AbstractQuery $query): mysqli_stmt
     {
         $statement = $this->prepare($query->sql($engine));
@@ -18,13 +32,7 @@ class MySqliConnector extends mysqli
         $values = [];
 
         foreach ($query->params($engine) as $i => $value) {
-            $types[] = [
-                'NULL' => 's',
-                'integer' => 'i',
-                'float' => 'd',
-                'string' => 's',
-            ][gettype($value)] ?? 's';
-
+            $types[] = static::$typeMap[gettype($value)] ?? static::$defaultType;
             $values[] = $value;
         }
 
