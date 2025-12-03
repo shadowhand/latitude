@@ -21,4 +21,20 @@ class InsertTest extends TestCase
         $this->assertSql('INSERT IGNORE INTO `users` (`username`) VALUES (?)', $insert);
         $this->assertParams(['james'], $insert);
     }
+
+    public function testOnDuplicateKeyUpdate(): void
+    {
+        $insert = $this->factory
+            ->insert('users', [
+                'username' => 'james',
+            ])
+            ->onDuplicateKeyUpdate(
+                [
+                    'username' => 'rick'
+                ]
+            );
+
+        $this->assertSql('INSERT INTO `users` (`username`) VALUES (?) ON DUPLICATE KEY UPDATE `username` = ?', $insert);
+        $this->assertParams(['james', 'rick'], $insert);
+    }
 }

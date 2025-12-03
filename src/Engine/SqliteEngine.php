@@ -4,10 +4,22 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Engine;
 
+use Latitude\QueryBuilder\Query;
+
 use function is_bool;
 
 class SqliteEngine extends CommonEngine
 {
+    public function makeInsert(): Query\InsertQuery
+    {
+        return new Query\Sqlite\InsertQuery($this);
+    }
+
+    public function makeUpdate(): Query\UpdateQuery
+    {
+        return new Query\Sqlite\UpdateQuery($this);
+    }
+
     /**
      * @inheritDoc
      */

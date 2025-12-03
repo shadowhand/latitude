@@ -2,21 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Latitude\QueryBuilder\Query\Postgres;
+namespace Latitude\QueryBuilder\Query\Sqlite;
 
 use Latitude\QueryBuilder\ExpressionInterface;
 use Latitude\QueryBuilder\Query;
 
-class InsertQuery extends Query\InsertQuery
+class UpdateQuery extends Query\UpdateQuery
 {
-    use Query\Capability\HasOnConflict;
     use Query\Capability\HasReturning;
 
     public function asExpression(): ExpressionInterface
     {
         $query = parent::asExpression();
-
-        $query = $this->applyOnConstraintViolation($query);
         $query = $this->applyReturning($query);
 
         return $query;
