@@ -28,7 +28,7 @@ class InsertTest extends TestCase
             ->insert('users', [
                 'username' => 'james',
             ])
-            ->ignoreOnConstraint([
+            ->onConflictDoNothing([
                 'email'
             ]);
 
@@ -42,14 +42,14 @@ class InsertTest extends TestCase
             ->insert('users', [
                 'username' => 'james',
             ])
-            ->updateOnConstraint(
-                'users_uniq',
+            ->onConflictDoUpdate(
+                ['username'],
                 [
                     'username' => 'rick'
                 ]
             );
 
-        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ON CONSTRAINT "users_uniq" DO UPDATE "username" = ?', $insert);
+        $this->assertSql('INSERT INTO "users" ("username") VALUES (?) ON CONFLICT ("username") DO UPDATE "username" = ?', $insert);
         $this->assertParams(['james', 'rick'], $insert);
     }
 }

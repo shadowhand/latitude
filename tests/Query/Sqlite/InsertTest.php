@@ -33,7 +33,7 @@ class InsertTest extends TestCase
             ->insert('users', [
                 'username' => 'james',
             ])
-            ->ignoreOnConstraint(['email']);
+            ->onConflictDoNothing(['email']);
 
         if (PHP_VERSION_ID < 80000) {
             $this->assertSql('INSERT INTO "users" ("username") VALUES (?)', $insert);
@@ -50,7 +50,7 @@ class InsertTest extends TestCase
             ->insert('users', [
                 'username' => 'james',
             ])
-            ->updateOnConstraint(
+            ->onConflictDoUpdate(
                 ['username'],
                 [
                     'username' => 'rick'
