@@ -19,4 +19,15 @@ class DeleteTest extends TestCase
         $this->assertSql('DELETE FROM "users" ROWS 10', $delete);
         $this->assertParams([], $delete);
     }
+
+    public function testLimitWithReturning(): void
+    {
+        $delete = $this->factory
+            ->delete('users')
+            ->limit(10)
+            ->returning('id');
+
+        $this->assertSql('DELETE FROM "users" ROWS 10 RETURNING "id"', $delete);
+        $this->assertParams([], $delete);
+    }
 }
