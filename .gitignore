@@ -1,5 +1,6 @@
 composer.phar
 composer.lock
+phpcs.xml
 phpunit.xml
 .phpunit.result.cache
 .phpcs.cache

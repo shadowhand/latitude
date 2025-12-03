@@ -20,7 +20,7 @@ class InsertQuery extends Query\InsertQuery
     protected bool $onDuplicateKeyUpdate = false;
     protected array $onDuplicateKeyUpdatesMap = [];
 
-    public function ignore(bool $status): self
+    public function ignore(bool $status = true): self
     {
         $this->ignore = $status;
 
