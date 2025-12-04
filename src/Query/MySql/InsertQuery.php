@@ -9,6 +9,7 @@ use Latitude\QueryBuilder\Query;
 
 use function array_keys;
 use function array_map;
+use function Latitude\QueryBuilder\func;
 use function Latitude\QueryBuilder\listing;
 use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\identify;
@@ -73,13 +74,25 @@ class InsertQuery extends Query\InsertQuery
             return $query;
         }
 
+        $updates = [];
+
+        foreach ($this->onDuplicateKeyUpdatesMap as $key => $value) {
+            $keyIsIdentifier = !is_numeric($key);
+
+            $identifier = $keyIsIdentifier ? $key : $value;
+
+            $updates[$identifier] = !$keyIsIdentifier
+                ? func('VALUES', identify($identifier))
+                : param($value);
+        }
+
         return $query->append(
             'ON DUPLICATE KEY UPDATE %s',
             listing(
                 array_map(
-                    fn($key, $value) => express('%s = %s', identify($key), param($value)),
-                    array_keys($this->onDuplicateKeyUpdatesMap),
-                    $this->onDuplicateKeyUpdatesMap
+                    fn($key, $value) => express('%s = %s', identify($key), $value),
+                    array_keys($updates),
+                    $updates
                 )
             )
         );

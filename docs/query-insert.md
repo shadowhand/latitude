@@ -31,7 +31,7 @@ $query->sql(); // INSERT INTO "users" ("username", "password") VALUES (?, ?), (?
 $query->params(); // ['sally', <hash>, 'mark', <hash>]
 ```
 
-When using the Postgres engine `RETURNING` can be added:
+When using the Postgres or SQLite engine `RETURNING` can be added:
 
 ```php
 $query = $factory
@@ -47,3 +47,76 @@ $query->params(); // [11, 30]
 ```
 
 **[Back](../)**
+
+MySQL, Postgres, and SQLite support native constraint handling in insert queries.
+
+MySQL:
+
+Ignore on constraint violation:
+```php
+$query = $factory
+    ->insert('friends', [
+        'user_id' => 11,
+        'friend_id' => 30,
+    ])
+    ->ignore(true);
+
+$query->sql(); // INSERT IGNORE INTO `friends` (`user_id`, `friend_id`)"
+$query->params(); // [11, 30]
+```
+
+Update on constraint violation:
+```php
+$query = $factory
+    ->insert('friends', [
+        'user_id' => 11,
+        'friend_id' => 30,
+        'name' => 'Charles'
+    ])
+    ->onDuplicateKeyUpdate([
+        'user_id',
+        'friend_id',
+        'name' => 'Rick'
+    ]);
+
+$query->sql(); // INSERT INTO `friends` (`user_id`, `friend_id` ON DUPLICATE KEY UPDATE `user_id` = VALUES(`user_id`), `friend_id` = VALUES(`friend_id`), `name` = ?"
+$query->params(); // [11, 30, 'Charles', 'Rick']
+```
+
+Postgres / SQLite:
+
+Ignore on constraint violation:
+```php
+$query = $factory
+    ->insert('friends', [
+        'user_id' => 11,
+        'friend_id' => 30,
+    ])
+    ->onConflictDoNothing(['friend_id']);
+
+$query->sql(); // INSERT INTO "friends" ("user_id", "friend_id") ON CONFLICT ("friend_id") DO NOTHING"
+$query->params(); // [11, 30]
+```
+
+Update on constraint violation:
+```php
+$query = $factory
+    ->insert('friends', [
+        'user_id' => 11,
+        'friend_id' => 30,
+        'name' => 'Charles'
+    ])
+    ->onConflictDoUpdate(
+        ['friend_id'],
+        [
+            'user_id',
+            'friend_id',
+            'name' => 'Rick'
+        ]
+    );
+
+$query->sql(); // INSERT INTO "friends" ("user_id", "friend_id" ON CONFLICT ("friend_id") DO UPDATE SET "user_id" = EXCLUDED."user_id", "friend_id" = EXCLUDED."friend_id", "name" = ?"
+$query->params(); // [11, 30, 'Charles', 'Rick']
+```
+
+This also works for bulk inserts

@@ -7,6 +7,7 @@ namespace Latitude\QueryBuilder\Query\Capability;
 use Latitude\QueryBuilder\ExpressionInterface;
 
 use function Latitude\QueryBuilder\express;
+use function Latitude\QueryBuilder\func;
 use function Latitude\QueryBuilder\identify;
 use function Latitude\QueryBuilder\identifyAll;
 use function Latitude\QueryBuilder\listing;
@@ -61,15 +62,24 @@ trait HasOnConflict
             return $query->append('DO NOTHING');
         }
 
-        $pattern = '%s = %s';
-        $express = static fn($key, $value) => express(
-            $pattern,
-            identify($key),
-            param($value)
-        );
+        $express = static function ($key, $value): ExpressionInterface {
+            $keyIsIdentifier = !is_numeric($key);
+
+            $identifier = $keyIsIdentifier ? $key : $value;
+
+            if (!$keyIsIdentifier) {
+                return express(
+                    '%s = EXCLUDED.%s',
+                    identify($identifier),
+                    identify($identifier)
+                );
+            }
+
+            return express('%s = %s', identify($key), param($value));
+        };
 
         return $query->append(
-            'DO UPDATE %s',
+            'DO UPDATE SET %s',
             listing(
                 array_map(
                     $express,
