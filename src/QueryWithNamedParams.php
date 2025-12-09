@@ -40,7 +40,7 @@ final class QueryWithNamedParams
 
         $sqlWithNamedParams = $this->pregReplaceCallback(
             static::REGEX_PATTERN_QUESTION_MARKS,
-            function (array $match) use ($template, $params, &$index, &$namedParams): mixed {
+            function (array $match) use ($template, $params, &$index, &$namedParams): string {
                 if (!$this->isQuestionMarkMatch($match)) {
                     return $match[0];
                 }
@@ -71,7 +71,7 @@ final class QueryWithNamedParams
         return $this->params;
     }
 
-    private function pregReplaceCallback(string|array $pattern, callable $callback, string $subject): string
+    private function pregReplaceCallback(string $pattern, callable $callback, string $subject): string
     {
         /**
          * To prevent possible out-of-memory issues, PCRE just in time compilation needs to be temporarily disabled
