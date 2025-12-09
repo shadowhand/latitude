@@ -15,7 +15,6 @@ use function implode;
 use function is_string;
 use function str_replace;
 use function var_export;
-use function is_subclass_of;
 
 class BasicEngine implements EngineInterface
 {
@@ -64,7 +63,7 @@ class BasicEngine implements EngineInterface
             return $param;
         }
 
-        if (is_subclass_of($param, DateTimeInterface::class)) {
+        if ($param instanceof DateTimeInterface) {
             return $this->exportParameter($param->format(static::$dateTimeFormat));
         }
 
