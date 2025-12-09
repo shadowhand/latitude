@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Engine;
 
+use DateTimeInterface;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query;
 use Latitude\QueryBuilder\StatementInterface;
@@ -14,9 +15,12 @@ use function implode;
 use function is_string;
 use function str_replace;
 use function var_export;
+use function is_subclass_of;
 
 class BasicEngine implements EngineInterface
 {
+    protected static $dateTimeFormat = 'Y-m-d H:i:s';
+
     public function makeSelect(): Query\SelectQuery
     {
         return new Query\SelectQuery($this);
@@ -58,6 +62,10 @@ class BasicEngine implements EngineInterface
     {
         if (is_string($param)) {
             return $param;
+        }
+
+        if (is_subclass_of($param, DateTimeInterface::class)) {
+            return $this->exportParameter($param->format(static::$dateTimeFormat));
         }
 
         return var_export($param, true);

@@ -8,6 +8,8 @@ use Latitude\QueryBuilder\Query;
 
 class PostgresEngine extends CommonEngine
 {
+    protected static $dateTimeFormat = 'Y-m-d H:i:s.u';
+
     public function makeInsert(): Query\InsertQuery
     {
         return new Query\Postgres\InsertQuery($this);

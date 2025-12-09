@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Partial;
 
+use DateTimeInterface;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Partial\Parameter\BoolParameter;
+use Latitude\QueryBuilder\Partial\Parameter\DateTimeParameter;
 use Latitude\QueryBuilder\Partial\Parameter\NullParameter;
 use Latitude\QueryBuilder\StatementInterface;
 
@@ -24,6 +26,10 @@ final class Parameter implements StatementInterface
 
         if (is_bool($value)) {
             return new BoolParameter($value);
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            return new DateTimeParameter($value);
         }
 
         return new self($value);
