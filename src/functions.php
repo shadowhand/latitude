@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+use Latitude\QueryBuilder\Partial\CaseStatement;
+use Latitude\QueryBuilder\Partial\Criteria;
 use Latitude\QueryBuilder\Partial\Parameter;
 
 use function array_map;
@@ -151,4 +153,9 @@ function paramAll(array $values): array
 function listing(array $values, string $separator = ', '): Partial\Listing
 {
     return new Partial\Listing($separator, ...paramAll($values));
+}
+
+function caseStatement(Criteria $when, StatementInterface $then): CaseStatement
+{
+    return new Partial\CaseStatement($when, $then);
 }
