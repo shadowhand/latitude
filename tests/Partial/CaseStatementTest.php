@@ -15,16 +15,18 @@ class CaseStatementTest extends TestCase
 {
     public function testBetween(): void
     {
+        $field = field('role');
+
         $expr = caseStatement(
-            field('role')->eq('admin'),
+            $field->eq('admin'),
             literal(1)
         )
             ->when(
-                field('role')->eq('editor'),
+                $field->eq('editor'),
                 literal(2),
             )
             ->when(
-                field('role')->eq('user'),
+                $field->eq('user'),
                 param(3),
             )
             ->else(param(4));
