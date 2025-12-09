@@ -4,11 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.4.1]
+
+### Fixed
+
+- Corrected constraint handling (#178 by @UniForceMusic)
+
 ## [4.4.0]
 
 ### Added
 
-- Now supports constraint handling for insert/update (#175 by @UniForceMusi)
+- Now supports constraint handling for insert/update (#175 by @UniForceMusic)
 
 ## [4.3.1]
 
