@@ -18,7 +18,7 @@ use function var_export;
 
 class BasicEngine implements EngineInterface
 {
-    protected static $dateTimeFormat = 'Y-m-d H:i:s';
+    protected const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     public function makeSelect(): Query\SelectQuery
     {
@@ -64,7 +64,7 @@ class BasicEngine implements EngineInterface
         }
 
         if ($param instanceof DateTimeInterface) {
-            return $this->exportParameter($param->format(static::$dateTimeFormat));
+            return $param->format(static::DATETIME_FORMAT);
         }
 
         return var_export($param, true);
