@@ -58,7 +58,7 @@ function on(string $left, string $right): CriteriaInterface
  */
 function order($column, ?string $direction = null): StatementInterface
 {
-    if (! $direction) {
+    if (!$direction) {
         return identify($column);
     }
 
@@ -155,7 +155,7 @@ function listing(array $values, string $separator = ', '): Partial\Listing
     return new Partial\Listing($separator, ...paramAll($values));
 }
 
-function caseStatement(Criteria $when, StatementInterface $then): CaseStatement
+function caseStatement(?StatementInterface $expression = null): CaseStatement
 {
-    return new Partial\CaseStatement($when, $then);
+    return new Partial\CaseStatement($expression);
 }

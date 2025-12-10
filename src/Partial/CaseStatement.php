@@ -13,12 +13,16 @@ final class CaseStatement implements StatementInterface
     private ExpressionInterface $expression;
     private ?ExpressionInterface $else = null;
 
-    public function __construct(Criteria $when, StatementInterface $then)
+    public function __construct(?StatementInterface $expression = null)
     {
-        $this->expression = new Expression('CASE WHEN %s THEN %s', $when, $then);
+        $this->expression = new Expression('CASE');
+
+        if ($expression) {
+            $this->expression = $this->expression->append('%s', $expression);
+        }
     }
 
-    public function when(Criteria $when, StatementInterface $then): self
+    public function when(StatementInterface $when, StatementInterface $then): self
     {
         $this->expression = $this->expression->append('WHEN %s THEN %s', $when, $then);
 
