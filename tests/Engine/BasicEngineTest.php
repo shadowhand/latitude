@@ -9,28 +9,18 @@ use Latitude\QueryBuilder\TestCase;
 
 use function Latitude\QueryBuilder\field;
 use function Latitude\QueryBuilder\identify;
+use function Latitude\QueryBuilder\param;
 
-class PostgresTest extends TestCase
+class BasicEngineTest extends TestCase
 {
     protected function setUp(): void
     {
-        $this->engine = new PostgresEngine();
+        $this->engine = new BasicEngine();
     }
 
-    public function testIdentifier(): void
+    public function testDateTime(): void
     {
-        $field = identify('id');
-
-        $this->assertSql('"id"', $field);
-
-        $field = identify('contains"quotes');
-
-        $this->assertSql('"contains""quotes"', $field);
-    }
-
-    public function testDateTimeWithMicroseconds(): void
-    {
-        $dateTimeString = '2025-01-01 20:45:08.957488';
+        $dateTimeString = '2025-01-01 20:45:08';
 
         $dateTime = new DateTime($dateTimeString);
 

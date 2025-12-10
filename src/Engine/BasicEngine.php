@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder\Engine;
 
+use DateTimeInterface;
 use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query;
 use Latitude\QueryBuilder\StatementInterface;
@@ -17,6 +18,8 @@ use function var_export;
 
 class BasicEngine implements EngineInterface
 {
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
+
     public function makeSelect(): Query\SelectQuery
     {
         return new Query\SelectQuery($this);
@@ -58,6 +61,10 @@ class BasicEngine implements EngineInterface
     {
         if (is_string($param)) {
             return $param;
+        }
+
+        if ($param instanceof DateTimeInterface) {
+            return $param->format(static::DATETIME_FORMAT);
         }
 
         return var_export($param, true);
