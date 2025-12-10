@@ -18,7 +18,7 @@ use function var_export;
 
 class BasicEngine implements EngineInterface
 {
-    protected const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     public function makeSelect(): Query\SelectQuery
     {

@@ -8,7 +8,7 @@ use Latitude\QueryBuilder\Query;
 
 class PostgresEngine extends CommonEngine
 {
-    protected const DATETIME_FORMAT = 'Y-m-d H:i:s.u';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s.u';
 
     public function makeInsert(): Query\InsertQuery
     {
