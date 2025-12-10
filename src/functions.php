@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Latitude\QueryBuilder;
 
+use Latitude\QueryBuilder\Partial\CaseStatement;
+use Latitude\QueryBuilder\Partial\Criteria;
 use Latitude\QueryBuilder\Partial\Parameter;
 
 use function array_map;
@@ -56,7 +58,7 @@ function on(string $left, string $right): CriteriaInterface
  */
 function order($column, ?string $direction = null): StatementInterface
 {
-    if (! $direction) {
+    if (!$direction) {
         return identify($column);
     }
 
@@ -151,4 +153,9 @@ function paramAll(array $values): array
 function listing(array $values, string $separator = ', '): Partial\Listing
 {
     return new Partial\Listing($separator, ...paramAll($values));
+}
+
+function caseStatement(?StatementInterface $expression = null): CaseStatement
+{
+    return new Partial\CaseStatement($expression);
 }
