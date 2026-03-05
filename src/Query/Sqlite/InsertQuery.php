@@ -6,12 +6,13 @@ namespace Latitude\QueryBuilder\Query\Sqlite;
 
 use Latitude\QueryBuilder\ExpressionInterface;
 use Latitude\QueryBuilder\Query;
+use function Latitude\QueryBuilder\identify;
 
 class InsertQuery extends Query\InsertQuery
 {
     use Query\Capability\HasOnConflict;
     use Query\Capability\HasReturning;
-
+    
     public function asExpression(): ExpressionInterface
     {
         $query = parent::asExpression();

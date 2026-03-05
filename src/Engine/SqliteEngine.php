@@ -10,12 +10,12 @@ use function is_bool;
 
 class SqliteEngine extends CommonEngine
 {
-    public function makeInsert(): Query\InsertQuery
+    public function makeInsert(): Query\Sqlite\InsertQuery
     {
         return new Query\Sqlite\InsertQuery($this);
     }
 
-    public function makeUpdate(): Query\UpdateQuery
+    public function makeUpdate(): Query\Sqlite\UpdateQuery
     {
         return new Query\Sqlite\UpdateQuery($this);
     }
