@@ -4,7 +4,6 @@ on:
     pull_request:
     push:
         branches:
-          - master
           - main
 
 jobs:
@@ -20,6 +19,7 @@ jobs:
                     - '8.2'
                     - '8.3'
                     - '8.4'
+                    - '8.5'
                 minimum_versions: [false]
                 coverage: ['none']
                 include:
@@ -27,21 +27,21 @@ jobs:
                       php: '7.4'
                       minimum_versions: true
                     - description: 'Log Code Coverage'
-                      php: '8.4'
+                      php: '8.5'
                       coverage: 'pcov'
 
         name: PHP ${{ matrix.php }} ${{ matrix.description }}
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-            - uses: actions/cache@v4
+            - uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
               with:
                   path: ~/.composer/cache/files
                   key: ${{ matrix.php }}
 
             - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+              uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
               with:
                   php-version: ${{ matrix.php }}
                   coverage: ${{ matrix.coverage }}
@@ -58,7 +58,7 @@ jobs:
               run: vendor/bin/phpunit
 
             - name: Upload code coverage
-              uses: codecov/codecov-action@v2
+              uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
               if: matrix.coverage == 'pcov'
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
