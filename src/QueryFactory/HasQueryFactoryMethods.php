@@ -8,10 +8,10 @@ use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\StatementInterface;
 use Latitude\QueryBuilder\Query;
 
-trait GenericQueryFactoryMethods
+trait HasQueryFactoryMethods
 {
     abstract protected function getEngine(): EngineInterface;
-    
+
     /**
      * Create a new SELECT query
      *
@@ -23,10 +23,10 @@ trait GenericQueryFactoryMethods
         if (empty($columns) === false) {
             $query = $query->columns(...$columns);
         }
-        
+
         return $query;
     }
-    
+
     /**
      * Create a new SELECT DISTINCT query
      *
@@ -36,7 +36,7 @@ trait GenericQueryFactoryMethods
     {
         return $this->select(...$columns)->distinct();
     }
-    
+
     /**
      * Create a new INSERT query
      *
@@ -45,14 +45,14 @@ trait GenericQueryFactoryMethods
     public function insert($table, array $map = []): Query\InsertQuery
     {
         $query = $this->getEngine()->makeInsert()->into($table);
-        
+
         if ($map) {
             $query = $query->map($map);
         }
-        
+
         return $query;
     }
-    
+
     /**
      * Create a new DELETE query
      *
@@ -62,7 +62,7 @@ trait GenericQueryFactoryMethods
     {
         return $this->getEngine()->makeDelete()->from($table);
     }
-    
+
     /**
      * Create a new UPDATE query
      *
@@ -71,11 +71,11 @@ trait GenericQueryFactoryMethods
     public function update($table, array $map = []): Query\UpdateQuery
     {
         $query = $this->getEngine()->makeUpdate()->table($table);
-        
+
         if ($map) {
             $query = $query->set($map);
         }
-        
+
         return $query;
     }
 }

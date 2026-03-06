@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace Latitude\QueryBuilder\QueryFactory;
 
 use Latitude\QueryBuilder\Engine\MySqlEngine;
-use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\Query;
 
 class MySqlQueryFactory implements QueryFactoryInterface
 {
-    use GenericQueryFactoryMethods;
+    use HasQueryFactoryMethods;
 
     protected MySqlEngine $engine;
 
-    public function __construct(?MySQLEngine $engine = null)
+    public function __construct(?MySqlEngine $engine = null)
     {
         $this->engine = $engine ?? new MySqlEngine();
     }
@@ -24,30 +23,21 @@ class MySqlQueryFactory implements QueryFactoryInterface
         return $this->engine;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function select(...$columns): Query\MySql\SelectQuery
     {
         $query = $this->getEngine()->makeSelect();
-        if (empty($columns) === false) {
+        if ($columns) {
             $query = $query->columns(...$columns);
         }
 
         return $query;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function selectDistinct(...$columns): Query\MySql\SelectQuery
     {
         return $this->select(...$columns)->distinct();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function insert($table, array $map = []): Query\MySql\InsertQuery
     {
         $query = $this->getEngine()->makeInsert()->into($table);

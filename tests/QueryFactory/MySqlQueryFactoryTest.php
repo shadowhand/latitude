@@ -12,7 +12,7 @@ class MySqlQueryFactoryTest extends TestCase
 {
     private MySqlQueryFactory $factory;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->factory = new MySqlQueryFactory();
     }

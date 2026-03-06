@@ -12,7 +12,7 @@ class SqliteQueryFactoryTest extends TestCase
 {
     private SqliteQueryFactory $factory;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->factory = new SqliteQueryFactory();
     }
@@ -25,7 +25,7 @@ class SqliteQueryFactoryTest extends TestCase
 
     public function testUpdateQueryInstance(): void
     {
-        $selectQuery = $this->factory->update('users', ['foo' => 'bar']);
-        $this->assertInstanceOf(UpdateQuery::class, $selectQuery);
+        $updateQuery = $this->factory->update('users', ['foo' => 'bar']);
+        $this->assertInstanceOf(UpdateQuery::class, $updateQuery);
     }
 }

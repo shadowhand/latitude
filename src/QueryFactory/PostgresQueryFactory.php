@@ -9,7 +9,7 @@ use Latitude\QueryBuilder\Query;
 
 class PostgresQueryFactory implements QueryFactoryInterface
 {
-    use GenericQueryFactoryMethods;
+    use HasQueryFactoryMethods;
 
     protected PostgresEngine $engine;
 
@@ -23,9 +23,6 @@ class PostgresQueryFactory implements QueryFactoryInterface
         return $this->engine;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function insert($table, array $map = []): Query\Postgres\InsertQuery
     {
         $query = $this->getEngine()->makeInsert()->into($table);
@@ -37,9 +34,6 @@ class PostgresQueryFactory implements QueryFactoryInterface
         return $query;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function update($table, array $map = []): Query\Postgres\UpdateQuery
     {
         $query = $this->getEngine()->makeUpdate()->table($table);

@@ -6,11 +6,10 @@ namespace Latitude\QueryBuilder\QueryFactory;
 
 use Latitude\QueryBuilder\Engine\SqlServerEngine;
 use Latitude\QueryBuilder\Query;
-use Latitude\QueryBuilder\QueryFactory\QueryFactoryInterface;
 
 class SqlServerQueryFactory implements QueryFactoryInterface
 {
-    use GenericQueryFactoryMethods;
+    use HasQueryFactoryMethods;
 
     protected SqlServerEngine $engine;
 
@@ -24,30 +23,21 @@ class SqlServerQueryFactory implements QueryFactoryInterface
         return $this->engine;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function select(...$columns): Query\SqlServer\SelectQuery
     {
         $query = $this->getEngine()->makeSelect();
-        if (empty($columns) === false) {
+        if ($columns) {
             $query = $query->columns(...$columns);
         }
 
         return $query;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function selectDistinct(...$columns): Query\SqlServer\SelectQuery
     {
         return $this->select(...$columns)->distinct();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function delete($table): Query\SqlServer\DeleteQuery
     {
         return $this->getEngine()->makeDelete()->from($table);

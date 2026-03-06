@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Engines
+title: Query Factories
 ---
 
 # Query Factories
@@ -18,7 +18,7 @@ $query = $factory->insert('users', ['name' => 'Alice']);
 // $query instanceof Latitude\QueryBuilder\Query\Sqlite\InsertQuery === true
 ```
 
-Since `$query` is now a specific type, your IDE will provide autocomplete for `$query->update()->onConflictDoUpdate()`.
+Since `$query` is now a specific type, your IDE will provide autocomplete for `$query->onConflictDoUpdate()`.
 
 ## Available factories
 

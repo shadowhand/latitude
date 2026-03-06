@@ -12,7 +12,7 @@ class SqlServerQueryFactoryTest extends TestCase
 {
     private SqlServerQueryFactory $factory;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->factory = new SqlServerQueryFactory();
     }
