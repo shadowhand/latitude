@@ -11,12 +11,12 @@ use function str_replace;
 
 class MySqlEngine extends BasicEngine
 {
-    public function makeSelect(): Query\SelectQuery
+    public function makeSelect(): Query\MySql\SelectQuery
     {
         return new Query\MySql\SelectQuery($this);
     }
 
-    public function makeInsert(): Query\InsertQuery
+    public function makeInsert(): Query\MySql\InsertQuery
     {
         return new Query\MySql\InsertQuery($this);
     }

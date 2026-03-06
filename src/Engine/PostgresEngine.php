@@ -10,12 +10,12 @@ class PostgresEngine extends CommonEngine
 {
     public const DATETIME_FORMAT = 'Y-m-d H:i:s.u';
 
-    public function makeInsert(): Query\InsertQuery
+    public function makeInsert(): Query\Postgres\InsertQuery
     {
         return new Query\Postgres\InsertQuery($this);
     }
 
-    public function makeUpdate(): Query\UpdateQuery
+    public function makeUpdate(): Query\Postgres\UpdateQuery
     {
         return new Query\Postgres\UpdateQuery($this);
     }

@@ -15,12 +15,11 @@ It supports most of [SQL-92](https://en.wikipedia.org/wiki/SQL-92) as well as
 database specific functionality:
 
 ```php
-use Latitude\QueryBuilder\Engine\CommonEngine;
-use Latitude\QueryBuilder\QueryFactory;
+use Latitude\QueryBuilder\QueryFactory\MySqlQueryFactory;
 
 use function Latitude\QueryBuilder\field;
 
-$factory = new QueryFactory(new CommonEngine());
+$factory = new MySqlQueryFactory();
 $query = $factory
     ->select('id', 'username')
     ->from('users')
@@ -43,6 +42,7 @@ Getting Started
 
 - [Installation](install)
 - [Quick Reference](cheatsheet)
+- [Query Factories](factories)
 - [Engines](engines)
 
 Query Types

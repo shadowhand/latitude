@@ -11,12 +11,12 @@ use function str_replace;
 
 class SqlServerEngine extends BasicEngine
 {
-    public function makeSelect(): Query\SelectQuery
+    public function makeSelect(): Query\SqlServer\SelectQuery
     {
         return new Query\SqlServer\SelectQuery($this);
     }
 
-    public function makeDelete(): Query\DeleteQuery
+    public function makeDelete(): Query\SqlServer\DeleteQuery
     {
         return new Query\SqlServer\DeleteQuery($this);
     }
