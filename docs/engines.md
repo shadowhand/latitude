@@ -45,3 +45,8 @@ converts boolean values into small integers because SQLite does not have
 a separate boolean storage class. Instead, boolean values are stored as
 integers: `0` (false) and `1` (true).
 
+## Firebird Engine
+
+The Firebird Engine is `Latitude\QueryBuilder\Engine\FirebirdEngine`. This engine
+adheres to the SQL-92, with the only custom implementation being limit and offset.
+The returning clause is also added to `INSERT` and `DELETE` queries.
