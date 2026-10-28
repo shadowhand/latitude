@@ -24,4 +24,13 @@ final class Query
     {
         return $this->params;
     }
+
+    public function toQueryWithNamedParams(string $template = QueryWithNamedParams::DEFAULT_PARAM_NAME_TEMPLATE): QueryWithNamedParams
+    {
+        return new QueryWithNamedParams(
+            $this->sql(),
+            $this->params(),
+            $template
+        );
+    }
 }

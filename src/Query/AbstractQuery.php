@@ -8,6 +8,7 @@ use Latitude\QueryBuilder\EngineInterface;
 use Latitude\QueryBuilder\ExpressionInterface;
 use Latitude\QueryBuilder\Query;
 use Latitude\QueryBuilder\QueryInterface;
+use Latitude\QueryBuilder\QueryWithNamedParams;
 
 abstract class AbstractQuery implements QueryInterface
 {
@@ -41,5 +42,14 @@ abstract class AbstractQuery implements QueryInterface
     public function params(EngineInterface $engine): array
     {
         return $this->asExpression()->params($engine);
+    }
+
+    public function toQueryWithNamedParams(EngineInterface $engine, string $template = QueryWithNamedParams::DEFAULT_PARAM_NAME_TEMPLATE): QueryWithNamedParams
+    {
+        return new QueryWithNamedParams(
+            $this->sql($engine),
+            $this->params($engine),
+            $template
+        );
     }
 }
